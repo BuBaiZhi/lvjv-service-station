@@ -1,0 +1,61 @@
+<!-- 浏览历史页面 -->
+<view class="page {{theme === 'dark' ? 'dark-mode' : ''}} {{appVersion === 'elderly' ? 'elderly-mode' : ''}}">
+  <!-- 导航栏 -->
+  <view class="page-header">
+    <view class="back-btn" bindtap="goBack">返回</view>
+    <text class="page-title">浏览历史</text>
+    <text class="edit-btn" bindtap="toggleEditMode">
+      {{isEditMode ? '取消' : '编辑'}}
+    </text>
+  </view>
+
+  <!-- 历史列表 -->
+  <view class="content">
+    <view 
+      class="history-card {{isEditMode ? 'edit-mode' : ''}}"
+      wx:for="{{historyList}}"
+      wx:key="id"
+      bindtap="viewDetail"
+      data-id="{{item.id}}"
+    >
+      <!-- 编辑模式选择框 -->
+      <view 
+        class="checkbox {{selectedIds.indexOf(item.id) > -1 ? 'checked' : ''}}"
+        wx:if="{{isEditMode}}"
+        catchtap="toggleSelect"
+        data-id="{{item.id}}"
+      >
+        <text wx:if="{{selectedIds.indexOf(item.id) > -1}}">✓</text>
+      </view>
+
+      <image class="history-image" src="{{item.image}}" mode="aspectFill"></image>
+      
+      <view class="history-info">
+        <text class="history-title">{{item.title}}</text>
+        <text class="history-type">
+          {{item.type === 'house' ? '民宿' : item.type === 'skill' ? '技能' : '活动'}}
+        </text>
+        <view class="history-footer">
+          <text class="history-price">¥{{item.price}}</text>
+          <text class="history-date">{{item.date}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty" wx:if="{{historyList.length === 0}}">
+      <text class="empty-icon">🕐</text>
+      <text class="empty-text">暂无浏览记录</text>
+    </view>
+  </view>
+
+  <!-- 编辑模式底部操作栏 -->
+  <view class="edit-bar" wx:if="{{isEditMode}}">
+    <view class="edit-actions">
+      <text class="action-text" bindtap="selectAll">全选</text>
+      <text class="action-text delete" bindtap="deleteSelected">
+        删除{{selectedIds.length > 0 ? '(' + selectedIds.length + ')' : ''}}
+      </text>
+    </view>
+  </view>
+</view>

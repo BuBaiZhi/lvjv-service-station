@@ -1,0 +1,195 @@
+/* 设置页面样式 */
+.page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* 导航栏 */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background: #fff;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.back-btn {
+  width: 100rpx;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: #1890ff;
+}
+
+.page-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+.placeholder {
+  width: 44px;
+}
+
+/* 内容区域 */
+.content {
+  padding: 20rpx;
+}
+
+.section {
+  margin-bottom: 30rpx;
+}
+
+.section-header {
+  padding: 20rpx 10rpx;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* 主题选项 */
+.theme-options {
+  display: flex;
+  gap: 20rpx;
+}
+
+.theme-item {
+  flex: 1;
+  background: #fff;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  padding: 40rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  transition: all 0.3s;
+}
+
+.theme-item.active {
+  border-color: #1890ff;
+  background: #e6f7ff;
+}
+
+.theme-icon {
+  font-size: 56rpx;
+}
+
+.theme-name {
+  font-size: 14px;
+  color: #666;
+}
+
+.theme-item.active .theme-name {
+  color: #1890ff;
+  font-weight: 500;
+}
+
+/* 版本选项 */
+.version-options {
+  display: flex;
+  gap: 20rpx;
+}
+
+.version-item {
+  flex: 1;
+  background: #fff;
+  border: 2rpx solid #e0e0e0;
+  border-radius: 12rpx;
+  padding: 40rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  transition: all 0.3s;
+}
+
+.version-item.active {
+  border-color: #52c41a;
+  background: #f6ffed;
+}
+
+.version-icon {
+  font-size: 56rpx;
+}
+
+.version-name {
+  font-size: 14px;
+  color: #666;
+}
+
+.version-item.active .version-name {
+  color: #52c41a;
+  font-weight: 500;
+}
+
+/* 设置列表 */
+.setting-list {
+  background: #fff;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx 30rpx;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.setting-label {
+  font-size: 15px;
+  color: #333;
+}
+
+.setting-arrow {
+  font-size: 32rpx;
+  color: #ccc;
+}
+
+/* 深色模式 */
+.dark-mode .page {
+  background-color: #1a1a1a;
+}
+
+.dark-mode .page-header {
+  background: #2a2a2a;
+  border-color: #3a3a3a;
+}
+
+.dark-mode .back-icon,
+.dark-mode .page-title,
+.dark-mode .section-title,
+.dark-mode .setting-label {
+  color: #f0f0f0;
+}
+
+.dark-mode .theme-item,
+.dark-mode .version-item,
+.dark-mode .setting-list {
+  background: #2a2a2a;
+  border-color: #3a3a3a;
+}
+
+.dark-mode .theme-item.active {
+  background: #1a3a5a;
+}
+
+.dark-mode .version-item.active {
+  background: #1a3a2a;
+}
+
+.dark-mode .setting-item {
+  border-color: #3a3a3a;
+}

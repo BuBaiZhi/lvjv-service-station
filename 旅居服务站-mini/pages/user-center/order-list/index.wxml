@@ -1,0 +1,77 @@
+<!-- 我的交易页面 -->
+<view class="page {{theme === 'dark' ? 'dark-mode' : ''}} {{appVersion === 'elderly' ? 'elderly-mode' : ''}}">
+  <!-- 导航栏 -->
+  <view class="page-header">
+    <view class="back-btn" bindtap="goBack">返回</view>
+    <text class="page-title">我的交易</text>
+    <view class="placeholder"></view>
+  </view>
+
+  <!-- 标签栏 -->
+  <view class="tabs">
+    <view 
+      class="tab-item {{activeTab === 'all' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="all"
+    >
+      <text>全部</text>
+    </view>
+    <view 
+      class="tab-item {{activeTab === 'pending' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="pending"
+    >
+      <text>待确认</text>
+    </view>
+    <view 
+      class="tab-item {{activeTab === 'ongoing' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="ongoing"
+    >
+      <text>进行中</text>
+    </view>
+    <view 
+      class="tab-item {{activeTab === 'completed' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="completed"
+    >
+      <text>已完成</text>
+    </view>
+  </view>
+
+  <!-- 订单列表 -->
+  <view class="content">
+    <view 
+      class="order-card"
+      wx:for="{{orderList}}"
+      wx:key="id"
+      bindtap="viewOrderDetail"
+      data-id="{{item.id}}"
+    >
+      <view class="order-header">
+        <text class="order-type">{{item.type === 'house' ? '民宿' : item.type === 'skill' ? '技能' : '活动'}}</text>
+        <text class="order-status {{item.status}}">{{item.statusText}}</text>
+      </view>
+      
+      <view class="order-content">
+        <image class="order-image" src="{{item.image || 'https://picsum.photos/200/200?random=' + item.id}}" mode="aspectFill"></image>
+        <view class="order-info">
+          <text class="order-title">{{item.title}}</text>
+          <text class="order-date">{{item.date}}</text>
+          <text class="order-price">¥{{item.price}}</text>
+        </view>
+      </view>
+
+      <view class="order-footer">
+        <button class="btn-secondary" size="mini">联系对方</button>
+        <button class="btn-primary" size="mini">查看详情</button>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty" wx:if="{{orderList.length === 0}}">
+      <text class="empty-icon">📦</text>
+      <text class="empty-text">暂无订单</text>
+    </view>
+  </view>
+</view>

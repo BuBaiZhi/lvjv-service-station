@@ -1,0 +1,176 @@
+/* 浏览历史页面样式 */
+.page {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 100rpx;
+}
+
+.page-header .edit-btn {
+  width: 80rpx;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: #1890ff;
+}
+
+/* 历史列表 */
+.content {
+  padding: 20rpx;
+}
+
+.history-card {
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+  display: flex;
+  gap: 20rpx;
+  position: relative;
+  transition: padding-left 0.3s;
+}
+
+.history-card.edit-mode {
+  padding-left: 80rpx;
+}
+
+/* 选择框 */
+.checkbox {
+  position: absolute;
+  left: 30rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40rpx;
+  height: 40rpx;
+  border: 2px solid #d9d9d9;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #fff;
+  transition: all 0.3s;
+}
+
+.checkbox.checked {
+  background: #1890ff;
+  border-color: #1890ff;
+}
+
+.history-image {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 8rpx;
+  flex-shrink: 0;
+}
+
+.history-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.history-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.history-type {
+  font-size: 13px;
+  color: #1890ff;
+  background: #e6f7ff;
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+  align-self: flex-start;
+  margin-bottom: 10rpx;
+}
+
+.history-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-price {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ff4d4f;
+}
+
+.history-date {
+  font-size: 12px;
+  color: #999;
+}
+
+/* 空状态 */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.empty-icon {
+  font-size: 80px;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 15px;
+  color: #999;
+}
+
+/* 编辑模式底部操作栏 */
+.edit-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20rpx 30rpx;
+  border-top: 1px solid #f0f0f0;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.edit-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.action-text {
+  font-size: 15px;
+  color: #1890ff;
+  padding: 16rpx 40rpx;
+  border-radius: 24rpx;
+  background: #e6f7ff;
+}
+
+.action-text.delete {
+  color: #ff4d4f;
+  background: #fff1f0;
+}
+
+/* 深色模式 */
+.dark-mode .page {
+  background-color: #1a1a1a;
+}
+
+.dark-mode .history-card,
+.dark-mode .edit-bar {
+  background: #2a2a2a;
+  border-color: #3a3a3a;
+}
+
+.dark-mode .history-title {
+  color: #f0f0f0;
+}
+
+.dark-mode .checkbox {
+  border-color: #555;
+}
