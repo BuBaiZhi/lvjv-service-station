@@ -1,0 +1,234 @@
+<view class="container">
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 房源内容 -->
+  <view class="detail-container" wx:else>
+    
+    <!-- 轮播图区域 -->
+    <view class="swiper-container">
+      <swiper class="swiper" circular autoplay interval="3000" duration="500" indicator-dots indicator-color="rgba(255,255,255,0.5)" indicator-active-color="#ffffff">
+        <block wx:for="{{house.images}}" wx:key="index">
+          <swiper-item>
+            <image class="slide-image" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-index="{{index}}"></image>
+          </swiper-item>
+        </block>
+      </swiper>
+      
+      <!-- 价格标签 -->
+      <view class="price-tag" wx:if="{{house.price}}">
+        <text class="price">¥{{house.price}}</text>
+        <text class="unit">/{{house.unit || '晚'}}</text>
+      </view>
+      
+      <!-- 图片计数 -->
+      <view class="image-count" wx:if="{{house.images}}">{{house.images.length}}张</view>
+    </view>
+    
+    <!-- 标题区域卡片 -->
+    <view class="card">
+      <view class="title-section">
+        <view class="title-left">
+          <text class="title">{{house.title || '房源标题'}}</text>
+          <view class="rating" wx:if="{{house.rating}}">
+            <text class="star">⭐</text>
+            <text class="score">{{house.rating}}</text>
+            <text class="comment-count">({{house.commentCount || 0}}条评价)</text>
+          </view>
+        </view>
+        <view class="title-right">
+          <view class="favorite-btn" bindtap="onFavorite">
+            <text class="favorite-icon">{{house.isFavorite ? '❤️' : '🤍'}}</text>
+            <text class="favorite-text">{{house.isFavorite ? '已收藏' : '收藏'}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 位置 -->
+      <view class="location-section" bindtap="onMap">
+        <text class="location-icon">📍</text>
+        <text class="address">{{house.location || '未知位置'}}</text>
+        <text class="distance" wx:if="{{house.distance}}">{{house.distance}}</text>
+        <text class="map-link">查看地图 ›</text>
+      </view>
+    </view>
+    
+    <!-- 入住信息卡片 -->
+    <view class="card">
+      <view class="card-header">
+        <text class="card-title">入住信息</text>
+      </view>
+      <view class="info-grid">
+        <view class="info-item">
+          <text class="info-label">入住</text>
+          <text class="info-value">15:00后</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">退房</text>
+          <text class="info-value">12:00前</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">最少入住</text>
+          <text class="info-value">1天</text>
+        </view>
+        <view class="info-item">
+          <text class="info-label">最多入住</text>
+          <text class="info-value">4人</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 设施标签卡片 -->
+    <view class="card" wx:if="{{house.facilities && house.facilities.length > 0}}">
+      <view class="card-header">
+        <text class="card-title">设施服务</text>
+      </view>
+      <view class="facilities-grid">
+        <view class="facility-grid-item" wx:for="{{house.facilities}}" wx:key="index">
+          <text class="facility-icon">{{facilityIcons[index] || '✓'}}</text>
+          <text class="facility-name">{{item}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 房东信息卡片 -->
+    <view class="card" wx:if="{{house.host}}">
+      <view class="card-header">
+        <text class="card-title">房东信息</text>
+      </view>
+      <view class="host-info">
+        <image class="host-avatar" src="{{house.host.avatar || 'https://picsum.photos/100/100'}}" mode="aspectFill"></image>
+        <view class="host-detail">
+          <view class="host-name">
+            <text>{{house.host.name || '房东'}}</text>
+            <identity-badge wx:if="{{house.host.identity}}" identity="{{house.host.identity}}"></identity-badge>
+          </view>
+          <text class="host-desc">{{house.host.desc || '数字游民社区主理人'}}</text>
+          <view class="host-stats">
+            <text>回复率 100%</text>
+            <text>|</text>
+            <text>5分钟回复</text>
+          </view>
+        </view>
+        <button class="contact-btn" bindtap="onContact">联系房东</button>
+      </view>
+    </view>
+    
+    <!-- 房源介绍卡片 -->
+    <view class="card">
+      <view class="card-header">
+        <text class="card-title">房源介绍</text>
+      </view>
+      <text class="description">{{house.description || '暂无介绍'}}</text>
+    </view>
+    
+    <!-- ===== 优化后的评价卡片 ===== -->
+    <view class="card reviews-card">
+      <view class="card-header">
+        <view class="header-left">
+          <text class="card-title">房客评价</text>
+          <view class="rating-summary" wx:if="{{ratingStats}}">
+            <text class="summary-star">⭐</text>
+            <text class="summary-score">{{ratingStats.average}}</text>
+            <text class="summary-count">({{ratingStats.total}}条评价)</text>
+          </view>
+        </view>
+        <view class="header-right">
+          <text class="section-more" bindtap="onViewAllReviews">查看全部 ›</text>
+          <text class="write-review" bindtap="onWriteReview">写评价</text>
+        </view>
+      </view>
+
+      <!-- 评分分布（快速查看） -->
+      <view class="rating-distribution" wx:if="{{ratingStats && ratingStats.distribution}}">
+        <view class="distribution-item" wx:for="{{ratingStats.distribution}}" wx:key="star">
+          <text class="star-label">{{item.star}}星</text>
+          <view class="progress-bar">
+            <view class="progress-fill" style="width: {{item.percentage}}%"></view>
+          </view>
+          <text class="progress-count">{{item.count}}</text>
+        </view>
+      </view>
+
+      <!-- 评价列表 -->
+      <view class="reviews-list">
+        <block wx:for="{{house.reviews}}" wx:key="index" wx:if="{{index < 2}}">
+          <view class="review-item">
+            <view class="review-header">
+              <image class="reviewer-avatar" src="{{item.avatar || 'https://picsum.photos/100/100'}}" mode="aspectFill"></image>
+              <view class="reviewer-info">
+                <text class="reviewer-name">{{item.name || '匿名用户'}}</text>
+                <view class="review-meta">
+                  <text class="review-time">{{item.time || '刚刚'}}</text>
+                  <view class="review-rating">
+                    <text class="star">⭐</text>
+                    <text>{{item.rating || 5}}</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+            <text class="review-content">{{item.content || '暂无评价内容'}}</text>
+            
+            <!-- 评价图片（如果有） -->
+            <view class="review-images" wx:if="{{item.images && item.images.length > 0}}">
+              <image 
+                class="review-image" 
+                wx:for="{{item.images}}" 
+                wx:key="index" 
+                src="{{item}}" 
+                mode="aspectFill"
+                bindtap="onReviewImageTap"
+                data-images="{{item.images}}"
+                data-index="{{index}}"
+              ></image>
+            </view>
+            
+            <!-- 房东回复（如果有） -->
+            <view class="host-reply" wx:if="{{item.reply}}">
+              <text class="reply-label">房东回复：</text>
+              <text class="reply-text">{{item.reply}}</text>
+              <text class="reply-time">{{item.replyTime}}</text>
+            </view>
+            
+            <!-- 评价互动 -->
+            <view class="review-actions">
+              <view class="action-item" bindtap="onLikeReview" data-id="{{item.id}}">
+                <text class="action-icon">{{item.isLiked ? '❤️' : '🤍'}}</text>
+                <text class="action-count">{{item.likeCount || 0}}</text>
+              </view>
+              <view class="action-item" bindtap="onReplyReview" data-id="{{item.id}}">
+                <text class="action-icon">💬</text>
+                <text class="action-count">回复</text>
+              </view>
+            </view>
+          </view>
+        </block>
+        
+        <!-- 如果没有评价 -->
+        <view class="no-reviews" wx:if="{{!house.reviews || house.reviews.length === 0}}">
+          <text class="no-reviews-icon">📝</text>
+          <text class="no-reviews-text">暂无评价</text>
+          <text class="no-reviews-subtext">成为第一个评价的人吧</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 底部操作栏 -->
+    <view class="bottom-bar">
+      <view class="price-info">
+        <text class="total-price">¥{{house.price || 0}}</text>
+        <text class="unit">/晚</text>
+        <text class="total-desc" wx:if="{{house.price && house.price * 3}}">¥{{house.price * 3}}/3晚</text>
+      </view>
+      <view class="action-buttons">
+        <view class="icon-btn" bindtap="onCustomerService">
+          <text class="btn-icon">💬</text>
+          <text class="btn-text">客服</text>
+        </view>
+        <button class="book-btn" bindtap="onBook">立即预订</button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,146 @@
+<view class="container">
+  <!-- 房源信息卡片 -->
+  <view class="house-card">
+    <image class="house-image" src="{{house.image}}" mode="aspectFill"></image>
+    <view class="house-info">
+      <text class="house-title">{{house.title}}</text>
+      <text class="house-location">{{house.location}}</text>
+      <view class="house-price">
+        <text class="price">¥{{house.price}}</text>
+        <text class="unit">/{{house.unit}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 日期选择 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">入住日期</text>
+    </view>
+    <view class="date-selector">
+      <view class="date-item" bindtap="showCalendar" data-type="checkIn">
+        <text class="date-label">入住</text>
+        <text class="date-value">{{checkIn || '请选择'}}</text>
+      </view>
+      <text class="date-arrow">→</text>
+      <view class="date-item" bindtap="showCalendar" data-type="checkOut">
+        <text class="date-label">离店</text>
+        <text class="date-value">{{checkOut || '请选择'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 人数选择 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">入住人数</text>
+    </view>
+    <view class="guest-selector">
+      <view class="guest-item">
+        <text class="guest-label">成人</text>
+        <view class="guest-control">
+          <text class="control-btn" bindtap="decreaseAdults">-</text>
+          <text class="guest-count">{{adults}}</text>
+          <text class="control-btn" bindtap="increaseAdults">+</text>
+        </view>
+      </view>
+      <view class="guest-item">
+        <text class="guest-label">儿童</text>
+        <view class="guest-control">
+          <text class="control-btn" bindtap="decreaseChildren">-</text>
+          <text class="guest-count">{{children}}</text>
+          <text class="control-btn" bindtap="increaseChildren">+</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 价格明细 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">价格明细</text>
+    </view>
+    <view class="price-detail">
+      <view class="price-row">
+        <text>¥{{house.price}} × {{nights}}晚</text>
+        <text>¥{{subtotal}}</text>
+      </view>
+      <view class="price-row">
+        <text>平台服务费</text>
+        <text>¥{{serviceFee}}</text>
+      </view>
+      <view class="price-row total">
+        <text>总计</text>
+        <text>¥{{total}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="bottom-left">
+      <text class="total-price">¥{{total}}</text>
+      <text class="total-desc">总价</text>
+    </view>
+    <button class="book-btn" bindtap="onBook">立即预订</button>
+  </view>
+
+  <!-- 日历弹窗 -->
+  <view class="calendar-modal" wx:if="{{showCalendar}}">
+    <view class="modal-mask" bindtap="hideCalendar"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">选择{{calendarType === 'checkIn' ? '入住' : '离店'}}日期</text>
+        <text class="close-btn" bindtap="hideCalendar">✕</text>
+      </view>
+      <view class="modal-body">
+        <picker-view 
+          class="calendar-picker" 
+          value="{{datePickerValue}}"
+          bindchange="onDateChange"
+          indicator-style="height: 80rpx;"
+        >
+          <picker-view-column>
+            <view wx:for="{{years}}" wx:key="index" class="picker-item">{{item}}年</view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{months}}" wx:key="index" class="picker-item">{{item}}月</view>
+          </picker-view-column>
+          <picker-view-column>
+            <view wx:for="{{days}}" wx:key="index" class="picker-item">{{item}}日</view>
+          </picker-view-column>
+        </picker-view>
+      </view>
+      <view class="modal-footer">
+        <button class="confirm-btn" bindtap="confirmDate">确定</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 支付弹窗 -->
+  <view class="payment-modal" wx:if="{{showPayment}}">
+    <view class="modal-mask" bindtap="closePayment"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">确认支付</text>
+        <text class="close-btn" bindtap="closePayment">✕</text>
+      </view>
+      <view class="modal-body">
+        <view class="payment-info">
+          <text class="payment-label">订单金额</text>
+          <text class="payment-amount">¥{{total}}</text>
+        </view>
+        <view class="payment-methods">
+          <view class="payment-method active">
+            <text class="method-icon">💳</text>
+            <text class="method-name">微信支付</text>
+            <text class="method-check">✓</text>
+          </view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="confirm-pay-btn" bindtap="onConfirmPay">确认支付 ¥{{total}}</button>
+      </view>
+    </view>
+  </view>
+</view>

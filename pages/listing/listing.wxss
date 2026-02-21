@@ -1,0 +1,407 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f8f8;
+}
+
+/* 头部 */
+.header {
+  padding: 20rpx 30rpx;
+  background: linear-gradient(135deg, #1e3d4c, #2a5a6e);
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.search-bar {
+  flex: 1;
+  height: 72rpx;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 36rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 24rpx;
+  margin-right: 20rpx;
+}
+
+.search-icon {
+  font-size: 32rpx;
+  margin-right: 12rpx;
+}
+
+.search-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.filter-btn {
+  width: 72rpx;
+  height: 72rpx;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+}
+
+/* 筛选栏 */
+.filter-bar {
+  background: white;
+  padding: 20rpx 30rpx;
+  white-space: nowrap;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.filter-list {
+  display: inline-block;
+}
+
+.filter-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 12rpx 24rpx;
+  margin-right: 20rpx;
+  font-size: 26rpx;
+  color: #666;
+  background: #f5f5f5;
+  border-radius: 40rpx;
+}
+
+.filter-item.active {
+  color: #1e3d4c;
+  background: rgba(30, 61, 76, 0.1);
+  font-weight: 500;
+}
+
+.arrow {
+  font-size: 20rpx;
+  margin-left: 6rpx;
+}
+
+/* 视图切换 */
+.view-switch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background: white;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.result-count {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.switch-buttons {
+  display: flex;
+  background: #f5f5f5;
+  border-radius: 48rpx;
+  padding: 4rpx;
+}
+
+.switch-btn {
+  display: flex;
+  align-items: center;
+  padding: 8rpx 24rpx;
+  border-radius: 40rpx;
+  font-size: 26rpx;
+}
+
+.switch-btn.active {
+  background: white;
+  color: #1e3d4c;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.btn-text {
+  margin-left: 8rpx;
+}
+
+/* 列表模式 */
+.list-mode {
+  flex: 1;
+  overflow: hidden;
+}
+
+.house-list {
+  height: 100%;
+  padding: 20rpx;
+}
+
+.house-card {
+  background: white;
+  border-radius: 24rpx;
+  margin-bottom: 30rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.03);
+  display: flex;
+  padding: 20rpx;
+}
+
+.house-image {
+  width: 240rpx;
+  height: 240rpx;
+  border-radius: 16rpx;
+  margin-right: 20rpx;
+}
+
+.house-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.house-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12rpx;
+}
+
+.house-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1e3d4c;
+  flex: 1;
+  margin-right: 20rpx;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.house-price {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #ff6b6b;
+  white-space: nowrap;
+}
+
+.unit {
+  font-size: 24rpx;
+  color: #999;
+  margin-left: 4rpx;
+}
+
+.house-location {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+  font-size: 24rpx;
+  color: #999;
+  flex-wrap: wrap;
+}
+
+.location-icon {
+  margin-right: 4rpx;
+}
+
+.location-text {
+  margin-right: 12rpx;
+}
+
+.distance {
+  color: #6b8c7d;
+  background: rgba(107, 140, 125, 0.1);
+  padding: 2rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+.house-rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.star {
+  font-size: 26rpx;
+  margin-right: 4rpx;
+}
+
+.score {
+  font-size: 26rpx;
+  color: #ff6b6b;
+  font-weight: 600;
+  margin-right: 16rpx;
+}
+
+.comment-count {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.house-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.tag {
+  font-size: 22rpx;
+  color: #6b8c7d;
+  background: rgba(107, 140, 125, 0.1);
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.house-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.feature {
+  font-size: 22rpx;
+  color: #1e3d4c;
+  background: rgba(30, 61, 76, 0.08);
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+/* 地图模式 */
+.map-mode {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+.current-location {
+  position: absolute;
+  bottom: 200rpx;
+  right: 30rpx;
+  background: white;
+  padding: 20rpx;
+  border-radius: 50%;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.locate-icon {
+  font-size: 36rpx;
+}
+
+.selected-card {
+  position: absolute;
+  bottom: 30rpx;
+  left: 30rpx;
+  right: 30rpx;
+  background: white;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  display: flex;
+  box-shadow: 0 8rpx 30rpx rgba(0, 0, 0, 0.1);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.card-image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 16rpx;
+  margin-right: 20rpx;
+}
+
+.card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8rpx;
+}
+
+.card-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1e3d4c;
+  flex: 1;
+  margin-right: 20rpx;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-price {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #ff6b6b;
+  white-space: nowrap;
+}
+
+.card-location {
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 12rpx;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-tags {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 16rpx;
+}
+
+.card-tag {
+  font-size: 22rpx;
+  color: #6b8c7d;
+  background: rgba(107, 140, 125, 0.1);
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.view-detail-btn {
+  width: 160rpx;
+  height: 56rpx;
+  line-height: 56rpx;
+  background: linear-gradient(135deg, #1e3d4c, #2a5a6e);
+  color: white;
+  font-size: 24rpx;
+  border-radius: 28rpx;
+  margin: 0;
+  padding: 0;
+}
+
+.view-detail-btn::after {
+  border: none;
+}
+
+/* 加载更多 */
+.load-more, .no-more {
+  text-align: center;
+  padding: 30rpx 0;
+  color: #999;
+  font-size: 26rpx;
+}

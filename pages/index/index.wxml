@@ -1,0 +1,108 @@
+<view class="container">
+  <!-- 顶部搜索 -->
+  <view class="header">
+    <!-- ✅ 确保这里有 bindtap="onSearch" -->
+    <view class="search-bar" bindtap="onSearch">
+      <text class="search-icon">🔍</text>
+      <text class="search-text">搜索目的地、社区名称</text>
+    </view>
+    
+    <!-- 发布房源按钮 -->
+    <view class="publish-house-btn" bindtap="onPublishHouse">
+      <text>🏠+</text>
+    </view>
+    
+    <view class="filter-btn" bindtap="onFilter">
+      <text>📋</text>
+    </view>
+  </view>
+  
+  <!-- 轮播图 -->
+  <scroll-view class="banner" scroll-x show-scrollbar="{{false}}">
+    <view class="banner-list">
+      <view class="banner-item" wx:for="{{banners}}" wx:key="index" bindtap="onBannerTap" data-index="{{index}}">
+        <view class="banner-content" style="background: {{item.color}}">
+          <text class="banner-title">{{item.title}}</text>
+          <text class="banner-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+  
+  <!-- 分类入口 -->
+  <view class="categories">
+    <view class="category-item" wx:for="{{categories}}" wx:key="index" bindtap="onCategoryTap" data-category="{{item.name}}">
+      <view class="category-icon">{{item.icon}}</view>
+      <text class="category-name">{{item.name}}</text>
+    </view>
+  </view>
+  
+  <!-- 地区选择器 -->
+  <view class="region-selector" bindtap="showRegionPicker">
+    <text class="region-label">📍 当前地区：</text>
+    <text class="region-value">{{currentRegion}}</text>
+    <text class="region-arrow">▼</text>
+  </view>
+  
+  <!-- 推荐房源 -->
+  <view class="section-header">
+    <text class="section-title">🔥 热门推荐（按点赞量）</text>
+    <text class="section-more" bindtap="onViewAll">查看更多 ></text>
+  </view>
+  
+  <!-- 房源列表 -->
+  <view class="house-list">
+    <view class="house-card" 
+          wx:for="{{houses}}" 
+          wx:key="id" 
+          bindtap="onHouseTap" 
+          data-id="{{item.id}}">
+      <view class="house-image">
+        <image class="image-placeholder" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="house-tag" wx:if="{{item.tag}}">{{item.tag}}</view>
+      </view>
+      <view class="house-info">
+        <view class="house-header">
+          <text class="house-title">{{item.title}}</text>
+          <text class="house-likes">❤️ {{item.likes || 0}}</text>
+        </view>
+        <view class="house-location">📍 {{item.location}}</view>
+        <view class="house-price">
+          <text class="price">¥{{item.price}}</text>
+          <text class="unit">/{{item.unit}}</text>
+        </view>
+        <view class="house-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this">#{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 地区选择弹窗 -->
+  <view class="filter-modal" wx:if="{{showRegionModal}}">
+    <view class="modal-mask" bindtap="hideRegionPicker"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">选择你的目标地区</text>
+        <text class="close-btn" bindtap="hideRegionPicker">✕</text>
+      </view>
+      <view class="modal-body">
+        <scroll-view class="region-list" scroll-y>
+          <view 
+            class="region-item {{currentRegion === item ? 'active' : ''}}"
+            wx:for="{{regions}}"
+            wx:key="index"
+            bindtap="selectRegion"
+            data-region="{{item}}"
+          >
+            <text class="region-name">{{item}}</text>
+            <text class="region-check" wx:if="{{currentRegion === item}}">✓</text>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 底部占位 -->
+  <view class="footer-placeholder"></view>
+</view>

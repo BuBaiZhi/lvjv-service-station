@@ -1,0 +1,69 @@
+<view class="container">
+  <view class="form-container">
+    <!-- 房源信息 -->
+    <view class="house-info">
+      <image class="house-image" src="{{houseInfo.image}}" mode="aspectFill"></image>
+      <view class="house-detail">
+        <text class="house-title">{{houseInfo.title}}</text>
+        <text class="house-location">{{houseInfo.location}}</text>
+      </view>
+    </view>
+
+    <!-- 评分 -->
+    <view class="form-item">
+      <text class="form-label">总体评分 <text class="required">*</text></text>
+      <view class="rating-stars">
+        <text 
+          class="star" 
+          wx:for="{{5}}" 
+          wx:key="index"
+          bindtap="setRating"
+          data-star="{{index + 1}}"
+        >{{index < rating ? '⭐' : '☆'}}</text>
+      </view>
+    </view>
+
+    <!-- 评价内容 -->
+    <view class="form-item">
+      <text class="form-label">评价内容 <text class="required">*</text></text>
+      <textarea 
+        class="form-textarea"
+        placeholder="分享你的入住体验..."
+        bindinput="onContentInput"
+        value="{{content}}"
+        maxlength="500"
+      ></textarea>
+      <text class="word-count">{{content.length}}/500</text>
+    </view>
+
+    <!-- 图片上传 -->
+    <view class="form-item">
+      <text class="form-label">上传图片</text>
+      <view class="image-uploader">
+        <view class="image-list">
+          <block wx:for="{{images}}" wx:key="index">
+            <view class="image-item">
+              <image class="uploaded-image" src="{{item}}" mode="aspectFill"></image>
+              <text class="remove-image" bindtap="removeImage" data-index="{{index}}">✕</text>
+            </view>
+          </block>
+          <view class="upload-btn" wx:if="{{images.length < 9}}" bindtap="chooseImage">
+            <text class="upload-icon">+</text>
+            <text class="upload-text">上传图片</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 匿名评价 -->
+    <view class="form-item">
+      <label class="anonymous-label">
+        <checkbox checked="{{isAnonymous}}" bindchange="toggleAnonymous"></checkbox>
+        <text class="anonymous-text">匿名评价</text>
+      </label>
+    </view>
+
+    <!-- 提交按钮 -->
+    <button class="submit-btn" bindtap="onSubmit" disabled="{{!canSubmit}}">提交评价</button>
+  </view>
+</view>

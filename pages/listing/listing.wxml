@@ -1,0 +1,177 @@
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="header">
+    <view class="search-bar" bindtap="onSearch">
+      <text class="search-icon">🔍</text>
+      <text class="search-text">搜索目的地、社区名称</text>
+    </view>
+    <view class="filter-btn" bindtap="onFilter">
+      <text>📋</text>
+    </view>
+  </view>
+
+  <!-- 筛选栏 -->
+  <scroll-view class="filter-bar" scroll-x show-scrollbar="{{false}}">
+    <view class="filter-list">
+      <view class="filter-item {{currentSort === 'comprehensive' ? 'active' : ''}}" bindtap="onSort" data-sort="comprehensive">
+        <text>综合</text>
+      </view>
+      <view class="filter-item {{currentSort === 'latest' ? 'active' : ''}}" bindtap="onSort" data-sort="latest">
+        <text>最新</text>
+      </view>
+      <view class="filter-item {{currentSort === 'price' ? 'active' : ''}}" bindtap="onSort" data-sort="price">
+        <text>价格最低</text>
+      </view>
+      <view class="filter-item" bindtap="showPriceFilter">
+        <text>价格区间</text>
+        <text class="arrow">▼</text>
+      </view>
+      <view class="filter-item" bindtap="showFacilityFilter">
+        <text>设施</text>
+        <text class="arrow">▼</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 价格区间弹窗 -->
+  <view class="filter-modal" wx:if="{{showPriceModal}}">
+    <view class="modal-mask" bindtap="hidePriceFilter"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">价格区间</text>
+        <text class="close-btn" bindtap="hidePriceFilter">✕</text>
+      </view>
+      <view class="modal-body">
+        <view class="price-range">
+          <input class="price-input" type="number" placeholder="最低价" bindinput="onMinPrice" value="{{minPrice}}"></input>
+          <text class="price-line">—</text>
+          <input class="price-input" type="number" placeholder="最高价" bindinput="onMaxPrice" value="{{maxPrice}}"></input>
+        </view>
+        <view class="range-buttons">
+          <view class="range-btn" wx:for="{{priceRanges}}" wx:key="index" bindtap="selectPriceRange" data-min="{{item.min}}" data-max="{{item.max}}">{{item.text}}</view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="reset-btn" bindtap="resetPrice">重置</button>
+        <button class="confirm-btn" bindtap="applyPriceFilter">确定</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 设施筛选弹窗 -->
+  <view class="filter-modal" wx:if="{{showFacilityModal}}">
+    <view class="modal-mask" bindtap="hideFacilityFilter"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">设施筛选</text>
+        <text class="close-btn" bindtap="hideFacilityFilter">✕</text>
+      </view>
+      <view class="modal-body">
+        <view class="facility-list">
+          <view class="facility-item" wx:for="{{facilities}}" wx:key="index">
+            <label class="checkbox-label">
+              <checkbox value="{{item}}" checked="{{selectedFacilities.includes(item)}}" bindchange="onFacilityChange" data-facility="{{item}}"></checkbox>
+              <text class="facility-name">{{item}}</text>
+            </label>
+          </view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="reset-btn" bindtap="resetFacilities">重置</button>
+        <button class="confirm-btn" bindtap="applyFacilityFilter">确定</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 视图切换 -->
+  <view class="view-switch">
+    <text class="result-count">共 {{filteredHouses.length}} 个房源</text>
+    <view class="switch-buttons">
+      <view class="switch-btn {{viewMode === 'list' ? 'active' : ''}}" bindtap="switchView" data-mode="list">
+        <text>📋</text>
+        <text class="btn-text">列表</text>
+      </view>
+      <view class="switch-btn {{viewMode === 'map' ? 'active' : ''}}" bindtap="switchView" data-mode="map">
+        <text>🗺️</text>
+        <text class="btn-text">地图</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 列表模式 -->
+  <view class="list-mode" wx:if="{{viewMode === 'list'}}">
+    <scroll-view 
+      class="house-list" 
+      scroll-y 
+      enhanced
+      show-scrollbar="{{false}}"
+      refresher-enabled
+      refresher-triggered="{{refreshing}}"
+      bindrefresherrefresh="onRefresh"
+      bindscrolltolower="onLoadMore"
+    >
+      <view class="house-card" wx:for="{{filteredHouses}}" wx:key="_id" bindtap="onHouseTap" data-id="{{item._id}}">
+        <image class="house-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="house-info">
+          <view class="house-header">
+            <text class="house-title">{{item.title}}</text>
+            <text class="house-price">¥{{item.price}}<text class="unit">/{{item.unit}}</text></text>
+          </view>
+          <view class="house-location">
+            <text class="location-icon">📍</text>
+            <text class="location-text">{{item.location}}</text>
+            <text class="distance" wx:if="{{item.distance}}">{{item.distance}}</text>
+          </view>
+          <view class="house-rating" wx:if="{{item.rating}}">
+            <text class="star">⭐</text>
+            <text class="score">{{item.rating}}</text>
+            <text class="comment-count">{{item.commentCount}}条评价</text>
+          </view>
+          <view class="house-tags">
+            <text class="tag" wx:for="{{item.tags}}" wx:key="*this">#{{item}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="load-more" wx:if="{{hasMore}}">
+        <text>加载中...</text>
+      </view>
+      <view class="no-more" wx:elif="{{filteredHouses.length > 0}}">
+        <text>没有更多了</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 地图模式 -->
+  <view class="map-mode" wx:else>
+    <map
+      id="map"
+      class="map"
+      latitude="{{latitude}}"
+      longitude="{{longitude}}"
+      scale="{{scale}}"
+      markers="{{markers}}"
+      bindmarkertap="onMarkerTap"
+      show-location
+    ></map>
+    
+    <view class="current-location" bindtap="onLocate">
+      <text class="locate-icon">📍</text>
+    </view>
+    
+    <view class="selected-card" wx:if="{{selectedHouse}}" catchtap="onSelectedCardTap">
+      <image class="card-image" src="{{selectedHouse.image}}" mode="aspectFill"></image>
+      <view class="card-info">
+        <view class="card-header">
+          <text class="card-title">{{selectedHouse.title}}</text>
+          <text class="card-price">¥{{selectedHouse.price}}<text class="unit">/{{selectedHouse.unit}}</text></text>
+        </view>
+        <text class="card-location">{{selectedHouse.location}}</text>
+        <view class="card-tags">
+          <text class="card-tag" wx:for="{{selectedHouse.tags}}" wx:key="*this" wx:for-item="tag" wx:for-index="index" wx:if="{{index < 2}}">#{{tag}}</text>
+        </view>
+        <button class="view-detail-btn" catchtap="onViewDetail">查看详情</button>
+      </view>
+    </view>
+  </view>
+</view>

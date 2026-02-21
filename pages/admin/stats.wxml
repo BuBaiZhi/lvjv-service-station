@@ -1,0 +1,97 @@
+<view class="container">
+  <!-- 时间选择 -->
+  <view class="time-selector">
+    <view class="time-tab {{currentTimeRange === 'day' ? 'active' : ''}}" bindtap="setTimeRange" data-range="day">今日</view>
+    <view class="time-tab {{currentTimeRange === 'week' ? 'active' : ''}}" bindtap="setTimeRange" data-range="week">本周</view>
+    <view class="time-tab {{currentTimeRange === 'month' ? 'active' : ''}}" bindtap="setTimeRange" data-range="month">本月</view>
+    <view class="time-tab {{currentTimeRange === 'year' ? 'active' : ''}}" bindtap="setTimeRange" data-range="year">全年</view>
+  </view>
+
+  <!-- 核心指标卡片（可点击导出） -->
+  <view class="stats-cards">
+    <view class="stat-card" bindtap="exportData" data-type="users">
+      <text class="stat-value">{{stats.dau}}</text>
+      <text class="stat-label">日活用户</text>
+      <text class="stat-trend up">↑ 12%</text>
+    </view>
+    <view class="stat-card" bindtap="exportData" data-type="newUsers">
+      <text class="stat-value">{{stats.newUsers}}</text>
+      <text class="stat-label">新增用户</text>
+      <text class="stat-trend up">↑ 8%</text>
+    </view>
+    <view class="stat-card" bindtap="exportData" data-type="posts">
+      <text class="stat-value">{{stats.posts}}</text>
+      <text class="stat-label">新增帖子</text>
+      <text class="stat-trend down">↓ 3%</text>
+    </view>
+    <view class="stat-card" bindtap="exportData" data-type="bookings">
+      <text class="stat-value">{{stats.bookings}}</text>
+      <text class="stat-label">预订量</text>
+      <text class="stat-trend up">↑ 15%</text>
+    </view>
+  </view>
+
+  <!-- 用户分布 -->
+  <view class="chart-section">
+    <view class="section-header">
+      <text class="section-title">用户角色分布</text>
+      <text class="export-btn" bindtap="exportChart" data-type="users">📊 导出</text>
+    </view>
+    <view class="pie-chart">
+      <view class="legend">
+        <view class="legend-item">
+          <view class="color-dot" style="background: #1e3d4c;"></view>
+          <text>数字游民 {{userDistribution.nomad}}人 ({{userDistribution.nomadPercent}}%)</text>
+        </view>
+        <view class="legend-item">
+          <view class="color-dot" style="background: #6b8c7d;"></view>
+          <text>村民 {{userDistribution.villager}}人 ({{userDistribution.villagerPercent}}%)</text>
+        </view>
+        <view class="legend-item">
+          <view class="color-dot" style="background: #ff6b6b;"></view>
+          <text>管理者 {{userDistribution.admin}}人 ({{userDistribution.adminPercent}}%)</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 用户增长趋势 -->
+  <view class="chart-section">
+    <view class="section-header">
+      <text class="section-title">用户增长趋势</text>
+      <text class="export-btn" bindtap="exportChart" data-type="trend">📊 导出</text>
+    </view>
+    <view class="trend-chart">
+      <view class="chart-bars">
+        <view class="chart-bar-item" wx:for="{{userTrend}}" wx:key="index">
+          <view class="bar" style="height: {{item.value}}px;"></view>
+          <text class="bar-label">{{item.date}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 内容统计 -->
+  <view class="content-stats">
+    <view class="section-header">
+      <text class="section-title">内容统计</text>
+      <text class="export-btn" bindtap="exportAllData">📥 导出全部</text>
+    </view>
+    <view class="stat-row">
+      <text class="row-label">帖子总数</text>
+      <text class="row-value">{{contentStats.totalPosts}}</text>
+    </view>
+    <view class="stat-row">
+      <text class="row-label">房源总数</text>
+      <text class="row-value">{{contentStats.totalHouses}}</text>
+    </view>
+    <view class="stat-row">
+      <text class="row-label">评论总数</text>
+      <text class="row-value">{{contentStats.totalComments}}</text>
+    </view>
+    <view class="stat-row">
+      <text class="row-label">待审核内容</text>
+      <text class="row-value warning">{{contentStats.pendingCount}}</text>
+    </view>
+  </view>
+</view>
