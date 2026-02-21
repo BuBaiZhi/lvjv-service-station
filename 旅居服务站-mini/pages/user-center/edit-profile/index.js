@@ -38,6 +38,13 @@ Page({
     this.loadUserInfo()
   },
 
+  onShow() {
+    this.setData({
+      theme: app.globalData.theme,
+      appVersion: app.globalData.appVersion
+    })
+  },
+
   // 加载用户信息
   loadUserInfo() {
     // 从本地存储或全局数据获取用户信息
@@ -159,8 +166,14 @@ Page({
       return
     }
 
+    // 同时保存 backgroundType
+    const saveData = {
+      ...this.data.userInfo,
+      backgroundType: this.data.backgroundType
+    }
+    
     // 保存到本地存储
-    wx.setStorageSync('userInfo', this.data.userInfo)
+    wx.setStorageSync('userInfo', saveData)
     
     wx.showToast({
       title: '保存成功',
@@ -168,9 +181,9 @@ Page({
       duration: 1500
     })
 
-    // 延迟返回
+    // 延迟跳转首页
     setTimeout(() => {
-      wx.navigateBack()
+      wx.switchTab({ url: '/pages/index/index' })
     }, 1500)
   },
 

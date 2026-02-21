@@ -1,8 +1,37 @@
 /** app.wxss - 全局样式 **/
 
+/* ========================================
+   全局主题变量定义
+   ======================================== */
+
+/* 浅色主题 */
+page.light {
+  --bg-page: #f5f5f5;
+  --bg-card: #fff;
+  --text-primary: #333;
+  --text-secondary: #666;
+  --text-tertiary: #999;
+  --border-color: #ddd;
+  --border-light: #f0f0f0;
+  --shadow: rgba(0, 0, 0, 0.05);
+}
+
+/* 深色主题 */
+page.dark,
+page.dark-mode {
+  --bg-page: #1a1a1a;
+  --bg-card: #2d2d2d;
+  --text-primary: #f0f0f0;
+  --text-secondary: #999;
+  --text-tertiary: #ccc;
+  --border-color: #3a3a3a;
+  --border-light: #3a3a3a;
+  --shadow: rgba(0, 0, 0, 0.3);
+}
+
 /* 基础样式 */
 page {
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   font-size: 28rpx;
   line-height: 1.5;
   color: #333;
@@ -19,7 +48,12 @@ page {
   border-radius: 16rpx;
   padding: 24rpx;
   margin-bottom: 20rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.05);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.page.dark-mode .card {
+  background: #2d2d2d;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
 }
 
 /* 按钮 */
@@ -30,7 +64,7 @@ page {
   height: 88rpx;
   border-radius: 44rpx;
   font-size: 30rpx;
-  background: #007AFF;
+  background: #007aff;
   color: #fff;
 }
 
@@ -45,6 +79,14 @@ page {
   border: 1rpx solid #ddd;
   border-radius: 8rpx;
   font-size: 28rpx;
+  background: #fff;
+  color: #333;
+}
+
+.page.dark-mode .input {
+  background-color: #2d2d2d;
+  border-color: #3a3a3a;
+  color: #f0f0f0;
 }
 
 /* 页面标题 */
@@ -54,20 +96,34 @@ page {
   color: #333;
 }
 
+.page.dark-mode .page-title {
+  color: #f0f0f0;
+}
+
 /* 页面头部 */
 .page-header {
   height: 56px;
-  background-color: white;
+  background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 20rpx;
-  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.05);
+  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.05);
+}
+
+.page.dark-mode .page-header {
+  background-color: #2d2d2d;
+  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.3);
 }
 
 .page-header .title {
   font-size: 32rpx;
   font-weight: bold;
+  color: #333;
+}
+
+.page.dark-mode .page-header .title {
+  color: #f0f0f0;
 }
 
 /* 返回按钮 */
@@ -77,7 +133,7 @@ page {
   border: none;
   background: none;
   font-size: 40rpx;
-  color: #007AFF;
+  color: #007aff;
   cursor: pointer;
 }
 
@@ -106,6 +162,15 @@ page {
   border-bottom: none;
 }
 
+.page.dark-mode .list-item {
+  background: #2d2d2d;
+  border-bottom-color: #3a3a3a;
+}
+
+.page.dark-mode .list-item {
+  color: #f0f0f0;
+}
+
 /* 空状态 */
 .empty-state {
   display: flex;
@@ -121,40 +186,17 @@ page {
   margin-bottom: 20rpx;
 }
 
+.page.dark-mode .empty-icon {
+  color: #555;
+}
+
 .empty-text {
   font-size: 28rpx;
   color: #999;
 }
 
-/* ========================================
-   深色模式样式
-   ======================================== */
-
-page.dark {
-  background-color: #1a1a1a;
-  color: #f0f0f0;
-}
-
-page.dark .card,
-page.dark .list-item,
-page.dark .page-header {
-  background-color: #2d2d2d;
-  color: #f0f0f0;
-}
-
-page.dark .page-title,
-page.dark .title {
-  color: #f0f0f0;
-}
-
-page.dark .input {
-  background-color: #2d2d2d;
-  border-color: #3a3a3a;
-  color: #f0f0f0;
-}
-
-page.dark .back-btn {
-  color: #1890ff;
+.page.dark-mode .empty-text {
+  color: #666;
 }
 
 /* ========================================

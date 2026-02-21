@@ -45,14 +45,25 @@ Page({
   },
 
   onLoad() {
+    // 🌟 统一认证检查 - 只在 onLoad 执行，不要在 onShow 里做跳转
+    const authMode = wx.getStorageSync('authMode')
+    if (!authMode) {
+      console.log('[Index] 未认证，跳转登录页')
+      wx.redirectTo({ url: '/pages/login/index' })
+      return
+    }
+
+    // 同步主题
     this.setData({
-      theme: app.globalData.theme,
-      appVersion: app.globalData.appVersion
+      theme: app.globalData.theme || 'light',
+      appVersion: app.globalData.appVersion || 'standard'
     })
+    
+    console.log('[Index] 已认证(authMode=' + authMode + ')，加载首页')
   },
 
   onShow() {
-    // 每次显示页面时更新主题
+    // ⚠️ 只同步主题，不做鉴权跳转（防止循环）
     this.setData({
       theme: app.globalData.theme,
       appVersion: app.globalData.appVersion

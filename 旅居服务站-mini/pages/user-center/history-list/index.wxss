@@ -1,17 +1,113 @@
 /* 浏览历史页面样式 */
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  padding-bottom: 100rpx;
+
+/* 主题变量定义 */
+.page.light {
+  --bg-page: #f5f5f5;
+  --bg-card: #ffffff;
+  --bg-filter: #f2f2f2;
+  --bg-dropdown-active: #e6f7ff;
+  --bg-action-delete: #fff1f0;
+  --text-primary: #333;
+  --text-secondary: #666;
+  --text-tertiary: #999;
+  --border-color: #eee;
+  --border-light: #f0f0f0;
 }
 
-.page-header .edit-btn {
-  width: 80rpx;
-  height: 44px;
+.page.dark-mode {
+  --bg-page: #1a1a1a;
+  --bg-card: #2a2a2a;
+  --bg-filter: #333;
+  --bg-dropdown-active: #1a3a5a;
+  --bg-action-delete: #3a1a1a;
+  --text-primary: #f0f0f0;
+  --text-secondary: #999;
+  --text-tertiary: #666;
+  --border-color: #3a3a3a;
+  --border-light: #3a3a3a;
+}
+
+.page {
+  min-height: 100vh;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+}
+
+/* Tabs */
+.tabs {
   display: flex;
+  background: var(--bg-card);
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  padding: 24rpx 0;
+  color: var(--text-secondary);
+  font-size: 30rpx;
+}
+
+.tab-item.active {
+  color: #1890ff;
+  font-weight: 600;
+  border-bottom: 4rpx solid #1890ff;
+}
+
+/* 筛选栏 */
+.filter-bar {
+  background: var(--bg-card);
+  padding: 20rpx;
+  border-bottom: 1rpx solid var(--border-color);
+}
+
+.filter-btn {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  font-size: 15px;
+  gap: 10rpx;
+  padding: 12rpx 20rpx;
+  background: var(--bg-filter);
+  color: var(--text-primary);
+  border-radius: 8rpx;
+  font-size: 28rpx;
+}
+
+.arrow.up {
+  transform: rotate(180deg);
+}
+
+/* 遮罩 */
+.mask {
+  position: fixed;
+  top: 180rpx;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+/* 下拉框 */
+.dropdown {
+  background: var(--bg-card);
+  margin: 20rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.dropdown-item {
+  padding: 28rpx;
+  border-bottom: 1rpx solid var(--border-color);
+  font-size: 30rpx;
+  color: var(--text-primary);
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item.active {
+  background: var(--bg-dropdown-active);
   color: #1890ff;
 }
 
@@ -21,7 +117,7 @@
 }
 
 .history-card {
-  background: #fff;
+  background: var(--bg-card);
   border-radius: 12rpx;
   padding: 30rpx;
   margin-bottom: 20rpx;
@@ -58,6 +154,10 @@
   border-color: #1890ff;
 }
 
+.page.dark-mode .checkbox {
+  border-color: #555;
+}
+
 .history-image {
   width: 120rpx;
   height: 120rpx;
@@ -75,7 +175,7 @@
 .history-title {
   font-size: 16px;
   font-weight: 500;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 10rpx;
 }
 
@@ -87,6 +187,11 @@
   border-radius: 4rpx;
   align-self: flex-start;
   margin-bottom: 10rpx;
+}
+
+.page.dark-mode .history-type {
+  background: #1a3a5a;
+  color: #1890ff;
 }
 
 .history-footer {
@@ -101,9 +206,13 @@
   color: #ff4d4f;
 }
 
+.page.dark-mode .history-price {
+  color: #ff7875;
+}
+
 .history-date {
   font-size: 12px;
-  color: #999;
+  color: var(--text-tertiary);
 }
 
 /* 空状态 */
@@ -122,7 +231,7 @@
 
 .empty-text {
   font-size: 15px;
-  color: #999;
+  color: var(--text-tertiary);
 }
 
 /* 编辑模式底部操作栏 */
@@ -131,10 +240,14 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: #fff;
+  background: var(--bg-card);
   padding: 20rpx 30rpx;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--border-light);
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.page.dark-mode .edit-bar {
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .edit-actions {
@@ -153,24 +266,62 @@
 
 .action-text.delete {
   color: #ff4d4f;
-  background: #fff1f0;
+  background: var(--bg-action-delete);
 }
 
-/* 深色模式 */
-.dark-mode .page {
-  background-color: #1a1a1a;
+.page.dark-mode .action-text {
+  background: #1a3a5a;
+  color: #1890ff;
 }
 
-.dark-mode .history-card,
-.dark-mode .edit-bar {
-  background: #2a2a2a;
-  border-color: #3a3a3a;
+.page.dark-mode .action-text.delete {
+  background: var(--bg-action-delete);
+  color: #ff7875;
 }
 
-.dark-mode .history-title {
-  color: #f0f0f0;
+/* 老人友好版 */
+.elderly-mode .tab-item {
+  padding: 32rpx 0;
+  font-size: 40rpx;
 }
 
-.dark-mode .checkbox {
-  border-color: #555;
+.elderly-mode .filter-btn {
+  padding: 18rpx 28rpx;
+  font-size: 32rpx;
+}
+
+.elderly-mode .dropdown-item {
+  padding: 40rpx;
+  font-size: 36rpx;
+}
+
+.elderly-mode .history-image {
+  width: 220rpx;
+  height: 220rpx;
+}
+
+.elderly-mode .history-title {
+  font-size: 36rpx;
+}
+
+.elderly-mode .history-type,
+.elderly-mode .history-date {
+  font-size: 28rpx;
+}
+
+.elderly-mode .history-price {
+  font-size: 40rpx;
+}
+
+.elderly-mode .edit-bar {
+  padding: 28rpx 30rpx;
+}
+
+.elderly-mode .action-text {
+  font-size: 18px;
+  padding: 20rpx 50rpx;
+}
+
+.elderly-mode .empty-text {
+  font-size: 40rpx;
 }

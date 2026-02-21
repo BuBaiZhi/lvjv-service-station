@@ -1,55 +1,71 @@
 <!-- 我的交易页面 -->
 <view class="page {{theme === 'dark' ? 'dark-mode' : ''}} {{appVersion === 'elderly' ? 'elderly-mode' : ''}}">
-  <!-- 导航栏 -->
-  <view class="page-header">
-    <view class="back-btn" bindtap="goBack">返回</view>
-    <text class="page-title">我的交易</text>
-    <view class="placeholder"></view>
-  </view>
 
   <!-- 标签栏 -->
   <view class="tabs">
     <view 
       class="tab-item {{activeTab === 'all' ? 'active' : ''}}"
       bindtap="switchTab"
-      data-tab="all"
-    >
-      <text>全部</text>
+      data-tab="all">
+      全部
     </view>
+
     <view 
       class="tab-item {{activeTab === 'pending' ? 'active' : ''}}"
       bindtap="switchTab"
-      data-tab="pending"
-    >
-      <text>待确认</text>
+      data-tab="pending">
+      待确认
     </view>
+
     <view 
       class="tab-item {{activeTab === 'ongoing' ? 'active' : ''}}"
       bindtap="switchTab"
-      data-tab="ongoing"
-    >
-      <text>进行中</text>
+      data-tab="ongoing">
+      进行中
     </view>
+
     <view 
       class="tab-item {{activeTab === 'completed' ? 'active' : ''}}"
       bindtap="switchTab"
-      data-tab="completed"
-    >
-      <text>已完成</text>
+      data-tab="completed">
+      已完成
     </view>
   </view>
 
-  <!-- 订单列表 -->
+  <!-- 类型筛选 -->
+  <view class="filter-bar">
+    <view class="filter-btn" bindtap="toggleTypeFilter">
+      {{ typeFilter === 'all' ? '全部类型' :
+         typeFilter === 'house' ? '民宿' :
+         typeFilter === 'skill' ? '技能' :
+         typeFilter === 'activity' ? '活动' :
+         '二手物品' }}
+      <text class="arrow {{typeFilterShow ? 'up' : ''}}">▼</text>
+    </view>
+  </view>
+
+  <!-- 下拉遮罩 -->
+  <view wx:if="{{typeFilterShow}}" class="mask" bindtap="closeTypeFilter">
+    <view class="dropdown" catchtap="noop">
+      <view 
+        class="dropdown-item {{typeFilter === item.value ? 'active' : ''}}"
+        wx:for="{{typeOptions}}"
+        wx:key="value"
+        data-type="{{item.value}}"
+        bindtap="toggleTypeFilter">
+        {{item.label}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 内容 -->
   <view class="content">
     <view 
       class="order-card"
-      wx:for="{{orderList}}"
-      wx:key="id"
-      bindtap="viewOrderDetail"
-      data-id="{{item.id}}"
-    >
+      wx:for="{{filteredList}}"
+      wx:key="id">
       <view class="order-header">
-        <text class="order-type">{{item.type === 'house' ? '民宿' : item.type === 'skill' ? '技能' : '活动'}}</text>
+        <text class="order-type">{{item.type === 'house' ? '民宿' : item.type === 'skill' ? '技能' : item.type === 'activity' ? '活动' : '二手物品'}}</text>
         <text class="order-status {{item.status}}">{{item.statusText}}</text>
       </view>
       
@@ -69,9 +85,10 @@
     </view>
 
     <!-- 空状态 -->
-    <view class="empty" wx:if="{{orderList.length === 0}}">
+    <view class="empty" wx:if="{{filteredList.length === 0}}">
       <text class="empty-icon">📦</text>
       <text class="empty-text">暂无订单</text>
     </view>
   </view>
+
 </view>

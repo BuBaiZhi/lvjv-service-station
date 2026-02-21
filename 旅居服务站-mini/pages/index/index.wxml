@@ -1,5 +1,5 @@
 <!-- 首页 -->
-<view class="page {{theme === 'dark' ? 'dark-mode' : ''}} {{appVersion === 'elderly' ? 'elderly-mode' : ''}}">
+<view class="page {{theme === 'dark' ? 'dark-mode' : (theme === 'light' ? 'light' : '') }} {{appVersion === 'elderly' ? 'elderly-mode' : ''}}">
   <!-- 搜索栏 -->
   <view class="search-bar">
     <view class="search-input" bindtap="onSearch">

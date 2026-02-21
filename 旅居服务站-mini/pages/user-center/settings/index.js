@@ -14,10 +14,17 @@ Page({
     })
   },
 
+  onShow() {
+    this.setData({
+      theme: app.globalData.theme,
+      appVersion: app.globalData.appVersion
+    })
+  },
+
   // 切换主题
   switchTheme(e) {
     const theme = e.currentTarget.dataset.theme
-    app.switchTheme(theme)
+    app.setTheme(theme)
     this.setData({ theme })
     
     wx.showToast({
@@ -29,7 +36,7 @@ Page({
   // 切换应用版本
   switchAppVersion(e) {
     const version = e.currentTarget.dataset.version
-    app.switchAppVersion(version)
+    app.setAppVersion(version)
     this.setData({ appVersion: version })
     
     wx.showToast({

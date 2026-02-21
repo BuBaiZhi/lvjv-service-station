@@ -1,8 +1,31 @@
 /* 编辑资料页面样式 */
+
+/* 主题变量定义 */
+.page.light {
+  --bg-page: #f5f5f5;
+  --bg-card: #fff;
+  --text-primary: #333;
+  --text-secondary: #666;
+  --text-tertiary: #999;
+  --border-color: #e0e0e0;
+  --input-bg: transparent;
+}
+
+.page.dark-mode {
+  --bg-page: #1a1a1a;
+  --bg-card: #2a2a2a;
+  --text-primary: #f0f0f0;
+  --text-secondary: #ccc;
+  --text-tertiary: #999;
+  --border-color: #444;
+  --input-bg: #333;
+}
+
 .page {
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: var(--bg-page);
   padding-bottom: 30rpx;
+  color: var(--text-primary);
 }
 
 /* 用户信息卡片 */
@@ -100,11 +123,13 @@
 /* 输入框 */
 .input {
   width: 100%;
-  height: 88rpx;
-  border: 1rpx solid #e0e0e0;
-  border-radius: 12rpx;
-  padding: 0 24rpx;
-  font-size: 30rpx;
+  height: 44px;
+  border: 1px solid var(--border-color);
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  font-size: 15px;
+  background: var(--input-bg);
+  color: var(--text-primary);
 }
 
 .input:focus {
@@ -112,7 +137,7 @@
 }
 
 .form-item {
-  background: #fff;
+  background: var(--bg-card);
   margin-bottom: 20rpx;
   padding: 30rpx;
   border-radius: 12rpx;
@@ -121,7 +146,7 @@
 .label {
   display: block;
   font-size: 30rpx;
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 20rpx;
   font-weight: 500;
 }
@@ -145,20 +170,6 @@
   color: #1890ff;
 }
 
-/* 输入框 */
-.input {
-  width: 100%;
-  height: 44px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8rpx;
-  padding: 0 20rpx;
-  font-size: 15px;
-}
-
-.input:focus {
-  border-color: #1890ff;
-}
-
 /* 性别选择器 */
 .gender-picker {
   display: flex;
@@ -171,10 +182,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
   border-radius: 8rpx;
   font-size: 15px;
-  color: #666;
+  color: var(--text-secondary);
+  background: var(--input-bg);
   transition: all 0.3s;
 }
 
@@ -184,14 +196,20 @@
   color: #1890ff;
 }
 
+.page.dark-mode .gender-item.active {
+  background-color: #1a3a5a;
+}
+
 /* 文本域 */
 .textarea {
   width: 100%;
   min-height: 120rpx;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--border-color);
   border-radius: 8rpx;
   padding: 20rpx;
   font-size: 15px;
+  background: var(--input-bg);
+  color: var(--text-primary);
 }
 
 .textarea:focus {
@@ -201,7 +219,7 @@
 .char-count {
   text-align: right;
   font-size: 12px;
-  color: #999;
+  color: var(--text-tertiary);
   margin-top: 10rpx;
 }
 
@@ -210,33 +228,30 @@
   margin-top: 40rpx;
 }
 
-/* 深色模式适配 */
-.dark-mode .page {
-  background-color: #1a1a1a;
+/* 老人友好版 */
+.elderly-mode .user-nickname {
+  font-size: 44rpx;
 }
 
-.dark-mode .form-item {
-  background: #2a2a2a;
+.elderly-mode .label {
+  font-size: 36rpx;
 }
 
-.dark-mode .label {
-  color: #f0f0f0;
+.elderly-mode .input,
+.elderly-mode .textarea {
+  height: 60px;
+  font-size: 20px;
 }
 
-.dark-mode .input,
-.dark-mode .textarea {
-  background: #333;
-  border-color: #444;
-  color: #f0f0f0;
+.elderly-mode .gender-item {
+  height: 60px;
+  font-size: 20px;
 }
 
-.dark-mode .gender-item {
-  background: #333;
-  border-color: #444;
-  color: #ccc;
+.elderly-mode .change-tip {
+  font-size: 32rpx;
 }
 
-.dark-mode .gender-item.active {
-  background: #1a3a5a;
-  border-color: #1890ff;
+.elderly-mode .char-count {
+  font-size: 20px;
 }

@@ -1,5 +1,7 @@
 {
   "pages": [
+    "pages/login/index",
+    "pages/login/identity/index",
     "pages/index/index",
     "pages/user-center/index/index",
     "pages/user-center/edit-profile/index",
@@ -16,6 +18,7 @@
     "navigationBarTextStyle": "white",
     "backgroundColor": "#F5F5F5"
   },
+  "darkmode": true,
   "tabBar": {
     "color": "#666666",
     "selectedColor": "#007AFF",

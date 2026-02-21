@@ -27,7 +27,7 @@
             <text class="question-text">{{item.question}}</text>
             <text class="expand-icon">{{item.expanded ? '−' : '+'}}</text>
           </view>
-          <view class="faq-answer" wx:if="{{item.expanded}}">
+          <view class="faq-answer" hidden="{{!item.expanded}}">
             <text>{{item.answer}}</text>
           </view>
         </view>

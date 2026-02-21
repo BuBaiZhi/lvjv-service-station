@@ -5,20 +5,13 @@ Page({
   data: {
     theme: 'light',
     appVersion: 'standard',
-    userInfo: {
-      avatar: 'https://picsum.photos/200/200?random=10',
-      nickname: '旅行者',
-      signature: '探索世界，发现自我',
-      identity: 'villager',  // 村民 villager / 游民 nomad
-      gender: 'male',         // 男 male / 女 female
-      age: 28,
-      id: 2123,
-      background: ''  // 背景图URL
-    },
+    isLoggedIn: false,  // 是否已登录
+    backgroundType: 'gradient',
+    userInfo: null,    // 默认 null，登录后加载
     stats: {
-      postCount: 24,
-      commentCount: 156,
-      likeCount: 89
+      postCount: 0,
+      commentCount: 0,
+      likeCount: 0
     },
     menuList: [
       {
@@ -55,32 +48,82 @@ Page({
   },
 
   onLoad() {
-    this.setData({
-      theme: app.globalData.theme,
-      appVersion: app.globalData.appVersion
-    })
-    this.loadUserInfo()
+    console.log('[UserCenter] onLoad 执行')
+    this.syncTheme()
+    this.checkAuth()
   },
 
   onShow() {
-    // 每次显示页面时更新主题和用户信息
+    console.log('[UserCenter] onShow 执行')
+    this.syncTheme()
+    this.checkAuth()
+  },
+
+  // 同步主题
+  syncTheme() {
     this.setData({
       theme: app.globalData.theme,
       appVersion: app.globalData.appVersion
     })
-    this.loadUserInfo()
+  },
+
+  // 检查认证状态
+  checkAuth() {
+    // 直接获取认证状态
+    const authMode = wx.getStorageSync('authMode')
+    
+    if (authMode === 'user') {
+      // 已登录用户
+      this.setData({ isLoggedIn: true })
+      this.loadUserInfo()
+    } else if (authMode === 'guest') {
+      // 游客模式
+      this.setData({ isLoggedIn: false, userInfo: null })
+    } else {
+      // 未登录
+      this.setData({ isLoggedIn: false, userInfo: null })
+    }
   },
 
   // 加载用户信息
   loadUserInfo() {
-    const userInfo = wx.getStorageSync('userInfo')
+    const userInfo = app.globalData.userInfo || wx.getStorageSync('userInfo')
     if (userInfo) {
-      this.setData({ userInfo })
+      const user = typeof userInfo === 'string' ? JSON.parse(userInfo) : userInfo
+      this.setData({ 
+        userInfo: user,
+        backgroundType: user.backgroundType || 'gradient',
+        stats: user.stats || { postCount: 0, commentCount: 0, likeCount: 0 }
+      })
     }
   },
 
-  // 菜单项点击
+  // 去登录 - 使用统一跳转
+  goToLogin() {
+    wx.navigateTo({ url: '/pages/login/index' })
+  },
+
+  // 菜单项点击 - 检查登录状态
   onMenuTap(e) {
+    // 直接检查登录状态
+    const authMode = wx.getStorageSync('authMode')
+    
+    if (!authMode) {
+      wx.showToast({
+        title: '请先登录',
+        icon: 'none'
+      })
+      return
+    }
+    
+    if (authMode === 'guest') {
+      wx.showToast({
+        title: '游客无法使用此功能',
+        icon: 'none'
+      })
+      return
+    }
+    
     const path = e.currentTarget.dataset.path
     wx.navigateTo({
       url: path

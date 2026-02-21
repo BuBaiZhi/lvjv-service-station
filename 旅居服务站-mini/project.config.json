@@ -6,7 +6,7 @@
   },
   "setting": {
     "bundle": false,
-    "urlCheck": true,
+    "urlCheck": false,
     "es6": true,
     "postcss": true,
     "minified": true,
@@ -22,7 +22,7 @@
     "localPlugins": false,
     "disableUseStrict": false,
     "useCompilerPlugins": false,
-    "condition": false,
+    "condition": true,
     "swc": false,
     "disableSWC": true,
     "babelSetting": {
@@ -36,6 +36,9 @@
   "appid": "wxf39739846f0c3925",
   "projectname": "旅居服务站",
   "condition": {},
-  "simulatorPluginLibVersion": {},
-  "editorSetting": {}
+  "simulatorPluginLibVersion": {
+    "wxext14566970e7e9f62": "2.27.3"
+  },
+  "editorSetting": {},
+  "projectArchitecture": "multiPlatform"
 }

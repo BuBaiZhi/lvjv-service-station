@@ -6,7 +6,18 @@ Page({
     theme: 'light',
     appVersion: 'standard',
     activeTab: 'all',
-    orderList: []
+    orderList: [],
+    filteredList: [],
+    // 下拉筛选
+    typeFilter: 'all',
+    typeFilterShow: false,
+    typeOptions: [
+      { value: 'all', label: '全部类型' },
+      { value: 'house', label: '民宿' },
+      { value: 'skill', label: '技能' },
+      { value: 'activity', label: '活动' },
+      { value: 'goods', label: '二手物品' }
+    ]
   },
 
   onLoad() {
@@ -15,6 +26,13 @@ Page({
       appVersion: app.globalData.appVersion
     })
     this.loadOrderList()
+  },
+
+  onShow() {
+    this.setData({
+      theme: app.globalData.theme,
+      appVersion: app.globalData.appVersion
+    })
   },
 
   // 加载订单列表
@@ -52,13 +70,69 @@ Page({
         image: 'https://picsum.photos/200/200?random=13'
       }
     ]
-    this.setData({ orderList: mockOrders })
+    this.setData({ 
+      orderList: mockOrders,
+      filteredList: mockOrders 
+    })
+    // 确保初始筛选正确
+    this.applyFilters()
   },
 
-  // 切换标签
+  // 切换状态标签
   switchTab(e) {
     const tab = e.currentTarget.dataset.tab
-    this.setData({ activeTab: tab })
+    console.log('switchTab:', tab)
+    // 先关闭下拉面板，再切换标签
+    this.setData({ 
+      activeTab: tab,
+      typeFilterShow: false
+    }, () => {
+      console.log('activeTab updated to:', tab)
+      this.applyFilters()
+    })
+  },
+
+  // 切换类型筛选
+  toggleTypeFilter(e) {
+    const type = e.currentTarget.dataset.type
+    
+    // 如果没有type值，说明是点击下拉按钮，切换面板显示
+    if (type === undefined || type === null) {
+      this.setData({ typeFilterShow: !this.data.typeFilterShow })
+      return
+    }
+    
+    // 有type值，说明是点击选项，执行筛选
+    this.setData({ 
+      typeFilter: type,
+      typeFilterShow: false
+    }, () => {
+      this.applyFilters()
+    })
+  },
+
+  // 关闭筛选面板
+  closeTypeFilter() {
+    this.setData({ typeFilterShow: false })
+  },
+
+  // 应用筛选
+  applyFilters() {
+    console.log('applyFilters - activeTab:', this.data.activeTab, 'typeFilter:', this.data.typeFilter)
+    let result = this.data.orderList
+    
+    // 按状态筛选
+    if (this.data.activeTab !== 'all') {
+      result = result.filter(item => item.status === this.data.activeTab)
+    }
+    
+    // 按类型筛选
+    if (this.data.typeFilter !== 'all') {
+      result = result.filter(item => item.type === this.data.typeFilter)
+    }
+    
+    console.log('applyFilters - result:', result)
+    this.setData({ filteredList: result })
   },
 
   // 查看订单详情

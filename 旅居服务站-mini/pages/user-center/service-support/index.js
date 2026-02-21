@@ -69,6 +69,13 @@ Page({
     })
   },
 
+  onShow() {
+    this.setData({
+      theme: app.globalData.theme,
+      appVersion: app.globalData.appVersion
+    })
+  },
+
   // 展开/收起FAQ
   toggleFaq(e) {
     const id = e.currentTarget.dataset.id

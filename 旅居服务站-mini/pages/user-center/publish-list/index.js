@@ -6,7 +6,8 @@ Page({
     theme: 'light',
     appVersion: 'standard',
     activeTab: 'all',
-    publishList: []
+    publishList: [],
+    filteredList: []
   },
 
   onLoad() {
@@ -17,6 +18,13 @@ Page({
     this.loadPublishList()
   },
 
+  onShow() {
+    this.setData({
+      theme: app.globalData.theme,
+      appVersion: app.globalData.appVersion
+    })
+  },
+
   // 加载发布列表
   loadPublishList() {
     // 模拟数据
@@ -25,8 +33,8 @@ Page({
         id: 1,
         title: '阳光大床房出租',
         type: 'house',
+        typeText: '房源',
         status: 'active',
-        statusText: '进行中',
         views: 128,
         likes: 23,
         date: '2026-01-10',
@@ -36,8 +44,8 @@ Page({
         id: 2,
         title: '周末徒步活动',
         type: 'activity',
+        typeText: '活动',
         status: 'active',
-        statusText: '进行中',
         views: 56,
         likes: 12,
         date: '2026-02-05',
@@ -47,21 +55,43 @@ Page({
         id: 3,
         title: '吉他入门教学',
         type: 'skill',
-        status: 'ended',
-        statusText: '已结束',
+        typeText: '技能',
+        status: 'active',
         views: 89,
         likes: 18,
         date: '2025-12-20',
         image: 'https://picsum.photos/400/300?random=23'
+      },
+      {
+        id: 4,
+        title: '旅居生活分享',
+        type: 'share',
+        typeText: '分享',
+        status: 'active',
+        views: 156,
+        likes: 45,
+        date: '2026-02-10',
+        image: 'https://picsum.photos/400/300?random=24'
       }
     ]
-    this.setData({ publishList: mockPublish })
+    this.setData({ 
+      publishList: mockPublish,
+      filteredList: mockPublish 
+    })
   },
 
   // 切换标签
   switchTab(e) {
     const tab = e.currentTarget.dataset.tab
     this.setData({ activeTab: tab })
+    
+    // 根据分类筛选
+    if (tab === 'all') {
+      this.setData({ filteredList: this.data.publishList })
+    } else {
+      const filtered = this.data.publishList.filter(item => item.type === tab)
+      this.setData({ filteredList: filtered })
+    }
   },
 
   // 编辑发布
