@@ -1,0 +1,67 @@
+<!-- 首页 -->
+<view class="page {{theme === 'dark' ? 'dark-mode' : (theme === 'light' ? 'light' : '') }} {{appVersion === 'elderly' ? 'elderly-mode' : ''}}">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-input" bindtap="onSearch">
+      <text class="search-icon">🔍</text>
+      <text class="search-placeholder">搜索民宿、技能、活动...</text>
+    </view>
+  </view>
+
+  <!-- 轮播图 -->
+  <view class="banner-section">
+    <swiper 
+      class="banner-swiper" 
+      indicator-dots 
+      autoplay 
+      interval="3000" 
+      circular
+      bindchange="onBannerChange"
+    >
+      <swiper-item wx:for="{{bannerList}}" wx:key="id">
+        <image class="banner-image" src="{{item.image}}" mode="aspectFill"></image>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- 分类菜单 -->
+  <view class="category-section">
+    <view 
+      class="category-item"
+      wx:for="{{categoryList}}"
+      wx:key="id"
+      bindtap="onCategoryTap"
+      data-path="{{item.path}}"
+    >
+      <text class="category-icon">{{item.icon}}</text>
+      <text class="category-name">{{item.name}}</text>
+    </view>
+  </view>
+
+  <!-- 热门推荐 -->
+  <view class="hot-section">
+    <view class="section-header">
+      <text class="section-title">🔥 热门推荐</text>
+    </view>
+
+    <view 
+      class="hot-card"
+      wx:for="{{hotList}}"
+      wx:key="id"
+      bindtap="viewDetail"
+      data-id="{{item.id}}"
+    >
+      <image class="hot-image" src="{{item.image}}" mode="aspectFill"></image>
+      <view class="hot-info">
+        <text class="hot-title">{{item.title}}</text>
+        <view class="hot-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+        </view>
+        <view class="hot-footer">
+          <text class="hot-type">{{item.type === 'house' ? '民宿' : item.type === 'skill' ? '技能' : '活动'}}</text>
+          <text class="hot-price">￥{{item.price}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

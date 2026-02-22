@@ -1,0 +1,12 @@
+# Environment variables (local development)
+# DO NOT commit to Git!
+# DO NOT share with frontend!
+# DO NOT upload to public repositories!
+
+node_modules/
+.env
+.env.local
+.env.*.local
+*.log
+dist/
+build/
