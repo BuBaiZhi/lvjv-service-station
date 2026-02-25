@@ -1,3 +1,4 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
 <view class="container">
   <!-- 发布表单 -->
   <view class="form-container">
@@ -92,4 +93,5 @@
     <!-- 发布按钮 -->
     <button class="publish-btn" bindtap="onPublish" disabled="{{!canPublish}}">发布</button>
   </view>
+</view>
 </view>

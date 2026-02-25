@@ -1,3 +1,4 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
 <view class="container">
   <!-- 房源信息卡片 -->
   <view class="house-card">
@@ -143,4 +144,4 @@
       </view>
     </view>
   </view>
-</view>
+</view></view>

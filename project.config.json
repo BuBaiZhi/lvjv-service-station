@@ -19,7 +19,6 @@
     "checkSiteMap": true,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
-    "lazyloadPlaceholderEnable": false,
     "useMultiFrameRuntime": true,
     "useApiHook": true,
     "useApiHostProcess": true,
@@ -28,6 +27,7 @@
       "disablePlugins": [],
       "outputPath": ""
     },
+    "useCompilerPlugins": [],
     "enableEngineNative": false,
     "useIsolateContext": true,
     "userConfirmedBundleSwitch": false,
@@ -36,8 +36,7 @@
     "minifyWXSS": true,
     "disableUseStrict": false,
     "minifyWXML": true,
-    "showES6CompileOption": false,
-    "useCompilerPlugins": false
+    "showES6CompileOption": false
   },
   "appid": "wx4078ae7dd46b9ef3",
   "projectname": "游牧鸟",

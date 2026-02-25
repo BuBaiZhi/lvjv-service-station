@@ -1,3 +1,4 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
 <view class="container">
   <view class="success-icon">✅</view>
   <text class="success-title">举报已提交</text>
@@ -14,4 +15,5 @@
     <button class="back-btn" bindtap="goBack">返回</button>
     <button class="view-btn" bindtap="viewReportStatus">查看处理进度</button>
   </view>
+</view>
 </view>

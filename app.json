@@ -17,7 +17,8 @@
     "pages/map-picker/map-picker",
     "pages/reviews/reviews",
     "pages/write-review/write-review",
-    "pages/search/search"
+    "pages/search/search",
+    "pages/settings/settings"
   ],
   "window": {
     "navigationBarBackgroundColor": "#1e3d4c",

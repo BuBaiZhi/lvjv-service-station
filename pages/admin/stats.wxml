@@ -1,3 +1,4 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
 <view class="container">
   <!-- 时间选择 -->
   <view class="time-selector">
@@ -94,4 +95,4 @@
       <text class="row-value warning">{{contentStats.pendingCount}}</text>
     </view>
   </view>
-</view>
+</view></view>

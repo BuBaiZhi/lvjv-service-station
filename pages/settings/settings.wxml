@@ -1,0 +1,67 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-title">设置</view>
+    <text bindtap="goBack" style="font-size: var(--font-size-large);">✕</text>
+  </view>
+
+  <!-- 日夜模式切换 -->
+  <view class="card" style="margin: 30rpx;">
+    <view style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 30rpx;">
+      <view>
+        <text style="font-size: var(--font-size-large); font-weight: 600; color: var(--color-text); display: block;">日夜模式</text>
+        <text style="font-size: calc(var(--font-size-base) * 0.9); color: var(--color-text-light);">切换明亮/暗色主题</text>
+      </view>
+      <view bindtap="toggleTheme" style="width: 120rpx; height: 64rpx; background: {{theme === 'light' ? 'var(--color-primary)' : '#666'}}; border-radius: 64rpx; position: relative; transition: all 0.3s;">
+        <view style="position: absolute; width: 56rpx; height: 56rpx; background: white; border-radius: 50%; top: 4rpx; left: {{theme === 'light' ? '60rpx' : '4rpx'}}; transition: all 0.3s;"></view>
+      </view>
+    </view>
+    <view style="display: flex; justify-content: space-around; padding: 20rpx 0;">
+      <text style="color: {{theme === 'light' ? 'var(--color-primary)' : 'var(--color-text-light)'}}; font-weight: {{theme === 'light' ? 'bold' : 'normal'}};">☀️ 日间</text>
+      <text style="color: {{theme === 'dark' ? 'var(--color-primary)' : 'var(--color-text-light)'}}; font-weight: {{theme === 'dark' ? 'bold' : 'normal'}};">🌙 夜间</text>
+    </view>
+  </view>
+
+  <!-- 老人模式切换 -->
+  <view class="card" style="margin: 30rpx;">
+    <view style="display: flex; align-items: center; justify-content: space-between;">
+      <view>
+        <text style="font-size: var(--font-size-large); font-weight: 600; color: var(--color-text); display: block;">老人模式</text>
+        <text style="font-size: calc(var(--font-size-base) * 0.9); color: var(--color-text-light);">放大字体，简化界面</text>
+      </view>
+      <view bindtap="toggleElderMode" style="width: 120rpx; height: 64rpx; background: {{elderMode ? 'var(--color-primary)' : '#666'}}; border-radius: 64rpx; position: relative;">
+        <view style="position: absolute; width: 56rpx; height: 56rpx; background: white; border-radius: 50%; top: 4rpx; left: {{elderMode ? '60rpx' : '4rpx'}}; transition: all 0.3s;"></view>
+      </view>
+    </view>
+    <view wx:if="{{elderMode}}" style="margin-top: 30rpx; padding: 20rpx; background: var(--color-secondary); border-radius: var(--radius-base); color: white;">
+      <text style="font-size: var(--font-size-base); display: block; margin-bottom: 10rpx;">🔍 当前为大字模式</text>
+      <text style="font-size: calc(var(--font-size-base) * 0.9);">字体已放大，按钮间距已调整</text>
+    </view>
+  </view>
+
+  <!-- 其他设置项 -->
+  <view class="card" style="margin: 30rpx;">
+    <view class="menu-item" bindtap="clearCache" style="display: flex; align-items: center; padding: 30rpx 0; border-bottom: 2rpx solid var(--color-border);">
+      <text style="font-size: 40rpx; width: 80rpx;">🗑️</text>
+      <text style="flex: 1; font-size: var(--font-size-base); color: var(--color-text);">清除缓存</text>
+      <text style="font-size: var(--font-size-base); color: var(--color-text-light);">›</text>
+    </view>
+
+    <view class="menu-item" bindtap="about" style="display: flex; align-items: center; padding: 30rpx 0; border-bottom: 2rpx solid var(--color-border);">
+      <text style="font-size: 40rpx; width: 80rpx;">ℹ️</text>
+      <text style="flex: 1; font-size: var(--font-size-base); color: var(--color-text);">关于我们</text>
+      <text style="font-size: var(--font-size-base); color: var(--color-text-light);">›</text>
+    </view>
+
+    <view class="menu-item" bindtap="feedback" style="display: flex; align-items: center; padding: 30rpx 0;">
+      <text style="font-size: 40rpx; width: 80rpx;">💬</text>
+      <text style="flex: 1; font-size: var(--font-size-base); color: var(--color-text);">意见反馈</text>
+      <text style="font-size: var(--font-size-base); color: var(--color-text-light);">›</text>
+    </view>
+  </view>
+
+  <!-- 版本号 -->
+  <view style="text-align: center; padding: 40rpx; color: var(--color-text-light);">
+    <text style="font-size: calc(var(--font-size-base) * 0.9);">版本 1.0.0</text>
+  </view>
+</view>

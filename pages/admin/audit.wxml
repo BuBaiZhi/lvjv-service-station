@@ -1,3 +1,4 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}">
 <view class="container">
   <!-- 审核 tabs -->
   <view class="audit-tabs">
@@ -84,4 +85,5 @@
       <text class="stat-number">{{todayRejected}}</text>
     </view>
   </view>
+</view>
 </view>

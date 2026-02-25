@@ -2,6 +2,8 @@ const houseService = require('../../services/houseService.js')
 
 Page({
   data: {
+    theme: 'light',
+    elderMode: false,
     viewMode: 'list',
     currentSort: 'comprehensive',
     allHouses: [],
@@ -9,7 +11,6 @@ Page({
     hasMore: true,
     refreshing: false,
     
-    // 筛选相关
     showPriceModal: false,
     showFacilityModal: false,
     minPrice: '',
@@ -23,26 +24,32 @@ Page({
     facilities: ['WiFi', '工位', '厨房', '洗衣机', '空调', '投影', '停车', '泳池'],
     selectedFacilities: [],
     
-    // 地图相关
     latitude: 18.2529,
     longitude: 109.5120,
     scale: 14,
     markers: [],
     selectedHouse: null,
     
-    // 分类参数
     currentCategory: '',
     loading: true
   },
 
   onLoad(options) {
-    this.setData({ 
+    const app = getApp()
+    this.setData({
+      theme: app.globalData.theme || 'light',
+      elderMode: app.globalData.elderMode || false,
       currentCategory: options.category || '' 
     })
     this.loadHouses()
   },
 
   onShow() {
+    const app = getApp()
+    this.setData({
+      theme: app.globalData.theme,
+      elderMode: app.globalData.elderMode
+    })
     this.loadHouses()
   },
 
@@ -50,8 +57,6 @@ Page({
     this.setData({ loading: true })
     
     houseService.getHouseList().then(houses => {
-      console.log('从数据库获取到房源:', houses)
-      
       this.setData({
         allHouses: houses,
         filteredHouses: houses,
@@ -66,14 +71,10 @@ Page({
         })),
         loading: false
       })
-      
       this.applyFilters()
     }).catch(err => {
       console.error('加载房源失败:', err)
-      wx.showToast({
-        title: '加载失败',
-        icon: 'none'
-      })
+      wx.showToast({ title: '加载失败', icon: 'none' })
       this.setData({ loading: false })
     })
   },
@@ -81,7 +82,6 @@ Page({
   applyFilters() {
     let filtered = [...this.data.allHouses]
     
-    // 分类筛选
     if (this.data.currentCategory === '海岛') {
       filtered = filtered.filter(h => h.title && h.title.includes('三亚'))
     } else if (this.data.currentCategory === '山居') {
@@ -91,7 +91,6 @@ Page({
       )
     }
     
-    // 价格筛选
     if (this.data.minPrice) {
       filtered = filtered.filter(h => h.price >= Number(this.data.minPrice))
     }
@@ -99,14 +98,12 @@ Page({
       filtered = filtered.filter(h => h.price <= Number(this.data.maxPrice))
     }
     
-    // 设施筛选
     if (this.data.selectedFacilities.length > 0) {
       filtered = filtered.filter(h => 
         this.data.selectedFacilities.every(f => h.facilities && h.facilities.includes(f))
       )
     }
     
-    // 排序
     if (this.data.currentSort === 'price') {
       filtered.sort((a, b) => a.price - b.price)
     } else if (this.data.currentSort === 'latest') {
@@ -133,21 +130,8 @@ Page({
 
   onHouseTap(e) {
     const id = e.currentTarget.dataset.id
-    console.log('点击房源，_id:', id)
-    
-    if (!id) {
-      wx.showToast({
-        title: '房源ID不存在',
-        icon: 'none'
-      })
-      return
-    }
-    
     wx.navigateTo({
-      url: `/pages/detail/detail?id=${id}`,
-      fail: (err) => {
-        console.error('跳转失败:', err)
-      }
+      url: `/pages/detail/detail?id=${id}`
     })
   },
 
@@ -204,13 +188,11 @@ Page({
   onFacilityChange(e) {
     const facility = e.currentTarget.dataset.facility
     let selected = this.data.selectedFacilities
-    
     if (e.detail.value.length > 0) {
       selected.push(facility)
     } else {
       selected = selected.filter(f => f !== facility)
     }
-    
     this.setData({ selectedFacilities: selected })
   },
 
@@ -224,9 +206,7 @@ Page({
   },
 
   onSearch() {
-    wx.navigateTo({
-      url: '/pages/search/search'
-    })
+    wx.navigateTo({ url: '/pages/search/search' })
   },
 
   onFilter() {
@@ -265,10 +245,7 @@ Page({
   },
 
   onLocate() {
-    wx.showToast({
-      title: '定位功能开发中',
-      icon: 'none'
-    })
+    wx.showToast({ title: '定位功能开发中', icon: 'none' })
   },
 
   onRefresh() {
@@ -281,10 +258,7 @@ Page({
     if (this.data.hasMore) {
       this.setData({ loading: true })
       setTimeout(() => {
-        this.setData({ 
-          hasMore: false, 
-          loading: false 
-        })
+        this.setData({ hasMore: false, loading: false })
       }, 500)
     }
   }

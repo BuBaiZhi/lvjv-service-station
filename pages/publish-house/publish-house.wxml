@@ -1,3 +1,4 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
 <view class="container">
   <form catchsubmit="onSubmit">
     <!-- 房源标题 -->
@@ -137,4 +138,5 @@
     <!-- 发布按钮 -->
     <button class="publish-btn" form-type="submit" disabled="{{!canPublish}}">发布房源</button>
   </form>
+</view>
 </view>

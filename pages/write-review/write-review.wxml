@@ -1,3 +1,4 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
 <view class="container">
   <view class="form-container">
     <!-- 房源信息 -->
@@ -66,4 +67,5 @@
     <!-- 提交按钮 -->
     <button class="submit-btn" bindtap="onSubmit" disabled="{{!canSubmit}}">提交评价</button>
   </view>
+</view>
 </view>

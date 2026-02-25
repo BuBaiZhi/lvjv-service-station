@@ -1,3 +1,4 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
 <view class="container">
   <!-- 搜索栏 -->
   <view class="header">
@@ -174,4 +175,5 @@
       </view>
     </view>
   </view>
+</view>
 </view>

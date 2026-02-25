@@ -2,6 +2,8 @@ const houseService = require('../../services/houseService.js')
 
 Page({
   data: {
+    theme: 'light',
+    elderMode: false,
     keyword: '',
     allHouses: [],
     filteredHouses: [],
@@ -13,11 +15,23 @@ Page({
   },
 
   onLoad() {
+    const app = getApp()
+    this.setData({
+      theme: app.globalData.theme || 'light',
+      elderMode: app.globalData.elderMode || false
+    })
     this.loadSearchHistory()
     this.loadAllHouses()
   },
 
-  // 加载所有房源
+  onShow() {
+    const app = getApp()
+    this.setData({
+      theme: app.globalData.theme,
+      elderMode: app.globalData.elderMode
+    })
+  },
+
   loadAllHouses() {
     houseService.getHouseList().then(houses => {
       this.setData({ allHouses: houses })
@@ -26,33 +40,24 @@ Page({
     })
   },
 
-  // 加载搜索历史
   loadSearchHistory() {
     const history = wx.getStorageSync('houseSearchHistory') || []
     this.setData({ history })
   },
 
-  // 保存搜索历史
   saveSearchHistory(keyword) {
     if (!keyword.trim()) return
-    
     let history = this.data.history
-    // 去重
     history = history.filter(item => item !== keyword)
-    // 添加到开头
     history.unshift(keyword)
-    // 只保留最近10条
     history = history.slice(0, 10)
-    
     wx.setStorageSync('houseSearchHistory', history)
     this.setData({ history })
   },
 
-  // 输入
   onInput(e) {
     const keyword = e.detail.value
     this.setData({ keyword })
-    
     if (keyword.trim()) {
       this.searchHouses(keyword)
     } else {
@@ -60,61 +65,44 @@ Page({
     }
   },
 
-  // 搜索房源
   searchHouses(keyword) {
     this.setData({ loading: true })
-    
-    // 按标题和位置搜索
     const results = this.data.allHouses.filter(item => 
       item.title.toLowerCase().includes(keyword.toLowerCase()) ||
       item.location.toLowerCase().includes(keyword.toLowerCase())
     )
-    
-    this.setData({ 
-      filteredHouses: results,
-      loading: false 
-    })
+    this.setData({ filteredHouses: results, loading: false })
   },
 
-  // 设置筛选
   setFilter(e) {
     const filter = e.currentTarget.dataset.filter
     this.setData({ currentFilter: filter })
   },
 
-  // 确认搜索
   onSearch() {
     if (!this.data.keyword.trim()) return
     this.saveSearchHistory(this.data.keyword)
   },
 
-  // 清空输入
   clearInput() {
-    this.setData({
-      keyword: '',
-      filteredHouses: []
-    })
+    this.setData({ keyword: '', filteredHouses: [] })
   },
 
-  // 取消
   onCancel() {
     wx.navigateBack()
   },
 
-  // 清空历史
   clearHistory() {
     wx.removeStorageSync('houseSearchHistory')
     this.setData({ history: [] })
   },
 
-  // 点击历史记录
   onHistoryTap(e) {
     const keyword = e.currentTarget.dataset.keyword
     this.setData({ keyword })
     this.searchHouses(keyword)
   },
 
-  // 点击热门搜索
   onHotTap(e) {
     const keyword = e.currentTarget.dataset.keyword
     this.setData({ keyword })
@@ -122,7 +110,6 @@ Page({
     this.saveSearchHistory(keyword)
   },
 
-  // 点击热门目的地
   onDestinationTap(e) {
     const keyword = e.currentTarget.dataset.keyword
     this.setData({ keyword })
@@ -130,11 +117,8 @@ Page({
     this.saveSearchHistory(keyword)
   },
 
-  // 点击房源
   onHouseTap(e) {
     const id = e.currentTarget.dataset.id
-    wx.navigateTo({
-      url: `/pages/detail/detail?id=${id}`
-    })
+    wx.navigateTo({ url: `/pages/detail/detail?id=${id}` })
   }
 })

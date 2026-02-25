@@ -2,6 +2,8 @@ const postService = require('../../services/postService.js')
 
 Page({
   data: {
+    theme: 'light',
+    elderMode: false,
     categories: [],
     currentTab: 'rec',
     posts: [],
@@ -9,33 +11,45 @@ Page({
     showCommentModal: false,
     currentPostId: '',
     loading: false,
-    hasMore: true
+    hasMore: true,
+    currentRegion: '全部',
+    regions: ['全部', '北京', '上海', '深圳', '杭州', '成都', '三亚', '大理', '黄山'],
+    showRegionModal: false,
+    showMoreFilterModal: false,
+    filterType: 'all',
+    filterTime: 'all',
+    filterImage: 'all'
   },
 
   onLoad() {
-    console.log('square.js onLoad')
+    const app = getApp()
+    this.setData({
+      theme: app.globalData.theme || 'light',
+      elderMode: app.globalData.elderMode || false
+    })
     this.loadCategories()
     this.loadPosts()
   },
 
   onShow() {
-    // 每次显示页面时刷新帖子列表
+    const app = getApp()
+    this.setData({
+      theme: app.globalData.theme,
+      elderMode: app.globalData.elderMode
+    })
     this.loadPosts(true)
   },
 
-  // 加载分类
   loadCategories() {
     postService.getCategories().then(categories => {
       this.setData({ categories })
     })
   },
 
-  // 加载帖子列表
   loadPosts(refresh = false) {
     this.setData({ loading: true })
     
     postService.getPosts().then(posts => {
-      console.log('加载帖子成功:', posts.length)
       this.setData({ 
         posts: posts,
         loading: false,
@@ -47,24 +61,13 @@ Page({
     })
   },
 
-  // 点击帖子卡片
   onPostTap(e) {
     const postId = e.detail.postId
-    console.log('点击帖子ID:', postId)
-    
     wx.navigateTo({
-      url: `/pages/square-detail/detail?id=${postId}`,
-      fail: (err) => {
-        console.error('跳转失败:', err)
-        wx.showToast({
-          title: '页面不存在',
-          icon: 'none'
-        })
-      }
+      url: `/pages/square-detail/detail?id=${postId}`
     })
   },
 
-  // 点击作者
   onAuthorTap(e) {
     const { authorId } = e.detail
     wx.navigateTo({
@@ -72,7 +75,6 @@ Page({
     })
   },
 
-  // 点赞
   onPostLike(e) {
     const { postId, isLiked, likes } = e.detail
     const posts = this.data.posts.map(item => {
@@ -83,14 +85,12 @@ Page({
       return item
     })
     this.setData({ posts })
-    
     wx.showToast({
       title: isLiked ? '点赞成功' : '取消点赞',
       icon: 'none'
     })
   },
 
-  // 收藏
   onPostCollect(e) {
     const { postId, isCollected } = e.detail
     const posts = this.data.posts.map(item => {
@@ -100,14 +100,12 @@ Page({
       return item
     })
     this.setData({ posts })
-    
     wx.showToast({
       title: isCollected ? '收藏成功' : '取消收藏',
       icon: 'success'
     })
   },
 
-  // 打开评论弹窗
   onPostComment(e) {
     const { postId } = e.detail
     this.setData({
@@ -116,12 +114,10 @@ Page({
     })
   },
 
-  // 关闭评论弹窗
   onCloseCommentModal() {
     this.setData({ showCommentModal: false })
   },
 
-  // 评论弹窗点击头像
   onCommentAvatarTap(e) {
     const { userId } = e.detail
     wx.navigateTo({
@@ -129,15 +125,11 @@ Page({
     })
   },
 
-  // 切换分类
   switchTab(e) {
     const tab = e.currentTarget.dataset.tab
     this.setData({ currentTab: tab })
-    
-    // 重新加载帖子，可以按分类筛选
     postService.getPosts().then(allPosts => {
       let filteredPosts = [...allPosts]
-      
       if (tab === 'partner') {
         filteredPosts = filteredPosts.filter(item => item.type === '找搭子')
       } else if (tab === 'latest') {
@@ -146,39 +138,53 @@ Page({
           if (b.time && b.time.includes('刚刚')) return 1
           return 0
         })
-      } else if (tab === 'samecity') {
-        wx.showToast({ 
-          title: '同城功能开发中', 
-          icon: 'none' 
-        })
-        return
       }
-      
       this.setData({ posts: filteredPosts })
     })
   },
 
-  // 搜索
+  showRegionPicker() {
+    this.setData({ showRegionModal: true })
+  },
+
+  hideRegionPicker() {
+    this.setData({ showRegionModal: false })
+  },
+
+  selectRegion(e) {
+    const region = e.currentTarget.dataset.region
+    this.setData({ 
+      currentRegion: region,
+      showRegionModal: false 
+    })
+    // 这里可以按地区筛选
+  },
+
+  showMoreFilter() {
+    this.setData({ showMoreFilterModal: true })
+  },
+
+  hideMoreFilter() {
+    this.setData({ showMoreFilterModal: false })
+  },
+
   onSearch() {
     wx.navigateTo({
       url: '/pages/square-search/square-search'
     })
   },
 
-  // 发布
   onPublish() {
     wx.navigateTo({
       url: '/pages/publish/publish'
     })
   },
 
-  // 下拉刷新
   onRefresh() {
     this.setData({ refreshing: true })
     this.loadPosts(true)
   },
 
-  // 上拉加载更多
   onLoadMore() {
     if (this.data.hasMore) {
       this.setData({ loading: true })
