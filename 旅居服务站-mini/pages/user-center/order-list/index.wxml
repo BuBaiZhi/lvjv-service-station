@@ -1,5 +1,5 @@
 <!-- 我的交易页面 -->
-<view class="page {{theme === 'dark' ? 'dark-mode' : ''}} {{appVersion === 'elderly' ? 'elderly-mode' : ''}}">
+<view class="page {{theme === 'dark' ? 'dark-mode' : 'light'}} {{appVersion === 'elderly' ? 'elderly-mode' : ''}}">
 
   <!-- 标签栏 -->
   <view class="tabs">
@@ -34,7 +34,7 @@
 
   <!-- 类型筛选 -->
   <view class="filter-bar">
-    <view class="filter-btn" bindtap="toggleTypeFilter">
+    <view class="filter-btn" bindtap="toggleTypeFilter" data-type="null">
       {{ typeFilter === 'all' ? '全部类型' :
          typeFilter === 'house' ? '民宿' :
          typeFilter === 'skill' ? '技能' :
@@ -46,12 +46,13 @@
 
   <!-- 下拉遮罩 -->
   <view wx:if="{{typeFilterShow}}" class="mask" bindtap="closeTypeFilter">
-    <view class="dropdown" catchtap="noop">
+    <view class="dropdown" catchtap="preventClose">
       <view 
         class="dropdown-item {{typeFilter === item.value ? 'active' : ''}}"
         wx:for="{{typeOptions}}"
         wx:key="value"
-        data-type="{{item.value}}"
+        wx:index-num="index"
+        data-index="{{index}}"
         bindtap="toggleTypeFilter">
         {{item.label}}
       </view>

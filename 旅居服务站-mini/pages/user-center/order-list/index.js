@@ -94,21 +94,32 @@ Page({
 
   // 切换类型筛选
   toggleTypeFilter(e) {
-    const type = e.currentTarget.dataset.type
+    // 获取 data-index
+    const index = parseInt(e.currentTarget.dataset.index)
     
-    // 如果没有type值，说明是点击下拉按钮，切换面板显示
-    if (type === undefined || type === null) {
+    // 判断是否是点击下拉按钮（index 不存在或为 NaN）
+    if (isNaN(index)) {
+      // 点击下拉按钮，切换面板显示
       this.setData({ typeFilterShow: !this.data.typeFilterShow })
       return
     }
     
-    // 有type值，说明是点击选项，执行筛选
-    this.setData({ 
-      typeFilter: type,
-      typeFilterShow: false
-    }, () => {
-      this.applyFilters()
-    })
+    // index 存在，读取对应的 option 值
+    const selectedOption = this.data.typeOptions[index]
+    if (selectedOption) {
+      console.log('[Order] 选择筛选类型:', selectedOption.value)
+      this.setData({ 
+        typeFilter: selectedOption.value,
+        typeFilterShow: false
+      }, () => {
+        this.applyFilters()
+      })
+    }
+  },
+
+  // 下拉遮罩点击 - 防止事件冒泡
+  preventClose() {
+    // 仅阻断事件传播，不执行任何操作
   },
 
   // 关闭筛选面板
