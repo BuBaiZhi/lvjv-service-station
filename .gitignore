@@ -1,15 +1,22 @@
 # IDE
-.idea
-.vscode
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
 
 # OS
 .DS_Store
+Thumbs.db
+desktop.ini
 
 # Node
-node_modules
+node_modules/
+.pnpm-store/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
 # Python
 __pycache__
@@ -17,8 +24,19 @@ __pycache__
 
 # Env
 .env
-.env.*
+.env.local
+.env.*.local
 
 # Build
-dist
-build
+dist/
+build/
+
+# Uni-app/HBuilder 输出
+unpackage/
+
+# 测试
+coverage/
+
+# 临时文件
+*.tmp
+*.temp

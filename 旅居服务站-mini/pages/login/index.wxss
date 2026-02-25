@@ -1,0 +1,361 @@
+/* 登录页面样式 - 重新设计 */
+
+/* 🌙 主题变量定义 */
+.page.light {
+  --bg-page: #f8f9fa;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  --border-color: #e0e0e0;
+  --accent-color: #09b83e;
+  --accent-light: rgba(9, 184, 62, 0.1);
+  --shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 8rpx 16rpx rgba(0, 0, 0, 0.1);
+}
+
+.page.dark-mode {
+  --bg-page: #0f0f0f;
+  --bg-card: #1a1a1a;
+  --text-primary: #f5f5f5;
+  --text-secondary: #b3b3b3;
+  --text-tertiary: #808080;
+  --border-color: #2d2d2d;
+  --accent-color: #07a02e;
+  --accent-light: rgba(7, 160, 46, 0.1);
+  --shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+  --shadow-hover: 0 8rpx 16rpx rgba(0, 0, 0, 0.5);
+}
+
+/* 页面容器 */
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f8f9fa;  /* 默认背景色 */
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  
+  /* 默认CSS变量 - 不依赖 theme 类 */
+  --bg-page: #f8f9fa;
+  --bg-card: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+  --border-color: #e0e0e0;
+  --accent-color: #09b83e;
+  --accent-light: rgba(9, 184, 62, 0.1);
+  --shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 8rpx 16rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 背景装饰 */
+.bg-decoration {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.05;
+}
+
+.circle-1 {
+  width: 400rpx;
+  height: 400rpx;
+  top: -100rpx;
+  right: -50rpx;
+  background: var(--accent-color);
+}
+
+.circle-2 {
+  width: 300rpx;
+  height: 300rpx;
+  bottom: -80rpx;
+  left: -100rpx;
+  background: var(--accent-color);
+}
+
+/* 顶部区域 */
+.header-section {
+  flex: 0 0 auto;
+  padding: 80rpx 40rpx 60rpx;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.logo-box {
+  width: 120rpx;
+  height: 120rpx;
+  margin: 0 auto 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64rpx;
+  background: var(--accent-light);
+  border-radius: 30rpx;
+}
+
+.logo-icon {
+  font-size: 64rpx;
+}
+
+.app-title {
+  display: block;
+  font-size: 44rpx;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8rpx;
+  letter-spacing: 1rpx;
+}
+
+.app-subtitle {
+  display: block;
+  font-size: 26rpx;
+  color: var(--text-secondary);
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+/* 登录卡片区 */
+.login-cards {
+  flex: 1 1 auto;
+  padding: 20rpx 40rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  position: relative;
+  z-index: 1;
+}
+
+/* 卡片通用样式 */
+.card {
+  background: var(--bg-card);
+  border-radius: 20rpx;
+  padding: 32rpx 24rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 2rpx solid var(--border-color);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+
+.card:active {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-hover);
+}
+
+/* 微信卡片 */
+.wechat-card {
+  border-color: var(--accent-color);
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--accent-light) 100%);
+}
+
+.wechat-card:active {
+  border-color: var(--accent-color);
+}
+
+/* 游客卡片 */
+.guest-card {
+  border-color: #4a90e2;
+}
+
+/* 卡片头部 */
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12rpx;
+  width: 100%;
+}
+
+.card-icon {
+  font-size: 44rpx;
+  margin-right: 16rpx;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* 卡片描述 */
+.card-desc {
+  font-size: 24rpx;
+  color: var(--text-secondary);
+  margin-bottom: 12rpx;
+}
+
+/* 卡片箭头 */
+.card-arrow {
+  position: absolute;
+  right: 20rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 32rpx;
+  color: var(--accent-color);
+  font-weight: bold;
+  opacity: 0.6;
+  transition: all 0.3s;
+}
+
+.card:active .card-arrow {
+  opacity: 1;
+  right: 16rpx;
+}
+
+/* 底部区域 */
+.footer-section {
+  flex: 0 0 auto;
+  padding: 30rpx 40rpx 40rpx;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+.agreement-hint {
+  display: block;
+  font-size: 22rpx;
+  color: var(--text-tertiary);
+  margin-bottom: 12rpx;
+}
+
+.agreement-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.link {
+  font-size: 22rpx;
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link:active {
+  opacity: 0.7;
+}
+
+.separator {
+  color: var(--text-tertiary);
+  margin: 0 8rpx;
+}
+
+/* 加载覆盖层 */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.loading-box {
+  background: var(--bg-card);
+  padding: 40rpx;
+  border-radius: 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: var(--shadow-hover);
+}
+
+.spinner {
+  width: 40rpx;
+  height: 40rpx;
+  border: 4rpx solid var(--border-color);
+  border-top-color: var(--accent-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16rpx;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 26rpx;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* 👴 老人友好版 */
+.page.elderly-mode .header-section {
+  padding: 100rpx 40rpx 60rpx;
+}
+
+.page.elderly-mode .logo-box {
+  width: 140rpx;
+  height: 140rpx;
+  font-size: 72rpx;
+}
+
+.page.elderly-mode .app-title {
+  font-size: 52rpx;
+  margin-bottom: 12rpx;
+}
+
+.page.elderly-mode .app-subtitle {
+  font-size: 30rpx;
+}
+
+.page.elderly-mode .card {
+  padding: 40rpx 32rpx;
+  margin-bottom: 20rpx;
+}
+
+.page.elderly-mode .card:last-child {
+  margin-bottom: 0;
+}
+
+.page.elderly-mode .card-header {
+  margin-bottom: 16rpx;
+}
+
+.page.elderly-mode .card-icon {
+  font-size: 52rpx;
+  margin-right: 20rpx;
+}
+
+.page.elderly-mode .card-title {
+  font-size: 40rpx;
+}
+
+.page.elderly-mode .card-desc {
+  font-size: 28rpx;
+}
+
+.page.elderly-mode .card-arrow {
+  font-size: 40rpx;
+}
+
+.page.elderly-mode .agreement-hint {
+  font-size: 26rpx;
+}
+
+.page.elderly-mode .link,
+.page.elderly-mode .separator {
+  font-size: 26rpx;
+}

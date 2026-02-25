@@ -1,0 +1,78 @@
+<!-- 用户中心首页 -->
+<view class="page {{theme === 'dark' ? 'dark-mode' : (theme === 'light' ? 'light' : '') }} {{appVersion === 'elderly' ? 'elderly-mode' : ''}}">
+  <!-- 未登录状态 -->
+  <view wx:if="{{!isLoggedIn}}" class="login-prompt">
+    <view class="login-avatar-box">
+      <view class="login-avatar-placeholder">👤</view>
+    </view>
+    <text class="login-hint">登录后享受更多服务</text>
+    <view class="login-buttons">
+      <view class="login-btn primary" bindtap="goToLogin">
+        <text>登录/注册</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 已登录状态 -->
+  <view wx:else>
+    <!-- 用户卡片 -->
+    <view class="user-card" style="{{backgroundType === 'image' && userInfo.background ? 'background-image: url(' + userInfo.background + ')' : (userInfo.background ? 'background: ' + userInfo.background : '')}}">
+      <view class="user-card-bg" style="{{backgroundType !== 'image' && userInfo.background ? 'background: ' + userInfo.background : 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)'}}"></view>
+      <image class="user-avatar" src="{{userInfo.avatar || 'https://picsum.photos/200/200?random=10'}}" mode="aspectFill"></image>
+      <view class="user-info">
+        <view class="user-name-row">
+          <text class="user-nickname">{{userInfo.nickname || '旅行者'}}</text>
+          <text class="identity-badge">{{userInfo.identity === 'villager' ? '村民' : '游民'}}</text>
+        </view>
+        <view class="user-meta-row">
+          <text class="user-gender">{{userInfo.gender === 'male' ? '♂ 男' : (userInfo.gender === 'female' ? '♀ 女' : '')}}</text>
+          <text class="user-age" wx:if="{{userInfo.age}}"> · {{userInfo.age}}岁</text>
+          <text class="user-id" wx:if="{{userInfo.id}}"> · ID: {{userInfo.id}}</text>
+        </view>
+        <text class="user-signature">{{userInfo.signature || '这个人很懒，什么都没写'}}</text>
+      </view>
+    </view>
+
+    <!-- 编辑资料按钮 -->
+    <view class="edit-profile-bar">
+      <view class="edit-profile-btn" bindtap="goToEditProfile">
+        <text>编辑资料</text>
+      </view>
+    </view>
+
+    <!-- 统计数据 -->
+    <view class="stats-section">
+      <view class="stat-item">
+        <text class="stat-value">{{stats.postCount}}</text>
+        <text class="stat-label">发帖</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{stats.commentCount}}</text>
+        <text class="stat-label">评论</text>
+      </view>
+      <view class="stat-divider"></view>
+      <view class="stat-item">
+        <text class="stat-value">{{stats.likeCount}}</text>
+        <text class="stat-label">获赞</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单（只有已登录才显示，避免覆盖问题） -->
+  <view wx:if="{{isLoggedIn}}" class="menu-section">
+    <view 
+      class="menu-item"
+      wx:for="{{menuList}}"
+      wx:key="id"
+      bindtap="onMenuTap"
+      data-path="{{item.path}}"
+    >
+      <view class="menu-left">
+        <text class="menu-icon">{{item.icon}}</text>
+        <text class="menu-title">{{item.title}}</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+</view>
