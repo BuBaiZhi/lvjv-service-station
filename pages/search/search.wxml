@@ -1,0 +1,91 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
+<view class="container">
+  <!-- 搜索框 -->
+  <view class="search-header">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input 
+        class="search-input" 
+        placeholder="搜索目的地、社区名称"
+        bindinput="onInput"
+        value="{{keyword}}"
+        confirm-type="search"
+        bindconfirm="onSearch"
+        auto-focus
+      ></input>
+      <text class="clear-btn" wx:if="{{keyword}}" bindtap="clearInput">✕</text>
+    </view>
+    <text class="cancel-btn" bindtap="onCancel">取消</text>
+  </view>
+
+  <!-- 搜索筛选栏 -->
+  <scroll-view class="filter-bar" scroll-x show-scrollbar="{{false}}" wx:if="{{keyword}}">
+    <view class="filter-list">
+      <view class="filter-item {{currentFilter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">全部</view>
+      <view class="filter-item {{currentFilter === 'house' ? 'active' : ''}}" bindtap="setFilter" data-filter="house">房源</view>
+      <view class="filter-item {{currentFilter === 'location' ? 'active' : ''}}" bindtap="setFilter" data-filter="location">位置</view>
+    </view>
+  </scroll-view>
+
+  <!-- 搜索结果 -->
+  <view class="search-results" wx:if="{{keyword}}">
+    <!-- 房源结果 -->
+    <view class="result-section" wx:if="{{filteredHouses.length > 0 && (currentFilter === 'all' || currentFilter === 'house')}}">
+      <view class="section-header">
+        <text class="section-title">房源</text>
+        <text class="section-count">{{filteredHouses.length}}个结果</text>
+      </view>
+      <view class="house-item" wx:for="{{filteredHouses}}" wx:key="id" bindtap="onHouseTap" data-id="{{item._id}}">
+        <image class="house-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="house-info">
+          <text class="house-title">{{item.title}}</text>
+          <text class="house-location">📍 {{item.location}}</text>
+          <view class="house-price">
+            <text class="price">¥{{item.price}}</text>
+            <text class="unit">/{{item.unit}}</text>
+          </view>
+          <view class="house-tags">
+            <text class="tag" wx:for="{{item.tags}}" wx:key="*this">#{{item}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 无结果 -->
+    <view class="no-result" wx:if="{{filteredHouses.length === 0}}">
+      <text class="no-result-icon">🔍</text>
+      <text class="no-result-text">没有找到相关房源</text>
+      <text class="no-result-subtext">试试其他关键词吧</text>
+    </view>
+  </view>
+
+  <!-- 搜索历史 -->
+  <view class="search-history" wx:else>
+    <view class="history-header">
+      <text class="history-title">搜索历史</text>
+      <text class="clear-history" bindtap="clearHistory">清空</text>
+    </view>
+    <view class="history-list">
+      <text class="history-item" wx:for="{{history}}" wx:key="index" bindtap="onHistoryTap" data-keyword="{{item}}">{{item}}</text>
+    </view>
+    
+    <!-- 热门搜索 -->
+    <view class="hot-section">
+      <text class="hot-title">热门搜索</text>
+      <view class="hot-list">
+        <text class="hot-item" wx:for="{{hotKeywords}}" wx:key="index" bindtap="onHotTap" data-keyword="{{item}}">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 热门目的地推荐 -->
+    <view class="hot-destinations">
+      <text class="hot-title">热门目的地</text>
+      <view class="destination-grid">
+        <view class="destination-item" wx:for="{{hotDestinations}}" wx:key="index" bindtap="onDestinationTap" data-keyword="{{item}}">
+          <text class="destination-name">{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+</view>

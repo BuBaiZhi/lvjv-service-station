@@ -1,0 +1,232 @@
+/* 设置页面样式 */
+
+/* 主题变量定义 */
+.page.light {
+  --bg-page: #f5f5f5;
+  --bg-card: #fff;
+  --text-primary: #333;
+  --text-secondary: #666;
+  --text-tertiary: #ccc;
+  --border-color: #e0e0e0;
+  --border-light: #f0f0f0;
+}
+
+.page.dark-mode {
+  --bg-page: #1a1a1a;
+  --bg-card: #2a2a2a;
+  --text-primary: #f0f0f0;
+  --text-secondary: #ccc;
+  --text-tertiary: #666;
+  --border-color: #3a3a3a;
+  --border-light: #3a3a3a;
+}
+
+.page {
+  min-height: 100vh;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+}
+
+/* 导航栏 */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background: var(--bg-card);
+  border-bottom: 1rpx solid var(--border-light);
+}
+
+.back-btn {
+  width: 100rpx;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: #1890ff;
+}
+
+.page-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.placeholder {
+  width: 44px;
+}
+
+/* 内容区域 */
+.content {
+  padding: 20rpx;
+}
+
+.section {
+  margin-bottom: 30rpx;
+}
+
+.section-header {
+  padding: 20rpx 10rpx;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* 主题选项 */
+.theme-options {
+  display: flex;
+  gap: 20rpx;
+}
+
+.theme-item {
+  flex: 1;
+  background: var(--bg-card);
+  border: 2rpx solid var(--border-color);
+  border-radius: 12rpx;
+  padding: 40rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  transition: all 0.3s;
+}
+
+.theme-item.active {
+  border-color: #1890ff;
+  background: #e6f7ff;
+}
+
+.page.dark-mode .theme-item.active {
+  background: #1a3a5a;
+  border-color: #1890ff;
+}
+
+.theme-icon {
+  font-size: 56rpx;
+}
+
+.theme-name {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.theme-item.active .theme-name {
+  color: #1890ff;
+  font-weight: 500;
+}
+
+/* 版本选项 */
+.version-options {
+  display: flex;
+  gap: 20rpx;
+}
+
+.version-item {
+  flex: 1;
+  background: var(--bg-card);
+  border: 2rpx solid var(--border-color);
+  border-radius: 12rpx;
+  padding: 40rpx 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  transition: all 0.3s;
+}
+
+.version-item.active {
+  border-color: #52c41a;
+  background: #f6ffed;
+}
+
+.page.dark-mode .version-item.active {
+  background: #1a3a2a;
+  border-color: #52c41a;
+}
+
+.version-icon {
+  font-size: 56rpx;
+}
+
+.version-name {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.version-item.active .version-name {
+  color: #52c41a;
+  font-weight: 500;
+}
+
+/* 设置列表 */
+.setting-list {
+  background: var(--bg-card);
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx 30rpx;
+  border-bottom: 1rpx solid var(--border-light);
+}
+
+.setting-item:last-child {
+  border-bottom: none;
+}
+
+.setting-label {
+  font-size: 15px;
+  color: var(--text-primary);
+}
+
+.setting-arrow {
+  font-size: 32rpx;
+  color: var(--text-tertiary);
+}
+
+/* 老人友好版 */
+.elderly-mode .page-title {
+  font-size: 24px;
+}
+
+.elderly-mode .section-title {
+  font-size: 20px;
+}
+
+.elderly-mode .theme-item,
+.elderly-mode .version-item {
+  padding: 60rpx 30rpx;
+}
+
+.elderly-mode .theme-icon,
+.elderly-mode .version-icon {
+  font-size: 80rpx;
+}
+
+.elderly-mode .theme-name,
+.elderly-mode .version-name {
+  font-size: 18px;
+}
+
+.elderly-mode .setting-item {
+  padding: 50rpx 30rpx;
+}
+
+.elderly-mode .setting-label {
+  font-size: 18px;
+}
+
+.elderly-mode .back-btn {
+  font-size: 18px;
+}
+
+.elderly-mode .setting-arrow {
+  font-size: 40rpx;
+}

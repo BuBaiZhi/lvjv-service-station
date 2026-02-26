@@ -1,0 +1,129 @@
+/* ===== 基础变量 ===== */
+page {
+  --font-size-base: 28rpx;
+  --font-size-large: 36rpx;
+  --font-size-xl: 48rpx;
+  --spacing-base: 30rpx;
+  --radius-base: 24rpx;
+}
+
+/* ===== 日间模式变量 ===== */
+[data-theme="light"] {
+  --color-primary: #4A7A5C;
+  --color-secondary: #A8D5BA;
+  --color-accent: #FFB7B2;
+  --color-background: #F9FBF8;
+  --color-card: #FFFFFF;
+  --color-text: #333333;
+  --color-text-light: #666666;
+  --color-border: rgba(74, 122, 92, 0.1);
+  --shadow: 0 4rpx 20rpx rgba(74, 122, 92, 0.08);
+}
+
+/* ===== 夜间模式变量 ===== */
+[data-theme="dark"] {
+  --color-primary: #6B9A7C;
+  --color-secondary: #2A4A3A;
+  --color-accent: #FF9F9A;
+  --color-background: #1A1A1A;
+  --color-card: #2A2A2A;
+  --color-text: #FFFFFF;
+  --color-text-light: #CCCCCC;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.3);
+}
+
+/* ===== 老人模式变量 ===== */
+[data-elder="true"] {
+  --font-size-base: 42rpx;
+  --font-size-large: 54rpx;
+  --font-size-xl: 72rpx;
+  --spacing-base: 45rpx;
+  --radius-base: 36rpx;
+}
+
+/* ===== 基础样式 ===== */
+page {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  transition: all 0.3s ease;
+}
+
+/* 卡片样式 */
+.card {
+  background: var(--color-card);
+  border-radius: var(--radius-base);
+  padding: var(--spacing-base);
+  margin-bottom: var(--spacing-base);
+  box-shadow: var(--shadow);
+  border: 2rpx solid var(--color-border);
+}
+
+/* 按钮样式 */
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+  border-radius: calc(var(--radius-base) * 1.5);
+  padding: calc(var(--spacing-base) * 0.8) var(--spacing-base);
+  font-size: var(--font-size-base);
+  border: none;
+  min-height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 标题样式 */
+.section-title {
+  font-size: var(--font-size-large);
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-base);
+}
+
+/* 导航栏 */
+.nav-bar {
+  background: var(--color-card);
+  padding: var(--spacing-base);
+  border-bottom: 2rpx solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 100rpx;
+}
+
+.nav-title {
+  font-size: var(--font-size-large);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* 标签样式 */
+.tag {
+  display: inline-block;
+  padding: calc(var(--spacing-base) * 0.3) calc(var(--spacing-base) * 0.8);
+  border-radius: calc(var(--radius-base) * 1.5);
+  font-size: calc(var(--font-size-base) * 0.9);
+  background: rgba(168, 213, 186, 0.2);
+  color: var(--color-primary);
+  border: 2rpx solid var(--color-secondary);
+}
+
+/* 老人模式专属样式 */
+[data-elder="true"] .btn-primary {
+  min-height: 120rpx;
+  font-weight: bold;
+}
+
+[data-elder="true"] .tag {
+  padding: calc(var(--spacing-base) * 0.5) var(--spacing-base);
+}
+
+[data-elder="true"] .nav-bar {
+  min-height: 140rpx;
+}
+
+[data-elder="true"] .card {
+  margin-bottom: calc(var(--spacing-base) * 1.5);
+}

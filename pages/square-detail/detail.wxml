@@ -1,0 +1,206 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
+<view class="container">
+  <!-- 加载状态 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 帖子内容 -->
+  <view class="post-detail" wx:else>
+    <!-- 作者信息 -->
+    <view class="author-section">
+      <view class="author-info" bindtap="onAuthorTap" data-author-id="{{post.author.id}}">
+        <image class="avatar" src="{{post.author.avatar}}" mode="aspectFill"></image>
+        <view class="author-detail">
+          <view class="author-name">
+            <text>{{post.author.name}}</text>
+            <identity-badge identity="{{post.author.identity}}"></identity-badge>
+            <text class="author-level" wx:if="{{post.author.level}}">Lv.{{post.author.level}}</text>
+          </view>
+          <view class="post-meta">
+            <text class="post-time">{{formatTime(post.createTime)}}</text>
+            <text class="post-views">👁️ {{formatNumber(post.views || 0)}}</text>
+            <text class="post-location" wx:if="{{post.location}}">📍 {{post.location}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="follow-btn" wx:if="{{!post.isSelf}}" bindtap="onFollow">
+        <text>{{post.isFollowed ? '已关注' : '+ 关注'}}</text>
+      </view>
+    </view>
+
+    <!-- 帖子类型标签 -->
+    <view class="post-type" wx:if="{{post.type}}">
+      <text class="type-tag" data-type="{{post.type}}"># {{post.type}}</text>
+    </view>
+    
+    <!-- 标题 -->
+    <view class="post-title" wx:if="{{post.title}}">
+      {{post.title}}
+    </view>
+    
+    <!-- 正文 -->
+    <view class="post-content">
+      {{post.content}}
+    </view>
+    
+    <!-- 图片列表 -->
+    <view class="image-grid" wx:if="{{post.images && post.images.length > 0}}">
+      <block wx:for="{{post.images}}" wx:key="index">
+        <image 
+          class="grid-image image-{{index}}"
+          src="{{item}}"
+          mode="aspectFill"
+          bindtap="previewImage"
+          data-index="{{index}}"
+          data-images="{{post.images}}"
+        ></image>
+      </block>
+    </view>
+    
+    <!-- 标签列表 -->
+    <view class="tags-container" wx:if="{{post.tags && post.tags.length > 0}}">
+      <block wx:for="{{post.tags}}" wx:key="index">
+        <text class="tag-item" bindtap="onTagTap" data-tag="{{item}}">#{{item}}</text>
+      </block>
+    </view>
+    
+    <!-- 互动统计 -->
+    <view class="stats-section">
+      <view class="stat-item" bindtap="onLikesList">
+        <text class="stat-number">{{formatNumber(post.likes)}}</text>
+        <text class="stat-label">点赞</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{formatNumber(post.comments)}}</text>
+        <text class="stat-label">评论</text>
+      </view>
+      <view class="stat-item" bindtap="onCollectsList">
+        <text class="stat-number">{{formatNumber(post.collects || 0)}}</text>
+        <text class="stat-label">收藏</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{formatNumber(post.views || 0)}}</text>
+        <text class="stat-label">浏览</text>
+      </view>
+    </view>
+    
+    <!-- 互动栏 -->
+    <view class="action-bar">
+      <view class="action-item {{post.isLiked ? 'active' : ''}}" bindtap="onLike">
+        <text class="action-icon">{{post.isLiked ? '❤️' : '🤍'}}</text>
+        <text class="action-text">{{post.isLiked ? '已点赞' : '点赞'}}</text>
+      </view>
+      <view class="action-item" bindtap="onComment">
+        <text class="action-icon">💬</text>
+        <text class="action-text">评论</text>
+      </view>
+      <view class="action-item {{post.isCollected ? 'active' : ''}}" bindtap="onCollect">
+        <text class="action-icon">{{post.isCollected ? '⭐' : '☆'}}</text>
+        <text class="action-text">{{post.isCollected ? '已收藏' : '收藏'}}</text>
+      </view>
+      <view class="action-item" bindtap="onShare">
+        <text class="action-icon">↗️</text>
+        <text class="action-text">分享</text>
+      </view>
+    </view>
+
+    <!-- 相关推荐 - 已修复 -->
+    <view class="related-section" wx:if="{{relatedPosts.length > 0}}">
+      <view class="section-header">
+        <text class="section-title">相关推荐</text>
+        <text class="section-more" bindtap="onMoreRelated">查看更多 ›</text>
+      </view>
+      <scroll-view class="related-list" scroll-x show-scrollbar="{{false}}">
+        <view class="related-item" wx:for="{{relatedPosts}}" wx:key="id" bindtap="onRelatedTap" data-id="{{item._id}}">
+          <!-- 已修复：用预处理好的 coverImage -->
+          <image class="related-image" src="{{item.coverImage}}" mode="aspectFill"></image>
+          <view class="related-info">
+            <!-- 已修复：用预处理好的 shortTitle -->
+            <text class="related-title">{{item.shortTitle}}</text>
+            <view class="related-meta">
+              <text>❤️ {{item.likes}}</text>
+              <text>💬 {{item.comments}}</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+
+    <!-- 评论区标题 -->
+    <view class="comment-header">
+      <text class="comment-title">全部评论 ({{post.comments}})</text>
+      <text class="comment-sort" bindtap="toggleCommentSort">
+        {{commentSort === 'hot' ? '🔥 热门' : '⏰ 最新'}}
+      </text>
+    </view>
+
+    <!-- 评论列表 -->
+    <view class="comment-list">
+      <block wx:for="{{comments}}" wx:key="id">
+        <view class="comment-item" id="comment-{{item._id}}">
+          <image 
+            class="comment-avatar" 
+            src="{{item.avatar}}" 
+            mode="aspectFill"
+            bindtap="onCommentAvatarTap"
+            data-user-id="{{item.userId}}"
+          ></image>
+          <view class="comment-content">
+            <view class="comment-info">
+              <text class="comment-name">{{item.userName}}</text>
+              <identity-badge wx:if="{{item.identity}}" identity="{{item.identity}}"></identity-badge>
+              <text class="comment-time">{{formatTime(item.createTime)}}</text>
+            </view>
+            <text class="comment-text">{{item.content}}</text>
+            
+            <!-- 回复列表 -->
+            <view class="reply-list" wx:if="{{item.replies && item.replies.length > 0}}">
+              <block wx:for="{{item.replies}}" wx:key="id">
+                <view class="reply-item">
+                  <text class="reply-name">{{item.userName}}</text>
+                  <text class="reply-text" wx:if="{{item.replyTo}}">回复 {{item.replyTo}}：</text>
+                  <text class="reply-content">{{item.content}}</text>
+                </view>
+              </block>
+              <text class="more-replies" wx:if="{{item.replyCount > 2}}" bindtap="showAllReplies" data-id="{{item._id}}">
+                查看全部{{item.replyCount}}条回复
+              </text>
+            </view>
+            
+            <!-- 评论互动 -->
+            <view class="comment-actions">
+              <view class="action-btn" bindtap="onReply" data-id="{{item._id}}" data-name="{{item.userName}}">
+                <text class="btn-icon">💬</text>
+                <text class="btn-text">回复</text>
+              </view>
+              <view class="action-btn" bindtap="onLikeComment" data-id="{{item._id}}">
+                <text class="btn-icon">{{item.isLiked ? '❤️' : '🤍'}}</text>
+                <text class="btn-text">{{item.likeCount || ''}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 底部输入框 -->
+    <view class="bottom-input" style="padding-bottom: {{safeAreaBottom}}rpx;">
+      <image class="input-avatar" src="{{userAvatar}}" mode="aspectFill"></image>
+      <view class="input-wrapper">
+        <input 
+          class="input-field"
+          placeholder="{{replyPlaceholder || '写评论...'}}"
+          bindinput="onInput"
+          value="{{inputValue}}"
+          confirm-type="send"
+          bindconfirm="onSendComment"
+          maxlength="500"
+        ></input>
+        <text class="word-count">{{inputValue.length}}/500</text>
+      </view>
+      <button class="send-btn" bindtap="onSendComment" disabled="{{!inputValue.trim()}}">发送</button>
+    </view>
+  </view>
+</view>
+</view>

@@ -1,0 +1,24 @@
+/* 个人中心专属样式 */
+page {
+  background: #FAF7F2;
+}
+
+.menu-item:active {
+  background: rgba(244, 164, 96, 0.1);
+}
+
+/* 竹编纹理背景 */
+.card {
+  background-image: repeating-linear-gradient(45deg, rgba(245, 222, 179, 0.2) 0px, rgba(245, 222, 179, 0.2) 4px, transparent 4px, transparent 8px);
+}
+
+/* 头像动画 */
+@keyframes sway {
+  0%, 100% { transform: translateX(-50%) rotate(0deg); }
+  25% { transform: translateX(-50%) rotate(5deg); }
+  75% { transform: translateX(-50%) rotate(-5deg); }
+}
+
+.avatar {
+  animation: sway 3s ease-in-out infinite;
+}

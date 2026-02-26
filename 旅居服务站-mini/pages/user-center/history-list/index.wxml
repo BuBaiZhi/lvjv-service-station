@@ -1,0 +1,73 @@
+<!-- 浏览历史页面 -->
+<view class="page {{theme === 'dark' ? 'dark-mode' : ''}} {{appVersion === 'elderly' ? 'elderly-mode' : ''}}">
+
+  <!-- 标签栏：浏览/收藏 -->
+  <view class="tabs">
+    <view 
+      class="tab-item {{activeTab === 'history' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="history">
+      浏览
+    </view>
+    <view 
+      class="tab-item {{activeTab === 'favorite' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="favorite">
+      收藏
+    </view>
+  </view>
+
+  <!-- 类型筛选 -->
+  <view class="filter-bar">
+    <view class="filter-btn" bindtap="toggleTypeFilter">
+      {{ currentTypeFilter === 'all' ? '全部' :
+         currentTypeFilter === 'house' ? '民宿' :
+         currentTypeFilter === 'activity' ? '活动' :
+         currentTypeFilter === 'skill' ? '技能' :
+         '分享' }}
+      <text class="arrow {{typeFilterShow ? 'up' : ''}}">▼</text>
+    </view>
+  </view>
+
+  <!-- 下拉遮罩 -->
+  <view wx:if="{{typeFilterShow}}" class="mask" bindtap="closeTypeFilter">
+    <view class="dropdown" catchtap="noop">
+      <view 
+        class="dropdown-item {{currentTypeFilter === item.value ? 'active' : ''}}"
+        wx:for="{{typeOptions}}"
+        wx:key="value"
+        data-type="{{item.value}}"
+        bindtap="toggleTypeFilter">
+        {{item.label}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 历史列表 -->
+  <view class="content">
+    <view 
+      class="history-card"
+      wx:for="{{filteredList}}"
+      wx:key="id"
+    >
+      <image class="history-image" src="{{item.image}}" mode="aspectFill"></image>
+      
+      <view class="history-info">
+        <text class="history-title">{{item.title}}</text>
+        <text class="history-type">
+          {{item.type === 'house' ? '民宿' : item.type === 'activity' ? '活动' : item.type === 'skill' ? '技能' : '分享'}}
+        </text>
+        <view class="history-footer">
+          <text class="history-price">¥{{item.price}}</text>
+          <text class="history-date">{{item.date}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty" wx:if="{{filteredList.length === 0}}">
+      <text class="empty-icon">🕐</text>
+      <text class="empty-text">{{activeTab === 'history' ? '暂无浏览记录' : '暂无收藏'}}</text>
+    </view>
+  </view>
+</view>

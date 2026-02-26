@@ -1,0 +1,51 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/square/square",
+    "pages/square-detail/detail",
+    "pages/detail/detail",
+    "pages/listing/listing",
+    "pages/publish/publish", 
+    "pages/publish-house/publish-house",
+    "pages/booking/booking",
+    "pages/message/chat",
+    "pages/square-search/square-search",
+    "pages/admin/index",
+    "pages/admin/users",
+    "pages/admin/audit",
+    "pages/admin/stats",
+    "pages/map-picker/map-picker",
+    "pages/reviews/reviews",
+    "pages/write-review/write-review",
+    "pages/search/search",
+    "pages/settings/settings"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#1e3d4c",
+    "navigationBarTitleText": "游牧鸟",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f5f5"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#1e3d4c",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "民宿",
+        "iconPath": "images/tabbar/home.png",
+        "selectedIconPath": "images/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/square/square",
+        "text": "广场",
+        "iconPath": "images/tabbar/square.png",
+        "selectedIconPath": "images/tabbar/square-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

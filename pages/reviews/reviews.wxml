@@ -1,0 +1,135 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
+<view class="container">
+  <!-- 头部统计 -->
+  <view class="header">
+    <view class="rating-summary">
+      <view class="rating-left">
+        <text class="rating-score">{{ratingSummary.average}}</text>
+        <view class="rating-stars">
+          <block wx:for="{{5}}" wx:key="index">
+            <text class="star">{{index < ratingSummary.average ? '⭐' : '☆'}}</text>
+          </block>
+        </view>
+        <text class="rating-total">{{ratingSummary.total}}条评价</text>
+      </view>
+      <view class="rating-right">
+        <view class="rating-item" wx:for="{{ratingSummary.distribution}}" wx:key="index">
+          <text class="rating-label">{{item.star}}星</text>
+          <view class="rating-bar">
+            <view class="rating-fill" style="width: {{item.percentage}}%"></view>
+          </view>
+          <text class="rating-count">{{item.count}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 筛选标签 -->
+  <scroll-view class="filter-tabs" scroll-x show-scrollbar="{{false}}">
+    <view class="tab-list">
+      <view class="tab-item {{currentFilter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">全部({{ratingSummary.total}})</view>
+      <view class="tab-item {{currentFilter === '5' ? 'active' : ''}}" bindtap="setFilter" data-filter="5">5星({{ratingSummary.starCounts[5]}})</view>
+      <view class="tab-item {{currentFilter === '4' ? 'active' : ''}}" bindtap="setFilter" data-filter="4">4星({{ratingSummary.starCounts[4]}})</view>
+      <view class="tab-item {{currentFilter === '3' ? 'active' : ''}}" bindtap="setFilter" data-filter="3">3星({{ratingSummary.starCounts[3]}})</view>
+      <view class="tab-item {{currentFilter === '2' ? 'active' : ''}}" bindtap="setFilter" data-filter="2">2星({{ratingSummary.starCounts[2]}})</view>
+      <view class="tab-item {{currentFilter === '1' ? 'active' : ''}}" bindtap="setFilter" data-filter="1">1星({{ratingSummary.starCounts[1]}})</view>
+      <view class="tab-item {{currentFilter === 'image' ? 'active' : ''}}" bindtap="setFilter" data-filter="image">有图({{ratingSummary.imageCount}})</view>
+    </view>
+  </scroll-view>
+
+  <!-- 评价列表 -->
+  <scroll-view 
+    class="reviews-list" 
+    scroll-y 
+    enhanced
+    show-scrollbar="{{false}}"
+    refresher-enabled
+    refresher-triggered="{{refreshing}}"
+    bindrefresherrefresh="onRefresh"
+    bindscrolltolower="onLoadMore"
+  >
+    <view class="review-item" wx:for="{{reviews}}" wx:key="id">
+      <!-- 用户信息 -->
+      <view class="user-info">
+        <image class="user-avatar" src="{{item.user.avatar}}" mode="aspectFill" bindtap="onUserTap" data-user-id="{{item.user.id}}"></image>
+        <view class="user-detail">
+          <view class="user-name-line">
+            <text class="user-name">{{item.user.name}}</text>
+            <identity-badge wx:if="{{item.user.identity}}" identity="{{item.user.identity}}"></identity-badge>
+          </view>
+          <view class="review-meta">
+            <view class="stars">
+              <block wx:for="{{5}}" wx:key="index">
+                <text class="star">⭐</text>
+              </block>
+            </view>
+            <text class="review-time">{{item.time}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 评价内容 -->
+      <view class="review-content">
+        <text class="review-text">{{item.content}}</text>
+      </view>
+
+      <!-- 评价图片 -->
+      <view class="review-images" wx:if="{{item.images && item.images.length > 0}}">
+        <image 
+          class="review-image" 
+          wx:for="{{item.images}}" 
+          wx:key="index" 
+          src="{{item}}" 
+          mode="aspectFill"
+          bindtap="onImageTap"
+          data-index="{{index}}"
+          data-images="{{item.images}}"
+        ></image>
+      </view>
+
+      <!-- 房东回复 -->
+      <view class="host-reply" wx:if="{{item.reply}}">
+        <text class="reply-label">房东回复：</text>
+        <text class="reply-text">{{item.reply}}</text>
+        <text class="reply-time">{{item.replyTime}}</text>
+      </view>
+
+      <!-- 互动栏 -->
+      <view class="interaction-bar">
+        <view class="interaction-item" bindtap="onLike" data-id="{{item._id}}">
+          <text class="interaction-icon">{{item.isLiked ? '❤️' : '🤍'}}</text>
+          <text class="interaction-count">{{item.likeCount || ''}}</text>
+        </view>
+        <view class="interaction-item" bindtap="onReply" data-id="{{item._id}}">
+          <text class="interaction-icon">💬</text>
+          <text class="interaction-count">{{item.replyCount || ''}}</text>
+        </view>
+        <view class="interaction-item" bindtap="onShare">
+          <text class="interaction-icon">↗️</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{hasMore}}">
+      <text>加载中...</text>
+    </view>
+    <view class="no-more" wx:elif="{{reviews.length > 0}}">
+      <text>没有更多了</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{reviews.length === 0 && !loading}}">
+      <text class="empty-icon">📝</text>
+      <text class="empty-text">暂无评价</text>
+      <text class="empty-subtext">成为第一个评价的人吧</text>
+    </view>
+  </scroll-view>
+
+  <!-- 写评价按钮 -->
+  <view class="write-review-btn" bindtap="onWriteReview">
+    <text class="btn-icon">✏️</text>
+    <text class="btn-text">写评价</text>
+  </view>
+</view>
+</view>
