@@ -1,0 +1,45 @@
+<view class="section">
+  <view class="tabs row">
+    <view class="tab {{activeType === '找资源' ? 'active' : ''}}" bindtap="onTypeChange" data-key="找资源">
+      <text>找资源</text>
+    </view>
+    <view class="tab {{activeType === '发需求' ? 'active' : ''}}" bindtap="onTypeChange" data-key="发需求">
+      <text>发需求</text>
+    </view>
+    <view class="spacer"></view>
+    <button class="btn-ghost small" bindtap="gotoPublish">发布需求</button>
+  </view>
+
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜索标题/位置/标签" value="{{keyword}}" confirm-type="search" bindinput="onInputKeyword" bindconfirm="onSearchConfirm" />
+  </view>
+
+  <block wx:if="{{filteredList.length}}">
+    <block wx:for="{{filteredList}}" wx:key="id">
+      <view class="card resource-card">
+        <view class="row-between">
+          <text class="title">{{item.title}}</text>
+          <text class="type">{{item.type}}</text>
+        </view>
+        <view class="row-between">
+          <text class="location">{{item.location}}</text>
+          <text class="contact">联系人：{{item.contact}}</text>
+        </view>
+        <view class="desc">
+          <text>{{item.desc}}</text>
+        </view>
+        <view class="row">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+        </view>
+        <view class="actions">
+          <button class="btn-primary" bindtap="contact" data-contact="{{item.contact}}" data-title="{{item.title}}">联系对接</button>
+        </view>
+      </view>
+    </block>
+  </block>
+  <block wx:else>
+    <view class="card empty-card">
+      <text>暂无相关资源</text>
+    </view>
+  </block>
+</view>
