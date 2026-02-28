@@ -62,6 +62,18 @@
         "selectedIconPath": "images/tabbar/square-active.png"
       },
       {
+        "pagePath": "pages/skill/index/index",
+        "text": "技能",
+        "iconPath": "images/tabbar/skill.png",
+        "selectedIconPath": "images/tabbar/skill-active.png"
+      },
+      {
+        "pagePath": "pages/message/index/index",
+        "text": "消息",
+        "iconPath": "images/tabbar/message.png",
+        "selectedIconPath": "images/tabbar/message-active.png"
+      },
+      {
         "pagePath": "pages/user/profile/profile",
         "text": "我的",
         "iconPath": "images/tabbar/user.png",

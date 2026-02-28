@@ -34,13 +34,6 @@ Page({
       theme: app.globalData.theme || 'light',
       elderMode: app.globalData.elderMode || false
     });
-    
-    if (this.getTabBar) {
-      const tb = this.getTabBar();
-      if (tb && tb.setSelectedByRoute) {
-        tb.setSelectedByRoute(getCurrentPages().slice(-1)[0].route);
-      }
-    }
     themeService.applyThemeToPage(this);
   },
   onSearchConfirm(e) {

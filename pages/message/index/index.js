@@ -53,12 +53,6 @@ Page({
       wx.setStorageSync("session:list", this.data.sessionList);
       this.syncUnreadStat();
     }
-    if (this.getTabBar) {
-      const tb = this.getTabBar();
-      if (tb && tb.setSelectedByRoute) {
-        tb.setSelectedByRoute(getCurrentPages().slice(-1)[0].route);
-      }
-    }
     themeService.applyThemeToPage(this);
   },
   syncUnreadStat() {
