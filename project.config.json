@@ -36,10 +36,22 @@
     "minifyWXSS": true,
     "disableUseStrict": false,
     "minifyWXML": true,
-    "showES6CompileOption": false
+    "showES6CompileOption": false,
+    "compileWorklet": false,
+    "localPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true
   },
-  "appid": "wx4078ae7dd46b9ef3",
+  "appid": "wxf39739846f0c3925",
   "projectname": "游牧鸟",
-  "libVersion": "2.14.1",
-  "condition": {}
+  "libVersion": "3.14.1",
+  "condition": {},
+  "compileType": "miniprogram",
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {}
 }

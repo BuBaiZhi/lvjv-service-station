@@ -1,7 +1,13 @@
 const { db, _, getOpenid } = require('../utils/cloud.js')
 
+// 开发模式：使用模拟数据
+const USE_MOCK = true
+
 // 获取房源评价
 function getReviewsByHouse(houseId) {
+  if (USE_MOCK) {
+    return Promise.resolve([])
+  }
   return db.collection('reviews')
     .where({ houseId: houseId })
     .orderBy('createTime', 'desc')
@@ -9,12 +15,15 @@ function getReviewsByHouse(houseId) {
     .then(res => res.data)
 }
 
-// 添加评价（已修复）
+// 添加评价
 function addReview(reviewData) {
-  const openid = getOpenid()  // 这行可以留着，虽然没用到
+  if (USE_MOCK) {
+    // 模拟添加成功，返回模拟ID
+    return Promise.resolve('review_' + Date.now())
+  }
+  const openid = getOpenid()
   const data = {
     ...reviewData,
-    // _openid: openid,  // ✅ 已删除！系统会自动添加
     createTime: db.serverDate(),
     likeCount: 0,
     isLiked: false
@@ -24,6 +33,20 @@ function addReview(reviewData) {
 
 // 获取评价统计
 function getReviewStats(houseId) {
+  if (USE_MOCK) {
+    return Promise.resolve({
+      average: 4.8,
+      total: 128,
+      imageCount: 45,
+      distribution: [
+        { star: 5, count: 89, percentage: 69.5 },
+        { star: 4, count: 26, percentage: 20.3 },
+        { star: 3, count: 10, percentage: 7.8 },
+        { star: 2, count: 2, percentage: 1.6 },
+        { star: 1, count: 1, percentage: 0.8 }
+      ]
+    })
+  }
   return db.collection('reviews')
     .where({ houseId: houseId })
     .get()

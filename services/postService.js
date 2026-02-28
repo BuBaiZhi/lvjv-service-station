@@ -1,7 +1,59 @@
 const { db, _, getOpenid } = require('../utils/cloud.js')
 
+// 开发模式：使用模拟数据
+const USE_MOCK = true
+
+// 模拟帖子数据
+const mockPosts = [
+  {
+    _id: 'post_1',
+    title: '周末徒步活动招募',
+    content: '本周六组织徒步活动，有兴趣的朋友可以一起参加！',
+    type: '活动',
+    author: { id: 'user_1', name: '户外达人', avatar: 'https://picsum.photos/100/100?random=20' },
+    images: ['https://picsum.photos/400/300?random=30'],
+    likes: 45,
+    comments: 12,
+    views: 234,
+    collects: 8,
+    createTime: '2026-02-25',
+    tags: ['徒步', '户外']
+  },
+  {
+    _id: 'post_2',
+    title: '寻找编程搭子',
+    content: '在大理旅居，想找个一起写代码的朋友，可以一起办公、交流技术。',
+    type: '找搭子',
+    author: { id: 'user_2', name: '程序员小王', avatar: 'https://picsum.photos/100/100?random=21' },
+    images: [],
+    likes: 23,
+    comments: 5,
+    views: 156,
+    collects: 3,
+    createTime: '2026-02-24',
+    tags: ['编程', '搭子']
+  },
+  {
+    _id: 'post_3',
+    title: '吉他教学',
+    content: '提供吉他入门教学服务，一对一指导，每小时80元。',
+    type: '技能变现',
+    author: { id: 'user_3', name: '音乐人阿杰', avatar: 'https://picsum.photos/100/100?random=22' },
+    images: ['https://picsum.photos/400/300?random=31'],
+    likes: 67,
+    comments: 18,
+    views: 312,
+    collects: 15,
+    createTime: '2026-02-23',
+    tags: ['音乐', '教学']
+  }
+]
+
 // 获取帖子列表
 function getPosts() {
+  if (USE_MOCK) {
+    return Promise.resolve(mockPosts)
+  }
   return db.collection('posts')
     .orderBy('createTime', 'desc')
     .get()
@@ -10,6 +62,14 @@ function getPosts() {
 
 // 获取单个帖子详情
 function getPostById(postId) {
+  if (USE_MOCK) {
+    const post = mockPosts.find(p => p._id === postId)
+    if (post) {
+      return Promise.resolve(post)
+    }
+    // 如果找不到，返回第一个模拟数据
+    return Promise.resolve(mockPosts[0])
+  }
   return db.collection('posts').doc(postId).get().then(res => res.data)
 }
 
@@ -24,6 +84,13 @@ function increaseViews(postId) {
 
 // 点赞帖子
 function likePost(postId, isLiked) {
+  if (USE_MOCK) {
+    const post = mockPosts.find(p => p._id === postId)
+    if (post) {
+      post.likes = isLiked ? (post.likes || 0) + 1 : Math.max(0, (post.likes || 1) - 1)
+    }
+    return Promise.resolve({ success: true })
+  }
   return db.collection('posts').doc(postId).update({
     data: {
       likes: _.inc(isLiked ? 1 : -1)
@@ -33,6 +100,13 @@ function likePost(postId, isLiked) {
 
 // 收藏帖子
 function collectPost(postId, isCollected) {
+  if (USE_MOCK) {
+    const post = mockPosts.find(p => p._id === postId)
+    if (post) {
+      post.collects = isCollected ? (post.collects || 0) + 1 : Math.max(0, (post.collects || 1) - 1)
+    }
+    return Promise.resolve({ success: true })
+  }
   return db.collection('posts').doc(postId).update({
     data: {
       collects: _.inc(isCollected ? 1 : -1)

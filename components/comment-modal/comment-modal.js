@@ -18,12 +18,15 @@ Component({
     comments: [],
     inputValue: '',
     replyTo: null,
+    replyToName: '',
     replyPlaceholder: ''
   },
 
-  lifetimes: {
-    attached() {
-      this.loadComments()
+  observers: {
+    'visible': function(visible) {
+      if (visible) {
+        this.loadComments()
+      }
     }
   },
 
@@ -31,7 +34,7 @@ Component({
     loadComments() {
       const mockComments = [
         {
-          id: 'c1',
+          _id: 'c1',
           userId: 'user002',
           userName: 'VK游民',
           avatar: 'https://picsum.photos/100/100?random=2',
@@ -68,19 +71,21 @@ Component({
     onLikeComment(e) {
       const commentId = e.currentTarget.dataset.id
       const comments = this.data.comments.map(item => {
-        if (item.id === commentId) {
+        if (item._id === commentId) {
           item.isLiked = !item.isLiked
           item.likeCount = item.isLiked ? item.likeCount + 1 : item.likeCount - 1
         }
         return item
       })
       this.setData({ comments })
+      wx.showToast({ title: item.isLiked ? '点赞成功' : '取消点赞', icon: 'success' })
     },
 
     onReply(e) {
       const { id, name } = e.currentTarget.dataset
       this.setData({
         replyTo: id,
+        replyToName: name,
         replyPlaceholder: `回复 ${name}:`
       })
     },
@@ -90,9 +95,62 @@ Component({
     },
 
     onSend() {
-      if (!this.data.inputValue.trim()) return
-      wx.showToast({ title: '评论已发送', icon: 'success' })
-      this.setData({ inputValue: '', replyTo: null, replyPlaceholder: '' })
+      if (!this.data.inputValue.trim()) {
+        wx.showToast({ title: '请输入评论内容', icon: 'none' })
+        return
+      }
+
+      // 构建新评论
+      const newComment = {
+        _id: 'comment_' + Date.now(),
+        userId: 'currentUser',
+        userName: '当前用户',
+        avatar: 'https://picsum.photos/100/100?random=999',
+        identity: '村民',
+        content: this.data.inputValue,
+        time: '刚刚',
+        likeCount: 0,
+        isLiked: false,
+        replies: []
+      }
+
+      // 如果是回复
+      if (this.data.replyTo) {
+        const comments = this.data.comments.map(item => {
+          if (item._id === this.data.replyTo) {
+            item.replies = item.replies || []
+            item.replies.push({
+              id: 'reply_' + Date.now(),
+              userId: 'currentUser',
+              userName: '当前用户',
+              avatar: 'https://picsum.photos/100/100?random=999',
+              replyTo: this.data.replyToName,
+              content: this.data.inputValue,
+              time: '刚刚'
+            })
+          }
+          return item
+        })
+        this.setData({ comments })
+      } else {
+        // 新评论
+        this.setData({
+          comments: [newComment, ...this.data.comments]
+        })
+      }
+
+      // 清空输入
+      this.setData({ 
+        inputValue: '', 
+        replyTo: null, 
+        replyToName: '', 
+        replyPlaceholder: '' 
+      })
+
+      wx.showToast({ title: '评论成功', icon: 'success' })
+      
+      // 通知父组件更新评论数
+      this.triggerEvent('commentAdded')
     },
 
     stopPropagation() {}

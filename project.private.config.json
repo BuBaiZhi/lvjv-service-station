@@ -1,6 +1,6 @@
 {
   "libVersion": "3.14.1",
-  "projectname": "miniprogram",
+  "projectname": "%E6%97%85%E5%B1%85%E6%9C%8D%E5%8A%A1%E7%AB%99",
   "setting": {
     "urlCheck": true,
     "coverView": true,
@@ -16,6 +16,8 @@
     "showES6CompileOption": false,
     "checkInvalidKey": true,
     "ignoreDevUnusedFiles": true,
-    "bigPackageSizeSupport": false
-  }
+    "bigPackageSizeSupport": false,
+    "useIsolateContext": true
+  },
+  "condition": {}
 }
