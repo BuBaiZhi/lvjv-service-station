@@ -1,0 +1,14 @@
+<view class="section">
+  <block wx:for="{{videos}}" wx:key="id">
+    <view class="card video-card" bindtap="gotoDetail" data-id="{{item.id}}">
+      <view class="row">
+        <image class="thumb" src="{{item.cover}}" mode="aspectFill" />
+        <view class="info">
+          <text class="title">{{item.title}}</text>
+          <text class="publisher">{{item.publisher}}</text>
+          <text class="meta">{{item.level}} · {{item.duration}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>
