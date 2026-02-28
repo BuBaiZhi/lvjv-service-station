@@ -1,0 +1,68 @@
+<view class="section">
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜索任务/视频/资源" confirm-type="search" bindconfirm="onSearchConfirm" />
+  </view>
+
+  <swiper class="banner" autoplay circular interval="4000">
+    <block wx:for="{{banners}}" wx:key="id">
+      <swiper-item>
+        <image class="banner-image" src="{{item.image}}" mode="aspectFill" />
+      </swiper-item>
+    </block>
+  </swiper>
+
+  <view class="entry-row">
+    <view class="entry" bindtap="gotoTaskList">
+      <text class="entry-title">副业变现</text>
+      <text class="entry-desc">接任务赚佣金</text>
+    </view>
+    <view class="entry" bindtap="gotoVideoList">
+      <text class="entry-title">培训视频</text>
+      <text class="entry-desc">边学边练</text>
+    </view>
+    <view class="entry" bindtap="gotoResourceList">
+      <text class="entry-title">资源对接</text>
+      <text class="entry-desc">找资源发需求</text>
+    </view>
+  </view>
+
+  <view class="section-header row-between">
+    <text class="section-title">热门副业任务</text>
+    <text class="more" bindtap="gotoTaskList">更多</text>
+  </view>
+  <block wx:for="{{hotTasks}}" wx:key="id">
+    <view class="card task-card" bindtap="gotoTaskDetail" data-id="{{item.id}}">
+      <view class="row-between">
+        <text class="title">{{item.title}}</text>
+        <text class="price">¥{{item.reward}}</text>
+      </view>
+      <view class="row-between bottom">
+        <view class="row">
+          <text class="tag">{{item.type}}</text>
+          <text class="tag tag-alt">{{item.mode}}</text>
+        </view>
+        <text class="location">{{item.location}}</text>
+      </view>
+      <view class="row-between extra">
+        <text class="publisher">{{item.publisher}}</text>
+      </view>
+    </view>
+  </block>
+
+  <view class="section-header row-between">
+    <text class="section-title">最新培训视频</text>
+    <text class="more" bindtap="gotoVideoList">更多</text>
+  </view>
+  <block wx:for="{{latestVideos}}" wx:key="id">
+    <view class="card video-card" bindtap="gotoVideoDetail" data-id="{{item.id}}">
+      <view class="row">
+        <image class="thumb" src="{{item.cover}}" mode="aspectFill" />
+        <view class="info">
+          <text class="title">{{item.title}}</text>
+          <text class="publisher">{{item.publisher}}</text>
+          <text class="meta">{{item.level}} · {{item.duration}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

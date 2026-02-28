@@ -1,0 +1,86 @@
+{
+  "pages": [
+    "pages/home/index/index",
+    "pages/house/detail/detail",
+    "pages/house/publish/publish",
+    "pages/house/booking/booking",
+    "pages/house/listing/listing",
+    "pages/house/map-picker/map-picker",
+    "pages/user/profile/profile",
+    "pages/user/edit-profile/index",
+    "pages/user/orders/index",
+    "pages/user/publish-list/index",
+    "pages/user/history/index",
+    "pages/user/support/index",
+    "pages/user/settings/index",
+    "pages/user/message/chat",
+    "pages/message/index/index",
+    "pages/message/chat/chat",
+    "pages/skill/index/index",
+    "pages/skill/task-list/task-list",
+    "pages/skill/task-detail/task-detail",
+    "pages/skill/video-list/video-list",
+    "pages/skill/video-detail/video-detail",
+    "pages/skill/resource-list/resource-list",
+    "pages/skill/resource-publish/resource-publish",
+    "pages/auth/login/index",
+    "pages/auth/identity/index",
+    "pages/square/index/index",
+    "pages/square/detail/detail",
+    "pages/square/search/search",
+    "pages/square/publish/publish",
+    "pages/square/reviews/reviews",
+    "pages/square/write-review/write-review",
+    "pages/admin/index",
+    "pages/admin/users",
+    "pages/admin/audit",
+    "pages/admin/stats",
+    "pages/common/report-success/report-success"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#4CAF50",
+    "navigationBarTitleText": "游牧鸟",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F5F5F5"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#4CAF50",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/index/index",
+        "text": "民宿",
+        "iconPath": "images/tabbar/home.png",
+        "selectedIconPath": "images/tabbar/home-active.png"
+      },
+      {
+        "pagePath": "pages/square/index/index",
+        "text": "广场",
+        "iconPath": "images/tabbar/square.png",
+        "selectedIconPath": "images/tabbar/square-active.png"
+      },
+      {
+        "pagePath": "pages/skill/index/index",
+        "text": "技能",
+        "iconPath": "images/tabbar/skill.png",
+        "selectedIconPath": "images/tabbar/skill-active.png"
+      },
+      {
+        "pagePath": "pages/message/index/index",
+        "text": "消息",
+        "iconPath": "images/tabbar/message.png",
+        "selectedIconPath": "images/tabbar/message-active.png"
+      },
+      {
+        "pagePath": "pages/user/profile/profile",
+        "text": "我的",
+        "iconPath": "images/tabbar/user.png",
+        "selectedIconPath": "images/tabbar/user-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,67 @@
+<!-- 身份选择页 -->
+<view class="page {{theme === 'dark' ? 'dark-mode' : ''}} {{appVersion === 'elderly' ? 'elderly-mode' : ''}}">
+  <!-- 顶部返回按钮 -->
+  <view class="header">
+    <button class="back-btn" bindtap="goBack">
+      <text>← 返回</text>
+    </button>
+    <text class="header-title">选择身份</text>
+    <view class="header-placeholder"></view>
+  </view>
+
+  <!-- 步骤指示器 -->
+  <view class="progress">
+    <text class="progress-text">第 2 步，共 2 步</text>
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: 50%;"></view>
+    </view>
+  </view>
+
+  <!-- 内容区 -->
+  <view class="content">
+    <text class="content-title">您的身份是？</text>
+    <text class="content-subtitle">选择您的身份以获得更好的体验</text>
+
+    <!-- 身份选项 -->
+    <view class="identity-options">
+      <!-- 村民 -->
+      <view 
+        class="identity-card {{selectedIdentity === 'villager' ? 'active' : ''}}"
+        bindtap="selectIdentity"
+        data-identity="villager"
+      >
+        <view class="card-icon">🏘️</view>
+        <text class="card-title">村民</text>
+        <text class="card-description">可以发布民宿、技能、活动等</text>
+        <view class="card-checkbox">
+          <view class="checkbox {{selectedIdentity === 'villager' ? 'checked' : ''}}"></view>
+        </view>
+      </view>
+
+      <!-- 游客 -->
+      <view 
+        class="identity-card {{selectedIdentity === 'visitor' ? 'active' : ''}}"
+        bindtap="selectIdentity"
+        data-identity="visitor"
+      >
+        <view class="card-icon">✈️</view>
+        <text class="card-title">游客</text>
+        <text class="card-description">可以浏览、预订、咨询等</text>
+        <view class="card-checkbox">
+          <view class="checkbox {{selectedIdentity === 'visitor' ? 'checked' : ''}}"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 确认按钮 -->
+  <view class="footer">
+    <button 
+      class="confirm-btn {{selectedIdentity ? '' : 'disabled'}}"
+      bindtap="confirmIdentity"
+      disabled="{{!selectedIdentity || isLoading}}"
+    >
+      {{isLoading ? '确认中...' : '确认'}}
+    </button>
+  </view>
+</view>

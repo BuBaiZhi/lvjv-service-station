@@ -1,0 +1,21 @@
+<view class="section">
+  <block wx:for="{{sessionList}}" wx:key="id">
+    <view class="card session-card" bindtap="gotoChat" data-id="{{item.id}}">
+      <view class="row-between">
+        <view class="row">
+          <image class="avatar" src="{{item.avatar}}" mode="aspectFill" />
+          <view class="info">
+            <text class="nickname">{{item.nickname}}</text>
+            <text class="last">{{item.lastMessage}}</text>
+          </view>
+        </view>
+        <view class="meta">
+          <text class="time">{{item.time}}</text>
+          <view class="badge" wx:if="{{item.unread > 0}}">
+            <text>{{item.unread}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

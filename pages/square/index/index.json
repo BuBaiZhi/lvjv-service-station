@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "post-card": "/components/post-card/post-card",
+    "comment-modal": "/components/comment-modal/comment-modal"
+  },
+  "navigationBarTitleText": "广场"
+}

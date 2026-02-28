@@ -1,0 +1,97 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
+<view class="container">
+  <!-- 发布表单 -->
+  <view class="form-container">
+    <!-- 分类选择 -->
+    <view class="form-item">
+      <text class="form-label">分类</text>
+      <view class="category-selector">
+        <view 
+          class="category-option {{currentCategory === item.value ? 'active' : ''}}"
+          wx:for="{{categories}}"
+          wx:key="value"
+          bindtap="selectCategory"
+          data-value="{{item.value}}"
+        >
+          {{item.name}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 标题（可选） -->
+    <view class="form-item">
+      <text class="form-label">标题</text>
+      <input 
+        class="form-input"
+        placeholder="请输入标题（选填）"
+        bindinput="onTitleInput"
+        value="{{title}}"
+      ></input>
+    </view>
+
+    <!-- 正文 -->
+    <view class="form-item">
+      <text class="form-label">内容 <text class="required">*</text></text>
+      <textarea 
+        class="form-textarea"
+        placeholder="分享你的想法、活动、找搭子..."
+        bindinput="onContentInput"
+        value="{{content}}"
+        maxlength="1000"
+      ></textarea>
+      <text class="word-count">{{content.length}}/1000</text>
+    </view>
+
+    <!-- 图片上传 -->
+    <view class="form-item">
+      <text class="form-label">图片</text>
+      <view class="image-uploader">
+        <view class="image-list">
+          <block wx:for="{{images}}" wx:key="index">
+            <view class="image-item">
+              <image class="uploaded-image" src="{{item}}" mode="aspectFill"></image>
+              <text class="remove-image" bindtap="removeImage" data-index="{{index}}">✕</text>
+            </view>
+          </block>
+          <view class="upload-btn" wx:if="{{images.length < 9}}" bindtap="chooseImage">
+            <text class="upload-icon">+</text>
+            <text class="upload-text">上传图片</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 标签 -->
+    <view class="form-item">
+      <text class="form-label">标签</text>
+      <view class="tags-input">
+        <input 
+          class="tag-input"
+          placeholder="输入标签后按空格添加"
+          bindinput="onTagInput"
+          bindconfirm="addTag"
+          value="{{tagInput}}"
+        ></input>
+        <view class="tag-list">
+          <view class="tag-item" wx:for="{{tags}}" wx:key="index">
+            <text class="tag-text">#{{item}}</text>
+            <text class="remove-tag" bindtap="removeTag" data-index="{{index}}">✕</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 定位（可选） -->
+    <view class="form-item">
+      <text class="form-label">定位</text>
+      <view class="location-selector" bindtap="chooseLocation">
+        <text class="location-icon">📍</text>
+        <text class="location-text">{{location || '选择位置'}}</text>
+      </view>
+    </view>
+
+    <!-- 发布按钮 -->
+    <button class="publish-btn" bindtap="onPublish" disabled="{{!canPublish}}">{{isEdit ? '保存修改' : '发布'}}</button>
+  </view>
+</view>
+</view>

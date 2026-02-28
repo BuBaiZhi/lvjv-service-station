@@ -1,0 +1,92 @@
+<view class="container {{theme === 'dark' ? 'dark' : ''}} {{elderMode ? 'elder-mode' : ''}}" data-theme="{{theme}}" data-elder="{{elderMode ? 'true' : 'false'}}">
+  <!-- 背景装饰 -->
+  <view class="bg-decorations">
+    <image class="bg-mountain" src="/images/backgrounds/山脉.jpg" mode="aspectFill"></image>
+  </view>
+  
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-title">个人中心</view>
+    <view class="nav-icon-btn" bindtap="goToSettings">
+      <image class="nav-icon-img" src="/images/icons/search.png" mode="aspectFit"></image>
+    </view>
+  </view>
+
+  <!-- 用户信息卡片 -->
+  <view class="card user-card">
+    <view class="user-avatar-wrapper">
+      <image src="{{userInfo.avatar || 'https://picsum.photos/120/120?random=1'}}" class="user-avatar" mode="aspectFill"></image>
+      <view class="user-status-dot"></view>
+    </view>
+    <view class="user-info-text">
+      <text class="user-name">{{userInfo.name || '旅行者'}}</text>
+      <identity-badge identity="{{userInfo.role || '村民'}}"></identity-badge>
+    </view>
+  </view>
+
+  <!-- 统计数据 -->
+  <view class="card stats-card">
+    <view class="stats-item">
+      <text class="stats-number">{{userInfo.postCount || 12}}</text>
+      <text class="stats-label">发布</text>
+    </view>
+    <view class="stats-divider"></view>
+    <view class="stats-item">
+      <text class="stats-number">{{userInfo.followerCount || 48}}</text>
+      <text class="stats-label">粉丝</text>
+    </view>
+    <view class="stats-divider"></view>
+    <view class="stats-item">
+      <text class="stats-number">{{userInfo.followingCount || 23}}</text>
+      <text class="stats-label">关注</text>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="card menu-card">
+    <view class="menu-item" bindtap="goToMyPosts">
+      <text class="menu-icon">📝</text>
+      <text class="menu-text">我的发布</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" bindtap="goToOrders">
+      <text class="menu-icon">💰</text>
+      <text class="menu-text">我的交易</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" bindtap="goToDrafts">
+      <text class="menu-icon">📦</text>
+      <text class="menu-text">草稿箱</text>
+      <view wx:if="{{draftCount > 0}}" class="menu-badge">{{draftCount}}</view>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" bindtap="goToHistory">
+      <text class="menu-icon">❤️</text>
+      <text class="menu-text">互动记录</text>
+      <text class="menu-desc">点赞·收藏·评论·浏览</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item" bindtap="goToSupport">
+      <text class="menu-icon">🛎️</text>
+      <text class="menu-text">服务与支持</text>
+      <text class="menu-arrow">›</text>
+    </view>
+
+    <view class="menu-item menu-item-last" bindtap="goToSettings">
+      <text class="menu-icon">⚙️</text>
+      <text class="menu-text">设置</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <view class="card logout-card">
+    <view class="logout-btn" bindtap="onLogout">
+      <text>退出登录</text>
+    </view>
+  </view>
+</view>
