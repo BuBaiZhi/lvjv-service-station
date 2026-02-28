@@ -1,0 +1,40 @@
+<view class="section">
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜索任务" value="{{keyword}}" confirm-type="search" bindinput="onInputKeyword" bindconfirm="onSearchConfirm" />
+  </view>
+
+  <view class="type-tabs">
+    <block wx:for="{{typeTabs}}" wx:key="key">
+      <view class="type-item {{activeType === item.key ? 'active' : ''}}" bindtap="onTypeChange" data-key="{{item.key}}">
+        <text>{{item.label}}</text>
+      </view>
+    </block>
+  </view>
+
+  <block wx:if="{{filteredTasks.length}}">
+    <block wx:for="{{filteredTasks}}" wx:key="id">
+      <view class="card task-card" bindtap="gotoDetail" data-id="{{item.id}}">
+        <view class="row-between">
+          <text class="title">{{item.title}}</text>
+          <text class="price">¥{{item.reward}}</text>
+        </view>
+        <view class="row-between bottom">
+          <view class="row">
+            <text class="tag">{{item.type}}</text>
+            <text class="tag tag-alt">{{item.mode}}</text>
+          </view>
+          <text class="location">{{item.location}}</text>
+        </view>
+        <view class="row-between extra">
+          <text class="publisher">{{item.publisher}}</text>
+        </view>
+      </view>
+    </block>
+  </block>
+
+  <block wx:else>
+    <view class="card empty-card">
+      <text>暂无相关任务</text>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,67 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input 
+        class="search-input" 
+        placeholder="搜索用户"
+        bindinput="onSearch"
+        value="{{keyword}}"
+      ></input>
+    </view>
+    <view class="filter-tabs">
+      <view class="filter-tab {{currentFilter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">全部</view>
+      <view class="filter-tab {{currentFilter === 'villager' ? 'active' : ''}}" bindtap="setFilter" data-filter="villager">村民</view>
+      <view class="filter-tab {{currentFilter === 'nomad' ? 'active' : ''}}" bindtap="setFilter" data-filter="nomad">数字游民</view>
+      <view class="filter-tab {{currentFilter === 'admin' ? 'active' : ''}}" bindtap="setFilter" data-filter="admin">管理者</view>
+    </view>
+  </view>
+
+  <!-- 用户列表 -->
+  <scroll-view class="user-list" scroll-y enhanced show-scrollbar="{{false}}" refresher-enabled refresher-triggered="{{refreshing}}" bindrefresherrefresh="onRefresh">
+    <!-- 修复了这一行：把 {{item._id}}="{{item.id}}" 改成 data-id="{{item.id}}" -->
+    <view class="user-item" wx:for="{{users}}" wx:key="id" bindtap="goToUserDetail" data-id="{{item.id}}">
+      <image class="user-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+      <view class="user-info">
+        <view class="user-header">
+          <view class="user-name-line">
+            <text class="user-name">{{item.name}}</text>
+            <text class="user-role {{item.role === '数字游民' ? 'nomad' : item.role === '管理者' ? 'admin' : 'villager'}}">{{item.role}}</text>
+          </view>
+          <text class="user-status {{item.status === '正常' ? 'active' : 'disabled'}}">{{item.status}}</text>
+        </view>
+        <text class="user-meta">ID: {{item.id}} · 注册于 {{item.registerTime}}</text>
+        <text class="user-stats">帖子 {{item.postCount}} · 房源 {{item.houseCount}} · 粉丝 {{item.fansCount}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 操作弹窗 -->
+  <view class="action-modal" wx:if="{{showActionModal}}">
+    <view class="modal-mask" bindtap="closeActionModal"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">用户操作</text>
+        <text class="close-btn" bindtap="closeActionModal">✕</text>
+      </view>
+      <view class="modal-body">
+        <view class="action-list">
+          <view class="action-list-item" bindtap="changeRole">
+            <text class="action-icon">🔄</text>
+            <text class="action-text">修改角色</text>
+          </view>
+          <view class="action-list-item" bindtap="toggleStatus">
+            <text class="action-icon">{{currentUser.status === '正常' ? '🔒' : '🔓'}}</text>
+            <text class="action-text">{{currentUser.status === '正常' ? '禁用账号' : '启用账号'}}</text>
+          </view>
+          <view class="action-list-item delete" bindtap="deleteUser">
+            <text class="action-icon">🗑️</text>
+            <text class="action-text">删除用户</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view></view>

@@ -6,6 +6,10 @@
 **状态**：初版（供团队协作参考）
 
 ---
+APPID：wxf39739846f0c3925
+secretID：95e8bdd8c70341f9eb3e0b81886e33eb
+
+wx.clearStorageSync()
 
 ## 一、项目模块总览
 

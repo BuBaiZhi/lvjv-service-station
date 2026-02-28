@@ -1,0 +1,163 @@
+<view class="container {{theme === 'dark' ? 'dark' : ''}} {{elderMode ? 'elder-mode' : ''}}" data-theme="{{theme}}" data-elder="{{elderMode ? 'true' : 'false'}}">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-title">邻里广场</view>
+    <view class="nav-actions">
+      <view class="nav-icon-btn" bindtap="onSearch">
+        <image class="nav-icon-img" src="/images/icons/search.png" mode="aspectFit"></image>
+      </view>
+      <view class="nav-icon-btn" bindtap="onPublish">
+        <image class="nav-icon-img" src="/images/icons/增加添加加号.png" mode="aspectFit"></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- 分类Tab -->
+  <scroll-view scroll-x show-scrollbar="{{false}}" class="tab-scroll">
+    <view class="tab-list">
+      <view wx:for="{{categories}}" wx:key="index" 
+        class="tab-item {{currentTab === item.id ? 'active' : ''}}"
+        bindtap="switchTab" data-tab="{{item.id}}">
+        {{item.name}}
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <view class="filter-tag" bindtap="showRegionPicker">
+      <text>{{currentRegion || '全部地区'}}</text>
+      <text class="filter-arrow">▼</text>
+    </view>
+    <view class="filter-tag" bindtap="showMoreFilter">
+      <text>筛选</text>
+      <text class="filter-icon">⚙️</text>
+    </view>
+  </view>
+
+  <!-- 帖子列表 -->
+  <scroll-view scroll-y class="post-scroll" refresher-enabled refresher-triggered="{{refreshing}}" bindrefresherrefresh="onRefresh" bindscrolltolower="onLoadMore">
+    <view wx:for="{{posts}}" wx:key="id" class="card post-card fade-in" bindtap="onPostTap" data-id="{{item._id}}">
+      <!-- 作者信息 -->
+      <view class="post-author" catchtap="onAuthorTap" data-author-id="{{item.author.id}}">
+        <image src="{{item.author.avatar}}" class="author-avatar"></image>
+        <view class="author-info">
+          <view class="author-name-row">
+            <text class="author-name">{{item.author.name}}</text>
+            <identity-badge identity="{{item.author.identity}}"></identity-badge>
+          </view>
+          <text class="post-meta">{{item.time}} · {{item.location || '未知'}}</text>
+        </view>
+      </view>
+
+      <!-- 帖子类型 -->
+      <text class="tag" wx:if="{{item.type}}"># {{item.type}}</text>
+
+      <!-- 标题 -->
+      <text wx:if="{{item.title}}" class="post-title">{{item.title}}</text>
+
+      <!-- 内容 -->
+      <text class="post-content">{{item.content}}</text>
+
+      <!-- 图片 -->
+      <view wx:if="{{item.images && item.images.length > 0}}" class="post-images">
+        <image wx:for="{{item.images}}" wx:key="index" wx:if="{{index < 3}}" src="{{item}}" class="post-image" mode="aspectFill"></image>
+      </view>
+
+      <!-- 标签 -->
+      <view wx:if="{{item.tags && item.tags.length > 0}}" class="post-tags">
+        <text class="tag" wx:for="{{item.tags}}" wx:key="index">#{{item}}</text>
+      </view>
+
+      <!-- 互动栏 -->
+      <view class="post-actions">
+        <view class="action-item" catchtap="onPostLike" data-post-id="{{item._id}}" data-is-liked="{{item.isLiked}}" data-likes="{{item.likes}}">
+          <text class="action-icon">{{item.isLiked ? '❤️' : '🤍'}}</text>
+          <text class="action-count">{{item.likes}}</text>
+        </view>
+        <view class="action-item" catchtap="onPostComment" data-post-id="{{item._id}}">
+          <text class="action-icon">💬</text>
+          <text class="action-count">{{item.comments}}</text>
+        </view>
+        <view class="action-item" catchtap="onPostCollect" data-post-id="{{item._id}}" data-is-collected="{{item.isCollected}}">
+          <text class="action-icon">{{item.isCollected ? '⭐' : '☆'}}</text>
+        </view>
+        <view class="action-item" catchtap="onShare">
+          <text class="action-icon">↗️</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 加载状态 -->
+    <view class="loading-status">
+      <text wx:if="{{hasMore}}">加载中...</text>
+      <text wx:else>没有更多了</text>
+    </view>
+  </scroll-view>
+
+  <!-- 地区选择弹窗 -->
+  <view class="filter-modal" wx:if="{{showRegionModal}}">
+    <view class="modal-mask" bindtap="hideRegionPicker"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">选择地区</text>
+        <text class="close-btn" bindtap="hideRegionPicker">✕</text>
+      </view>
+      <view class="modal-body">
+        <view class="region-list">
+          <view class="region-item {{currentRegion === item ? 'active' : ''}}" wx:for="{{regions}}" wx:key="index" bindtap="selectRegion" data-region="{{item}}">
+            <text class="region-name">{{item}}</text>
+            <text class="region-check" wx:if="{{currentRegion === item}}">✓</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 更多筛选弹窗 -->
+  <view class="filter-modal" wx:if="{{showMoreFilterModal}}">
+    <view class="modal-mask" bindtap="hideMoreFilter"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">筛选</text>
+        <text class="close-btn" bindtap="hideMoreFilter">✕</text>
+      </view>
+      <view class="modal-body">
+        <!-- 帖子类型 -->
+        <view class="filter-section">
+          <text class="section-title">帖子类型</text>
+          <view class="filter-options">
+            <view class="option-item {{filterType === 'all' ? 'active' : ''}}" bindtap="setFilterType" data-type="all">全部</view>
+            <view class="option-item {{filterType === '活动' ? 'active' : ''}}" bindtap="setFilterType" data-type="活动">活动信息</view>
+            <view class="option-item {{filterType === '找搭子' ? 'active' : ''}}" bindtap="setFilterType" data-type="找搭子">找搭子</view>
+            <view class="option-item {{filterType === '技能变现' ? 'active' : ''}}" bindtap="setFilterType" data-type="技能变现">技能变现</view>
+            <view class="option-item {{filterType === '讨论' ? 'active' : ''}}" bindtap="setFilterType" data-type="讨论">社区讨论</view>
+          </view>
+        </view>
+        <!-- 发布时间 -->
+        <view class="filter-section">
+          <text class="section-title">发布时间</text>
+          <view class="filter-options">
+            <view class="option-item {{filterTime === 'all' ? 'active' : ''}}" bindtap="setFilterTime" data-time="all">全部</view>
+            <view class="option-item {{filterTime === 'today' ? 'active' : ''}}" bindtap="setFilterTime" data-time="today">今天</view>
+            <view class="option-item {{filterTime === 'week' ? 'active' : ''}}" bindtap="setFilterTime" data-time="week">本周</view>
+            <view class="option-item {{filterTime === 'month' ? 'active' : ''}}" bindtap="setFilterTime" data-time="month">本月</view>
+          </view>
+        </view>
+        <!-- 图片筛选 -->
+        <view class="filter-section">
+          <text class="section-title">图片</text>
+          <view class="filter-options">
+            <view class="option-item {{filterImage === 'all' ? 'active' : ''}}" bindtap="setFilterImage" data-image="all">全部</view>
+            <view class="option-item {{filterImage === 'has' ? 'active' : ''}}" bindtap="setFilterImage" data-image="has">有图</view>
+            <view class="option-item {{filterImage === 'no' ? 'active' : ''}}" bindtap="setFilterImage" data-image="no">无图</view>
+          </view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="reset-btn" bindtap="resetFilter">重置</button>
+        <button class="confirm-btn" bindtap="applyFilter">确定</button>
+      </view>
+    </view>
+  </view>
+</view>
