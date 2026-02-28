@@ -1,0 +1,49 @@
+.session-card {
+  margin-top: 16rpx;
+}
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 16rpx;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.nickname {
+  font-size: 30rpx;
+}
+
+.last {
+  margin-top: 4rpx;
+  font-size: 24rpx;
+  color: #888888;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.time {
+  font-size: 22rpx;
+  color: #aaaaaa;
+}
+
+.badge {
+  margin-top: 8rpx;
+  min-width: 32rpx;
+  padding: 4rpx 8rpx;
+  background-color: #ff4d4f;
+  border-radius: 999rpx;
+  text-align: center;
+  color: #ffffff;
+  font-size: 22rpx;
+}
