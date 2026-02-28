@@ -1,6 +1,10 @@
-const theme = require("../../../utils/theme.js");
+const themeService = require("../../../services/themeService.js");
+const app = getApp();
+
 Page({
   data: {
+    theme: 'light',
+    elderMode: false,
     sessionList: [
       {
         id: 1,
@@ -35,6 +39,12 @@ Page({
     });
   },
   onShow() {
+    // 获取全局主题设置
+    this.setData({
+      theme: app.globalData.theme || 'light',
+      elderMode: app.globalData.elderMode || false
+    });
+    
     const saved = wx.getStorageSync("session:list");
     if (saved && saved.length) {
       this.setData({ sessionList: saved });
@@ -49,7 +59,7 @@ Page({
         tb.setSelectedByRoute(getCurrentPages().slice(-1)[0].route);
       }
     }
-    theme.applyThemeFromStorage();
+    themeService.applyThemeToPage(this);
   },
   syncUnreadStat() {
     const sum = this.data.sessionList.reduce(function (acc, cur) {

@@ -1,20 +1,29 @@
 const resourcesData = require("../../../data/resources.js");
-const theme = require("../../../utils/theme.js");
+const themeService = require("../../../services/themeService.js");
+const app = getApp();
 
 Page({
   data: {
+    theme: 'light',
+    elderMode: false,
     keyword: "",
     activeType: "找资源",
     list: [],
     filteredList: []
   },
   onShow() {
+    // 获取全局主题设置
+    this.setData({
+      theme: app.globalData.theme || 'light',
+      elderMode: app.globalData.elderMode || false
+    });
+    
     const list = resourcesData.getResources();
     this.setData({
       list: list
     });
     this.filter();
-    theme.applyThemeFromStorage();
+    themeService.applyThemeToPage(this);
   },
   onInputKeyword(e) {
     this.setData({

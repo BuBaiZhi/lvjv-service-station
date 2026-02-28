@@ -1,8 +1,12 @@
 const tasksData = require("../../../data/tasks.js");
 const videosData = require("../../../data/videos.js");
-const theme = require("../../../utils/theme.js");
+const themeService = require("../../../services/themeService.js");
+const app = getApp();
+
 Page({
   data: {
+    theme: 'light',
+    elderMode: false,
     banners: [
       {
         id: 1,
@@ -25,13 +29,19 @@ Page({
     });
   },
   onShow() {
+    // 获取全局主题设置
+    this.setData({
+      theme: app.globalData.theme || 'light',
+      elderMode: app.globalData.elderMode || false
+    });
+    
     if (this.getTabBar) {
       const tb = this.getTabBar();
       if (tb && tb.setSelectedByRoute) {
         tb.setSelectedByRoute(getCurrentPages().slice(-1)[0].route);
       }
     }
-    theme.applyThemeFromStorage();
+    themeService.applyThemeToPage(this);
   },
   onSearchConfirm(e) {
     const value = e.detail.value || "";
