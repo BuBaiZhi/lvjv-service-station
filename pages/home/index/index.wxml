@@ -2,8 +2,6 @@
   <!-- 背景装饰 -->
   <view class="bg-decorations">
     <image class="bg-mountain" src="/images/backgrounds/山脉.jpg" mode="aspectFill"></image>
-    <image class="bg-wave" src="/images/backgrounds/波浪.jpg" mode="aspectFill"></image>
-    <image class="bg-cloud" src="/images/backgrounds/云朵.jpg" mode="aspectFit"></image>
   </view>
   
   <!-- 顶部导航栏 -->

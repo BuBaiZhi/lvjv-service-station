@@ -1,4 +1,9 @@
 <view class="container {{theme === 'dark' ? 'dark' : ''}} {{elderMode ? 'elder-mode' : ''}}" data-theme="{{theme}}" data-elder="{{elderMode ? 'true' : 'false'}}">
+  <!-- 背景装饰 -->
+  <view class="bg-decorations">
+    <image class="bg-mountain" src="/images/backgrounds/山脉.jpg" mode="aspectFill"></image>
+  </view>
+  
   <!-- 顶部导航栏 -->
   <view class="nav-bar">
     <view class="nav-title">邻里广场</view>
