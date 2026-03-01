@@ -16,6 +16,7 @@ const { rateLimit } = require('./middleware/rateLimit')
 // 路由
 const authRoutes = require('./routes/auth')
 const userRoutes = require('./routes/user')
+const orderRoutes = require('./routes/order')
 
 // 工具
 const logger = require('./utils/logger')
@@ -35,7 +36,7 @@ setupGlobalErrorHandlers()
 
 // 跨域支持
 app.use(cors({
-  origin: '*', // 开发环境允许所有来源，生产环境应配置具体域名
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }))
@@ -50,24 +51,18 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')))
 // 请求日志中间件
 app.use((req, res, next) => {
   const startTime = Date.now()
-  
-  // 响应完成时记录日志
   res.on('finish', () => {
     const responseTime = Date.now() - startTime
     logger.request(req, res, responseTime)
   })
-  
   next()
 })
 
-// 全局限流（标准限制）
+// 全局限流
 app.use(rateLimit({
-  windowMs: 60 * 1000,  // 1分钟
-  max: 100,             // 最多100次请求
-  skip: (req) => {
-    // 健康检查跳过限流
-    return req.path === '/api/health'
-  }
+  windowMs: 60 * 1000,
+  max: 100,
+  skip: (req) => req.path === '/api/health'
 }))
 
 // ============================================
@@ -91,19 +86,13 @@ app.get('/api/health', (req, res) => {
 // API路由
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
-// TODO: 添加更多路由
-// app.use('/api/items', itemRoutes)
-// app.use('/api/orders', orderRoutes)
-// app.use('/api/messages', messageRoutes)
+app.use('/api/order', orderRoutes)
 
 // ============================================
 // 错误处理
 // ============================================
 
-// 404处理
 app.use(notFoundHandler)
-
-// 统一错误处理
 app.use(errorHandler)
 
 // ============================================
@@ -118,18 +107,27 @@ app.listen(PORT, () => {
   console.log(`🔗 健康检查: http://localhost:${PORT}/api/health`)
   console.log('')
   console.log('📡 API接口:')
+  console.log('   认证模块:')
   console.log(`   POST /api/auth/login      - 微信登录`)
   console.log(`   POST /api/auth/refresh    - 刷新Token`)
+  console.log('')
+  console.log('   用户模块:')
   console.log(`   GET  /api/user/me         - 获取当前用户`)
   console.log(`   PUT  /api/user/info       - 更新用户信息`)
   console.log(`   POST /api/user/avatar     - 上传头像`)
   console.log(`   POST /api/user/identity   - 设置身份`)
   console.log('')
+  console.log('   订单模块:')
+  console.log(`   GET  /api/order/list      - 获取订单列表`)
+  console.log(`   GET  /api/order/stats     - 获取订单统计`)
+  console.log(`   GET  /api/order/:id       - 获取订单详情`)
+  console.log(`   POST /api/order           - 创建订单`)
+  console.log(`   PUT  /api/order/:id/cancel  - 取消订单`)
+  console.log(`   PUT  /api/order/:id/confirm - 确认订单`)
+  console.log('')
   console.log(`📁 上传目录: ${path.join(__dirname, '../uploads')}`)
   console.log(`🌍 环境: ${process.env.NODE_ENV || 'development'}`)
-  console.log('='.repeat(50))
-  console.log(`\n⚠️  请确保 MySQL 已启动且配置正确`)
-  console.log(`   数据库: ${process.env.DB_NAME || 'travel_service'}\n`)
+  console.log('='.repeat(50) + '\n')
   
   logger.info('服务器启动成功', { port: PORT })
 })
