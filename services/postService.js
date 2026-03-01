@@ -1,4 +1,13 @@
-const { db, _, getOpenid } = require('../utils/cloud.js')
+// 帖子服务 - 支持云数据库和本地存储双模式
+const LOCAL_STORAGE_KEY = 'local_posts'
+
+// 尝试获取云开发模块
+let cloudModule = null
+try {
+  cloudModule = require('../utils/cloud.js')
+} catch (e) {
+  console.log('[postService] 云开发模块不可用，使用本地存储模式')
+}
 
 // 开发模式：使用模拟数据
 const USE_MOCK = true
@@ -49,15 +58,53 @@ const mockPosts = [
   }
 ]
 
+// ========== 本地存储方法 ==========
+
+function getLocalPosts() {
+  try {
+    const local = wx.getStorageSync(LOCAL_STORAGE_KEY)
+    return local || mockPosts
+  } catch (e) {
+    return mockPosts
+  }
+}
+
+function saveLocalPost(postData) {
+  const posts = getLocalPosts()
+  const newPost = {
+    ...postData,
+    _id: 'local_' + Date.now(),
+    likes: 0,
+    comments: 0,
+    views: 0,
+    collects: 0,
+    status: 'active',
+    createTime: new Date().toISOString()
+  }
+  posts.unshift(newPost)
+  wx.setStorageSync(LOCAL_STORAGE_KEY, posts)
+  return Promise.resolve(newPost._id)
+}
+
+// ========== 统一接口（带降级） ==========
+
 // 获取帖子列表
 function getPosts() {
   if (USE_MOCK) {
     return Promise.resolve(mockPosts)
   }
-  return db.collection('posts')
-    .orderBy('createTime', 'desc')
-    .get()
-    .then(res => res.data)
+  if (cloudModule && cloudModule.db) {
+    const { db } = cloudModule
+    return db.collection('posts')
+      .orderBy('createTime', 'desc')
+      .get()
+      .then(res => res.data)
+      .catch(err => {
+        console.log('[postService] 云端获取失败，使用本地数据:', err.message)
+        return getLocalPosts()
+      })
+  }
+  return Promise.resolve(getLocalPosts())
 }
 
 // 获取单个帖子详情
@@ -70,48 +117,49 @@ function getPostById(postId) {
     // 如果找不到，返回第一个模拟数据
     return Promise.resolve(mockPosts[0])
   }
-  return db.collection('posts').doc(postId).get().then(res => res.data)
+  if (cloudModule && cloudModule.db) {
+    const { db } = cloudModule
+    return db.collection('posts').doc(postId).get()
+      .then(res => res.data)
+      .catch(err => {
+        console.log('[postService] 云端获取详情失败，使用本地数据:', err.message)
+        const posts = getLocalPosts()
+        return posts.find(p => p._id === postId) || posts[0]
+      })
+  }
+  const posts = getLocalPosts()
+  return Promise.resolve(posts.find(p => p._id === postId) || posts[0])
 }
 
 // 增加浏览量
 function increaseViews(postId) {
-  return db.collection('posts').doc(postId).update({
-    data: {
-      views: _.inc(1)
-    }
-  })
+  if (cloudModule && cloudModule.db) {
+    const { db, _ } = cloudModule
+    return db.collection('posts').doc(postId).update({
+      data: { views: _.inc(1) }
+    }).catch(() => {})
+  }
+  return Promise.resolve()
 }
 
-// 点赞帖子
+// 点赞帖子（已迁移到 likeService）
 function likePost(postId, isLiked) {
-  if (USE_MOCK) {
-    const post = mockPosts.find(p => p._id === postId)
-    if (post) {
-      post.likes = isLiked ? (post.likes || 0) + 1 : Math.max(0, (post.likes || 1) - 1)
-    }
-    return Promise.resolve({ success: true })
+  const likeService = require('./likeService.js')
+  if (isLiked) {
+    return likeService.like(postId, 'post')
+  } else {
+    return likeService.unlike(postId)
   }
-  return db.collection('posts').doc(postId).update({
-    data: {
-      likes: _.inc(isLiked ? 1 : -1)
-    }
-  })
 }
 
-// 收藏帖子
+// 收藏帖子（已迁移到 favoriteService）
 function collectPost(postId, isCollected) {
-  if (USE_MOCK) {
-    const post = mockPosts.find(p => p._id === postId)
-    if (post) {
-      post.collects = isCollected ? (post.collects || 0) + 1 : Math.max(0, (post.collects || 1) - 1)
-    }
-    return Promise.resolve({ success: true })
+  const favoriteService = require('./favoriteService.js')
+  if (isCollected) {
+    return favoriteService.favorite(postId, 'post')
+  } else {
+    return favoriteService.unfavorite(postId)
   }
-  return db.collection('posts').doc(postId).update({
-    data: {
-      collects: _.inc(isCollected ? 1 : -1)
-    }
-  })
 }
 
 // 获取分类
@@ -126,46 +174,86 @@ function getCategories() {
 
 // 按类型筛选帖子
 function getPostsByType(type) {
-  return db.collection('posts')
-    .where({ type: type })
-    .orderBy('createTime', 'desc')
-    .get()
-    .then(res => res.data)
+  if (USE_MOCK) {
+    return Promise.resolve(mockPosts.filter(p => p.type === type))
+  }
+  if (cloudModule && cloudModule.db) {
+    const { db } = cloudModule
+    return db.collection('posts')
+      .where({ type: type })
+      .orderBy('createTime', 'desc')
+      .get()
+      .then(res => res.data)
+      .catch(() => [])
+  }
+  return Promise.resolve([])
 }
 
 // 按地区筛选帖子
 function getPostsByRegion(region) {
-  return db.collection('posts')
-    .where({ location: db.RegExp({ regexp: region, options: 'i' }) })
-    .orderBy('createTime', 'desc')
-    .get()
-    .then(res => res.data)
+  if (USE_MOCK) {
+    return Promise.resolve(mockPosts)
+  }
+  if (cloudModule && cloudModule.db) {
+    const { db } = cloudModule
+    return db.collection('posts')
+      .where({ location: db.RegExp({ regexp: region, options: 'i' }) })
+      .orderBy('createTime', 'desc')
+      .get()
+      .then(res => res.data)
+      .catch(() => [])
+  }
+  return Promise.resolve([])
 }
 
 // 搜索帖子
 function searchPosts(keyword) {
-  return db.collection('posts')
-    .where(_.or([
-      { title: db.RegExp({ regexp: keyword, options: 'i' }) },
-      { content: db.RegExp({ regexp: keyword, options: 'i' }) },
-      { 'author.name': db.RegExp({ regexp: keyword, options: 'i' }) }
-    ]))
-    .orderBy('likes', 'desc')
-    .get()
-    .then(res => res.data)
+  if (USE_MOCK) {
+    const results = mockPosts.filter(p => 
+      p.title.includes(keyword) || p.content.includes(keyword)
+    )
+    return Promise.resolve(results)
+  }
+  if (cloudModule && cloudModule.db) {
+    const { db, _ } = cloudModule
+    return db.collection('posts')
+      .where(_.or([
+        { title: db.RegExp({ regexp: keyword, options: 'i' }) },
+        { content: db.RegExp({ regexp: keyword, options: 'i' }) }
+      ]))
+      .orderBy('likes', 'desc')
+      .get()
+      .then(res => res.data)
+      .catch(() => [])
+  }
+  return Promise.resolve([])
 }
 
 // 发布帖子
 function publishPost(postData) {
-  const data = {
-    ...postData,
-    createTime: db.serverDate(),
-    likes: 0,
-    comments: 0,
-    views: 0,
-    collects: 0
+  // 先保存到本地
+  saveLocalPost(postData)
+  
+  // 尝试同步到云端
+  if (cloudModule && cloudModule.db && !USE_MOCK) {
+    const { db, getOpenid } = cloudModule
+    const openid = getOpenid()
+    const data = {
+      ...postData,
+      _openid: openid,
+      createTime: db.serverDate(),
+      likes: 0,
+      comments: 0,
+      views: 0,
+      collects: 0
+    }
+    return db.collection('posts').add({ data }).then(res => res._id)
+      .catch(err => {
+        console.log('[postService] 云端发布失败，已保存到本地:', err.message)
+        return 'local_' + Date.now()
+      })
   }
-  return db.collection('posts').add({ data }).then(res => res._id)
+  return Promise.resolve('local_' + Date.now())
 }
 
 module.exports = {
@@ -178,5 +266,7 @@ module.exports = {
   getPostsByType,
   getPostsByRegion,
   searchPosts,
-  publishPost
+  publishPost,
+  // 暴露本地方法供调试
+  getLocalPosts
 }

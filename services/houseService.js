@@ -1,4 +1,13 @@
-const { db, _, getOpenid } = require('../utils/cloud.js')
+// 房源服务 - 支持云数据库和本地存储双模式
+const LOCAL_STORAGE_KEY = 'local_houses'
+
+// 尝试获取云开发模块
+let cloudModule = null
+try {
+  cloudModule = require('../utils/cloud.js')
+} catch (e) {
+  console.log('[houseService] 云开发模块不可用，使用本地存储模式')
+}
 
 // 开发模式：使用模拟数据
 const USE_MOCK = true
@@ -62,15 +71,52 @@ const mockHouses = [
   }
 ]
 
+// ========== 本地存储方法 ==========
+
+function getLocalHouses() {
+  try {
+    const local = wx.getStorageSync(LOCAL_STORAGE_KEY)
+    return local || mockHouses
+  } catch (e) {
+    return mockHouses
+  }
+}
+
+function saveLocalHouse(houseData) {
+  const houses = getLocalHouses()
+  const newHouse = {
+    ...houseData,
+    _id: 'local_' + Date.now(),
+    viewCount: 0,
+    likeCount: 0,
+    favoriteCount: 0,
+    status: 'active',
+    createTime: new Date().toISOString()
+  }
+  houses.unshift(newHouse)
+  wx.setStorageSync(LOCAL_STORAGE_KEY, houses)
+  return Promise.resolve(newHouse._id)
+}
+
+// ========== 统一接口（带降级） ==========
+
 // 获取房源列表
 function getHouseList() {
   if (USE_MOCK) {
     return Promise.resolve(mockHouses)
   }
-  return db.collection('houses')
-    .orderBy('createTime', 'desc')
-    .get()
-    .then(res => res.data)
+  if (cloudModule && cloudModule.db) {
+    const { db } = cloudModule
+    return db.collection('houses')
+      .orderBy('createTime', 'desc')
+      .get()
+      .then(res => res.data)
+      .catch(err => {
+        console.log('[houseService] 云端获取失败，使用本地数据:', err.message)
+        return getLocalHouses()
+      })
+  }
+  return Promise.resolve(getLocalHouses())
 }
 
 // 获取单个房源详情
@@ -83,52 +129,89 @@ function getHouseById(houseId) {
     // 如果找不到，返回第一个模拟数据
     return Promise.resolve(mockHouses[0])
   }
-  return db.collection('houses').doc(houseId).get().then(res => res.data)
+  if (cloudModule && cloudModule.db) {
+    const { db } = cloudModule
+    return db.collection('houses').doc(houseId).get()
+      .then(res => res.data)
+      .catch(err => {
+        console.log('[houseService] 云端获取详情失败，使用本地数据:', err.message)
+        const houses = getLocalHouses()
+        return houses.find(h => h._id === houseId) || houses[0]
+      })
+  }
+  const houses = getLocalHouses()
+  return Promise.resolve(houses.find(h => h._id === houseId) || houses[0])
 }
 
 // 获取推荐房源（首页用）
 function getRecommendedHouses() {
-  return db.collection('houses')
-    .where({
-      recommend: true
-    })
-    .limit(3)
-    .get()
-    .then(res => res.data)
+  if (cloudModule && cloudModule.db) {
+    const { db } = cloudModule
+    return db.collection('houses')
+      .where({ recommend: true })
+      .limit(3)
+      .get()
+      .then(res => res.data)
+      .catch(() => mockHouses.slice(0, 3))
+  }
+  return Promise.resolve(mockHouses.slice(0, 3))
 }
 
 // 搜索房源
 function searchHouses(keyword) {
-  return db.collection('houses')
-    .where(_.or([
-      { title: db.RegExp({ regexp: keyword, options: 'i' }) },
-      { location: db.RegExp({ regexp: keyword, options: 'i' }) }
-    ]))
-    .get()
-    .then(res => res.data)
+  if (USE_MOCK) {
+    const results = mockHouses.filter(h => 
+      h.title.includes(keyword) || h.location.includes(keyword)
+    )
+    return Promise.resolve(results)
+  }
+  if (cloudModule && cloudModule.db) {
+    const { db, _ } = cloudModule
+    return db.collection('houses')
+      .where(_.or([
+        { title: db.RegExp({ regexp: keyword, options: 'i' }) },
+        { location: db.RegExp({ regexp: keyword, options: 'i' }) }
+      ]))
+      .get()
+      .then(res => res.data)
+      .catch(() => [])
+  }
+  return Promise.resolve([])
 }
 
 // 发布房源（修改后的关键代码）
 function publishHouse(houseData) {
-  const openid = getOpenid()
-  const data = {
-    ...houseData,
-    createTime: db.serverDate(),
-    viewCount: 0
+  // 先保存到本地
+  saveLocalHouse(houseData)
+  
+  // 尝试同步到云端
+  if (cloudModule && cloudModule.db && !USE_MOCK) {
+    const { db, getOpenid } = cloudModule
+    const openid = getOpenid()
+    const data = {
+      ...houseData,
+      _openid: openid,
+      createTime: db.serverDate(),
+      viewCount: 0
+    }
+    return db.collection('houses').add({ data }).then(res => res._id)
+      .catch(err => {
+        console.log('[houseService] 云端发布失败，已保存到本地:', err.message)
+        return 'local_' + Date.now()
+      })
   }
-  return db.collection('houses').add({ data }).then(res => res._id)
+  return Promise.resolve('local_' + Date.now())
 }
 
-// 收藏房源
+// 收藏房源（已迁移到 favoriteService）
 function favoriteHouse(houseId, isFavorite) {
-  const openid = getOpenid()
-  return db.collection('favorites').add({
-    data: {
-      houseId: houseId,
-      type: 'house',
-      createTime: db.serverDate()
-    }
-  })
+  // 使用统一的收藏服务
+  const favoriteService = require('./favoriteService.js')
+  if (isFavorite) {
+    return favoriteService.favorite(houseId, 'house')
+  } else {
+    return favoriteService.unfavorite(houseId)
+  }
 }
 
 module.exports = {
@@ -137,5 +220,7 @@ module.exports = {
   getRecommendedHouses,
   searchHouses,
   publishHouse,
-  favoriteHouse
+  favoriteHouse,
+  // 暴露本地方法供调试
+  getLocalHouses
 }
