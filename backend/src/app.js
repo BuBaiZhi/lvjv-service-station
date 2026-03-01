@@ -10,11 +10,12 @@ const cors = require('cors')
 const path = require('path')
 
 // 中间件
-const { errorHandler, notFoundHandler, asyncHandler, setupGlobalErrorHandlers } = require('./middleware/errorHandler')
+const { errorHandler, notFoundHandler, setupGlobalErrorHandlers } = require('./middleware/errorHandler')
 const { rateLimit } = require('./middleware/rateLimit')
 
 // 路由
 const authRoutes = require('./routes/auth')
+const userRoutes = require('./routes/user')
 
 // 工具
 const logger = require('./utils/logger')
@@ -89,8 +90,8 @@ app.get('/api/health', (req, res) => {
 
 // API路由
 app.use('/api/auth', authRoutes)
+app.use('/api/user', userRoutes)
 // TODO: 添加更多路由
-// app.use('/api/users', userRoutes)
 // app.use('/api/items', itemRoutes)
 // app.use('/api/orders', orderRoutes)
 // app.use('/api/messages', messageRoutes)
@@ -115,7 +116,15 @@ app.listen(PORT, () => {
   console.log('='.repeat(50))
   console.log(`📍 服务地址: http://localhost:${PORT}`)
   console.log(`🔗 健康检查: http://localhost:${PORT}/api/health`)
-  console.log(`📝 登录接口: POST http://localhost:${PORT}/api/auth/login`)
+  console.log('')
+  console.log('📡 API接口:')
+  console.log(`   POST /api/auth/login      - 微信登录`)
+  console.log(`   POST /api/auth/refresh    - 刷新Token`)
+  console.log(`   GET  /api/user/me         - 获取当前用户`)
+  console.log(`   PUT  /api/user/info       - 更新用户信息`)
+  console.log(`   POST /api/user/avatar     - 上传头像`)
+  console.log(`   POST /api/user/identity   - 设置身份`)
+  console.log('')
   console.log(`📁 上传目录: ${path.join(__dirname, '../uploads')}`)
   console.log(`🌍 环境: ${process.env.NODE_ENV || 'development'}`)
   console.log('='.repeat(50))
