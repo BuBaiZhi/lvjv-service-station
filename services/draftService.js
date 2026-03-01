@@ -55,11 +55,10 @@ function updateLocalDraft(draftId, draftData) {
 // ========== 云开发方法 ==========
 
 async function saveCloudDraft(draftData) {
-  const { db, getOpenid } = cloudModule
-  const openid = getOpenid()
+  const { db } = cloudModule
   const data = {
     ...draftData,
-    _openid: openid,
+    // 注意：不要手动设置 _openid，云数据库会自动添加
     createTime: db.serverDate(),
     updateTime: db.serverDate()
   }

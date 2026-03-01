@@ -10,7 +10,7 @@ try {
 }
 
 // 开发模式：使用模拟数据
-const USE_MOCK = true
+const USE_MOCK = false
 
 // 模拟帖子数据
 const mockPosts = [
@@ -19,8 +19,8 @@ const mockPosts = [
     title: '周末徒步活动招募',
     content: '本周六组织徒步活动，有兴趣的朋友可以一起参加！',
     type: '活动',
-    author: { id: 'user_1', name: '户外达人', avatar: 'https://picsum.photos/100/100?random=20' },
-    images: ['https://picsum.photos/400/300?random=30'],
+    author: { id: 'user_1', name: '户外达人', avatar: 'https://via.placeholder.com/100x100?text=User+1' },
+    images: ['https://via.placeholder.com/400x300?text=Post+1'],
     likes: 45,
     comments: 12,
     views: 234,
@@ -33,7 +33,7 @@ const mockPosts = [
     title: '寻找编程搭子',
     content: '在大理旅居，想找个一起写代码的朋友，可以一起办公、交流技术。',
     type: '找搭子',
-    author: { id: 'user_2', name: '程序员小王', avatar: 'https://picsum.photos/100/100?random=21' },
+    author: { id: 'user_2', name: '程序员小王', avatar: 'https://via.placeholder.com/100x100?text=User+2' },
     images: [],
     likes: 23,
     comments: 5,
@@ -47,8 +47,8 @@ const mockPosts = [
     title: '吉他教学',
     content: '提供吉他入门教学服务，一对一指导，每小时80元。',
     type: '技能变现',
-    author: { id: 'user_3', name: '音乐人阿杰', avatar: 'https://picsum.photos/100/100?random=22' },
-    images: ['https://picsum.photos/400/300?random=31'],
+    author: { id: 'user_3', name: '音乐人阿杰', avatar: 'https://via.placeholder.com/100x100?text=User+3' },
+    images: ['https://via.placeholder.com/400x300?text=Post+2'],
     likes: 67,
     comments: 18,
     views: 312,
@@ -236,11 +236,10 @@ function publishPost(postData) {
   
   // 尝试同步到云端
   if (cloudModule && cloudModule.db && !USE_MOCK) {
-    const { db, getOpenid } = cloudModule
-    const openid = getOpenid()
+    const { db } = cloudModule
     const data = {
       ...postData,
-      _openid: openid,
+      // 注意：不要手动设置 _openid，云数据库会自动添加
       createTime: db.serverDate(),
       likes: 0,
       comments: 0,

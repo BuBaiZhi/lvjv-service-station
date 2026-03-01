@@ -2,7 +2,7 @@
 const { db, _, getOpenid } = require('../utils/cloud.js')
 
 // 开发模式：使用模拟数据
-const USE_MOCK = true
+const USE_MOCK = false
 
 // 获取评论列表
 function getComments(postId) {
@@ -13,7 +13,7 @@ function getComments(postId) {
         postId: postId,
         userId: 'user_1',
         userName: '旅居达人',
-        avatar: 'https://picsum.photos/100/100?random=50',
+        avatar: 'https://via.placeholder.com/100x100?text=User+1',
         identity: '村民',
         content: '这个地方真的很棒，推荐大家去体验！',
         likeCount: 12,
@@ -26,7 +26,7 @@ function getComments(postId) {
         postId: postId,
         userId: 'user_2',
         userName: '数字游民',
-        avatar: 'https://picsum.photos/100/100?random=51',
+        avatar: 'https://via.placeholder.com/100x100?text=User+2',
         identity: '数字游民',
         content: '请问价格可以优惠吗？',
         likeCount: 5,
@@ -37,7 +37,7 @@ function getComments(postId) {
             id: 'reply_1',
             userId: 'user_3',
             userName: '房东小王',
-            avatar: 'https://picsum.photos/100/100?random=52',
+            avatar: 'https://via.placeholder.com/100x100?text=User+3',
             content: '可以的，私信联系~',
             createTime: '2026-02-25 15:00'
           }
@@ -48,7 +48,7 @@ function getComments(postId) {
         postId: postId,
         userId: 'user_4',
         userName: '旅行者小李',
-        avatar: 'https://picsum.photos/100/100?random=53',
+        avatar: 'https://via.placeholder.com/100x100?text=User+4',
         identity: '游客',
         content: '环境看起来不错，下次我也想去体验一下！',
         likeCount: 8,
@@ -61,7 +61,7 @@ function getComments(postId) {
         postId: postId,
         userId: 'user_5',
         userName: '咖啡爱好者',
-        avatar: 'https://picsum.photos/100/100?random=54',
+        avatar: 'https://via.placeholder.com/100x100?text=User+5',
         identity: '村民',
         content: '请问附近有什么好吃的推荐吗？',
         likeCount: 3,
@@ -74,7 +74,7 @@ function getComments(postId) {
         postId: postId,
         userId: 'user_6',
         userName: '民宿达人',
-        avatar: 'https://picsum.photos/100/100?random=55',
+        avatar: 'https://via.placeholder.com/100x100?text=User+6',
         identity: '房东',
         content: '作为房东，欢迎各位来体验我们的服务！',
         likeCount: 15,

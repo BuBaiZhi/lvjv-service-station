@@ -10,7 +10,7 @@ try {
 }
 
 // 开发模式：使用模拟数据
-const USE_MOCK = true
+const USE_MOCK = false
 
 // 模拟房源数据
 const mockHouses = [
@@ -20,17 +20,17 @@ const mockHouses = [
     location: '海南省三亚市崖州区',
     price: 45,
     unit: '天',
-    image: 'https://picsum.photos/400/300?random=1',
-    images: ['https://picsum.photos/400/300?random=1', 'https://picsum.photos/400/300?random=2'],
+    image: 'https://via.placeholder.com/400x300?text=House+1',
+    images: ['https://via.placeholder.com/400x300?text=House+1a', 'https://via.placeholder.com/400x300?text=House+1b'],
     tags: ['海景', 'WiFi', '厨房'],
     facilities: ['WiFi', '工位', '厨房', '空调'],
     rating: 4.8,
     likes: 128,
     description: '温馨舒适的海景房，适合数字游民办公和度假。',
-    host: { id: 'host_1', name: '房东小王', avatar: 'https://picsum.photos/100/100?random=10' },
+    host: { id: 'host_1', name: '房东小王', avatar: 'https://via.placeholder.com/100x100?text=Host+1' },
     reviews: [
-      { id: 'r1', name: '旅行者张三', avatar: 'https://picsum.photos/100/100?random=60', rating: 5, content: '非常棒的体验！房间干净整洁，房东很热情。', time: '3天前', likeCount: 12, isLiked: false },
-      { id: 'r2', name: '数字游民李四', avatar: 'https://picsum.photos/100/100?random=61', rating: 4, content: '位置很好，适合远程办公，网络稳定。', time: '1周前', likeCount: 8, isLiked: false, reply: '感谢您的好评，欢迎下次再来！', replyTime: '6天前' }
+      { id: 'r1', name: '旅行者张三', avatar: 'https://via.placeholder.com/100x100?text=User+1', rating: 5, content: '非常棒的体验！房间干净整洁，房东很热情。', time: '3天前', likeCount: 12, isLiked: false },
+      { id: 'r2', name: '数字游民李四', avatar: 'https://via.placeholder.com/100x100?text=User+2', rating: 4, content: '位置很好，适合远程办公，网络稳定。', time: '1周前', likeCount: 8, isLiked: false, reply: '感谢您的好评，欢迎下次再来！', replyTime: '6天前' }
     ]
   },
   {
@@ -39,16 +39,16 @@ const mockHouses = [
     location: '云南省大理白族自治州',
     price: 68,
     unit: '天',
-    image: 'https://picsum.photos/400/300?random=3',
-    images: ['https://picsum.photos/400/300?random=3'],
+    image: 'https://via.placeholder.com/400x300?text=House+2',
+    images: ['https://via.placeholder.com/400x300?text=House+2'],
     tags: ['山景', '古城'],
     facilities: ['WiFi', '厨房'],
     rating: 4.6,
     likes: 89,
     description: '苍山脚下的安静小院，远离喧嚣。',
-    host: { id: 'host_2', name: '房东小李', avatar: 'https://picsum.photos/100/100?random=11' },
+    host: { id: 'host_2', name: '房东小李', avatar: 'https://via.placeholder.com/100x100?text=Host+2' },
     reviews: [
-      { id: 'r3', name: '文艺青年', avatar: 'https://picsum.photos/100/100?random=62', rating: 5, content: '太美了！每天早上醒来就能看到苍山，非常治愈。', time: '2天前', likeCount: 15, isLiked: false }
+      { id: 'r3', name: '文艺青年', avatar: 'https://via.placeholder.com/100x100?text=User+3', rating: 5, content: '太美了！每天早上醒来就能看到苍山，非常治愈。', time: '2天前', likeCount: 15, isLiked: false }
     ]
   },
   {
@@ -57,16 +57,16 @@ const mockHouses = [
     location: '安徽省黄山市黟县',
     price: 55,
     unit: '天',
-    image: 'https://picsum.photos/400/300?random=4',
-    images: ['https://picsum.photos/400/300?random=4'],
+    image: 'https://via.placeholder.com/400x300?text=House+3',
+    images: ['https://via.placeholder.com/400x300?text=House+3'],
     tags: ['古镇', '山居'],
     facilities: ['WiFi', '停车'],
     rating: 4.9,
     likes: 156,
     description: '徽派建筑，感受水墨江南。',
-    host: { id: 'host_3', name: '房东老张', avatar: 'https://picsum.photos/100/100?random=12' },
+    host: { id: 'host_3', name: '房东老张', avatar: 'https://via.placeholder.com/100x100?text=Host+3' },
     reviews: [
-      { id: 'r4', name: '摄影师小王', avatar: 'https://picsum.photos/100/100?random=63', rating: 5, content: '拍照绝佳！每个角落都是风景。', time: '5天前', likeCount: 20, isLiked: false }
+      { id: 'r4', name: '摄影师小王', avatar: 'https://via.placeholder.com/100x100?text=User+4', rating: 5, content: '拍照绝佳！每个角落都是风景。', time: '5天前', likeCount: 20, isLiked: false }
     ]
   }
 ]
@@ -186,11 +186,10 @@ function publishHouse(houseData) {
   
   // 尝试同步到云端
   if (cloudModule && cloudModule.db && !USE_MOCK) {
-    const { db, getOpenid } = cloudModule
-    const openid = getOpenid()
+    const { db } = cloudModule
     const data = {
       ...houseData,
-      _openid: openid,
+      // 注意：不要手动设置 _openid，云数据库会自动添加
       createTime: db.serverDate(),
       viewCount: 0
     }

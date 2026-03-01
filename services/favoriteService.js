@@ -54,7 +54,7 @@ async function saveCloudFavorite(itemId, itemType, itemData = {}) {
   
   // 检查是否已收藏
   const checkRes = await db.collection('favorites')
-    .where({ _openid: openid, itemId: itemId })
+    .where({ itemId: itemId })
     .count()
   
   if (checkRes.total > 0) {
@@ -64,9 +64,8 @@ async function saveCloudFavorite(itemId, itemType, itemData = {}) {
   const data = {
     itemId,
     itemType,
-    itemData,
-    _openid: openid,
-    createTime: db.serverDate()
+    itemData
+    // 注意：不要手动设置 _openid，云数据库会自动添加
   }
   
   await db.collection('favorites').add({ data })
@@ -78,7 +77,7 @@ async function removeCloudFavorite(itemId) {
   const openid = getOpenid()
   
   const res = await db.collection('favorites')
-    .where({ _openid: openid, itemId: itemId })
+    .where({ itemId: itemId })
     .remove()
   
   return res.stats.removed > 0
@@ -89,7 +88,7 @@ async function checkCloudFavorited(itemId) {
   const openid = getOpenid()
   
   const res = await db.collection('favorites')
-    .where({ _openid: openid, itemId: itemId })
+    .where({ itemId: itemId })
     .count()
   
   return res.total > 0

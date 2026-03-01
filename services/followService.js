@@ -53,7 +53,7 @@ async function saveCloudFollow(followingId, followingData = {}) {
   
   // 检查是否已关注
   const checkRes = await db.collection('follows')
-    .where({ followerId: openid, followingId: followingId })
+    .where({ followingId: followingId })
     .count()
   
   if (checkRes.total > 0) {
@@ -61,10 +61,9 @@ async function saveCloudFollow(followingId, followingData = {}) {
   }
   
   const data = {
-    followerId: openid,
     followingId,
-    followingData,
-    createTime: db.serverDate()
+    followingData
+    // 注意：不要手动设置 _openid，云数据库会自动添加
   }
   
   await db.collection('follows').add({ data })
@@ -76,7 +75,7 @@ async function removeCloudFollow(followingId) {
   const openid = getOpenid()
   
   const res = await db.collection('follows')
-    .where({ followerId: openid, followingId: followingId })
+    .where({ followingId: followingId })
     .remove()
   
   return res.stats.removed > 0
@@ -87,7 +86,7 @@ async function checkCloudFollowing(followingId) {
   const openid = getOpenid()
   
   const res = await db.collection('follows')
-    .where({ followerId: openid, followingId: followingId })
+    .where({ followingId: followingId })
     .count()
   
   return res.total > 0

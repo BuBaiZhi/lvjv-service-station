@@ -10,7 +10,7 @@ try {
 }
 
 // 开发模式：使用模拟数据
-const USE_MOCK = true
+const USE_MOCK = false
 
 // 模拟技能数据
 const mockSkills = [
@@ -19,10 +19,10 @@ const mockSkills = [
     type: 'task',
     title: '周末徒步活动招募',
     description: '本周六组织徒步活动，有兴趣的朋友可以一起参加！',
-    images: ['https://picsum.photos/400/300?random=40'],
+    images: ['https://via.placeholder.com/400x300?text=Skill+1'],
     price: 0,
     unit: '免费',
-    author: { id: 'user_1', name: '户外达人', avatar: 'https://picsum.photos/100/100?random=70' },
+    author: { id: 'user_1', name: '户外达人', avatar: 'https://via.placeholder.com/100x100?text=User+1' },
     viewCount: 234,
     likeCount: 45,
     status: 'active',
@@ -33,10 +33,10 @@ const mockSkills = [
     type: 'video',
     title: '吉他入门教学',
     description: '提供吉他入门教学视频，适合零基础学员。',
-    images: ['https://picsum.photos/400/300?random=41'],
+    images: ['https://via.placeholder.com/400x300?text=Skill+2'],
     price: 29,
     unit: '元',
-    author: { id: 'user_2', name: '音乐人阿杰', avatar: 'https://picsum.photos/100/100?random=71' },
+    author: { id: 'user_2', name: '音乐人阿杰', avatar: 'https://via.placeholder.com/100x100?text=User+2' },
     viewCount: 512,
     likeCount: 89,
     status: 'active',
@@ -47,10 +47,10 @@ const mockSkills = [
     type: 'resource',
     title: '二手摄影器材转让',
     description: '闲置相机和镜头，九成新，价格实惠。',
-    images: ['https://picsum.photos/400/300?random=42'],
+    images: ['https://via.placeholder.com/400x300?text=Skill+3'],
     price: 3500,
     unit: '元',
-    author: { id: 'user_3', name: '摄影师小王', avatar: 'https://picsum.photos/100/100?random=72' },
+    author: { id: 'user_3', name: '摄影师小王', avatar: 'https://via.placeholder.com/100x100?text=User+3' },
     viewCount: 156,
     likeCount: 23,
     status: 'active',
@@ -111,12 +111,11 @@ async function getCloudSkillById(skillId) {
 }
 
 async function saveCloudSkill(skillData) {
-  const { db, getOpenid } = cloudModule
-  const openid = getOpenid()
+  const { db } = cloudModule
   
   const data = {
     ...skillData,
-    _openid: openid,
+    // 注意：不要手动设置 _openid，云数据库会自动添加
     viewCount: 0,
     likeCount: 0,
     status: 'active',

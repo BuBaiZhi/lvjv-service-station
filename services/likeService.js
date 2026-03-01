@@ -53,7 +53,7 @@ async function saveCloudLike(itemId, itemType) {
   
   // 检查是否已点赞
   const checkRes = await db.collection('likes')
-    .where({ _openid: openid, itemId: itemId })
+    .where({ itemId: itemId })
     .count()
   
   if (checkRes.total > 0) {
@@ -62,9 +62,8 @@ async function saveCloudLike(itemId, itemType) {
   
   const data = {
     itemId,
-    itemType,
-    _openid: openid,
-    createTime: db.serverDate()
+    itemType
+    // 注意：不要手动设置 _openid，云数据库会自动添加
   }
   
   await db.collection('likes').add({ data })
@@ -76,7 +75,7 @@ async function removeCloudLike(itemId) {
   const openid = getOpenid()
   
   const res = await db.collection('likes')
-    .where({ _openid: openid, itemId: itemId })
+    .where({ itemId: itemId })
     .remove()
   
   return res.stats.removed > 0
@@ -87,7 +86,7 @@ async function checkCloudLiked(itemId) {
   const openid = getOpenid()
   
   const res = await db.collection('likes')
-    .where({ _openid: openid, itemId: itemId })
+    .where({ itemId: itemId })
     .count()
   
   return res.total > 0
