@@ -10,3 +10,12 @@ node_modules/
 *.log
 dist/
 build/
+
+logs/
+uploads/
+*.log
+.DS_Store
+
+logs/
+uploads/
+.DS_Store
