@@ -18,6 +18,7 @@ module.exports = {
     EDIT_PROFILE: '/pages/user/edit-profile/index',
     ORDERS: '/pages/user/orders/index',
     PUBLISH_LIST: '/pages/user/publish-list/index',
+    DRAFTS: '/pages/user/drafts/index',
     HISTORY: '/pages/user/history/index',
     SUPPORT: '/pages/user/support/index',
     SETTINGS: '/pages/user/settings/index',

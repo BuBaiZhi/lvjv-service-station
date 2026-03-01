@@ -1,4 +1,5 @@
 const themeService = require('../../../services/themeService.js')
+const draftService = require('../../../services/draftService.js')
 const nav = require('../../../utils/navigation.js')
 const authModel = require('../../../models/authModel.js')
 
@@ -93,9 +94,13 @@ Page({
   },
 
   // 加载草稿数量
-  loadDraftCount() {
-    // TODO: 从草稿服务获取数量
-    // 这里先用模拟数据
+  async loadDraftCount() {
+    try {
+      const drafts = await draftService.getUserDrafts()
+      this.setData({ draftCount: drafts ? drafts.length : 0 })
+    } catch (error) {
+      console.error('加载草稿数量失败:', error)
+    }
   },
 
   // 跳转到设置页
@@ -118,10 +123,7 @@ Page({
 
   // 草稿箱
   goToDrafts() {
-    wx.showToast({
-      title: '草稿箱功能开发中',
-      icon: 'none'
-    })
+    wx.navigateTo({ url: nav.routes.USER.DRAFTS })
   },
 
   // 浏览历史（互动记录）

@@ -10,6 +10,7 @@
     "pages/user/edit-profile/index",
     "pages/user/orders/index",
     "pages/user/publish-list/index",
+    "pages/user/drafts/index",
     "pages/user/history/index",
     "pages/user/support/index",
     "pages/user/settings/index",
