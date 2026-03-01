@@ -17,7 +17,7 @@ Page({
       followingCount: 23,
       joinTime: '2024年春'
     },
-    draftCount: 3
+    draftCount: 0
   },
 
   async onLoad() {
