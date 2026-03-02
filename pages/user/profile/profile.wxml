@@ -26,17 +26,17 @@
 
   <!-- 统计数据 -->
   <view class="card stats-card">
-    <view class="stats-item">
+    <view class="stats-item" bindtap="goToMyPosts">
       <text class="stats-number">{{userInfo.postCount || 12}}</text>
       <text class="stats-label">发布</text>
     </view>
     <view class="stats-divider"></view>
-    <view class="stats-item">
+    <view class="stats-item" bindtap="goToFollowers">
       <text class="stats-number">{{userInfo.followerCount || 48}}</text>
       <text class="stats-label">粉丝</text>
     </view>
     <view class="stats-divider"></view>
-    <view class="stats-item">
+    <view class="stats-item" bindtap="goToFollowing">
       <text class="stats-number">{{userInfo.followingCount || 23}}</text>
       <text class="stats-label">关注</text>
     </view>

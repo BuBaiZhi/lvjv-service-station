@@ -48,10 +48,10 @@ function checkLocalFollowing(followingId) {
 // ========== 云开发方法 ==========
 
 async function saveCloudFollow(followingId, followingData = {}) {
-  const { db, getOpenid } = cloudModule
-  const openid = getOpenid()
+  const { db } = cloudModule
+  // 注意：不要手动获取 openid！云数据库会根据用户登录态自动添加 _openid
   
-  // 检查是否已关注（必须加上 _openid 条件，确保同一个关注者不重复）
+  // 检查是否已关注（由系统自动过滤，只查询当前用户的记录）
   const checkRes = await db.collection('follows')
     .where({ followingId: followingId })
     .count()
@@ -72,8 +72,8 @@ async function saveCloudFollow(followingId, followingData = {}) {
 }
 
 async function removeCloudFollow(followingId) {
-  const { db, getOpenid } = cloudModule
-  const openid = getOpenid()
+  const { db } = cloudModule
+  // 注意：不要手动获取 openid，权限模型会自动只删除当前用户的记录
   
   const res = await db.collection('follows')
     .where({ followingId: followingId })
@@ -83,8 +83,8 @@ async function removeCloudFollow(followingId) {
 }
 
 async function checkCloudFollowing(followingId) {
-  const { db, getOpenid } = cloudModule
-  const openid = getOpenid()
+  const { db } = cloudModule
+  // 注意：权限模型自动过滤，只查询当前用户的记录
   
   const res = await db.collection('follows')
     .where({ followingId: followingId })
@@ -124,12 +124,10 @@ async function getCloudFollowerList(page = 1, pageSize = 20) {
   return res.data
 }
 
-// 获取关注数（当前用户关注了多少人）
 async function getCloudFollowingCount() {
-  const { db, getOpenid } = cloudModule
-  const openid = getOpenid()
+  const { db } = cloudModule
+  // 权限模型自动过滤当前用户的记录
   
-  // 统计当前用户的所有关注记录
   const res = await db.collection('follows')
     .count()
   
@@ -138,12 +136,11 @@ async function getCloudFollowingCount() {
 
 // 获取粉丝数（有多少人关注当前用户）
 async function getCloudFollowerCount() {
-  const { db, getOpenid } = cloudModule
-  const openid = getOpenid()
+  const { db } = cloudModule
   
   // 统计所有 followingId === 当前用户的记录
   const res = await db.collection('follows')
-    .where({ followingId: openid })
+    .where({ followingId: db._.eq(wx.getStorageSync('openid')) })
     .count()
   
   return res.total

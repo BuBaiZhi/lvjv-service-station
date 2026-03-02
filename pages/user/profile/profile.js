@@ -1,5 +1,6 @@
 const themeService = require('../../../services/themeService.js')
 const draftService = require('../../../services/draftService.js')
+const followService = require('../../../services/followService.js')
 const nav = require('../../../utils/navigation.js')
 const authModel = require('../../../models/authModel.js')
 
@@ -52,6 +53,9 @@ Page({
     
     // 加载用户信息
     await this.loadUserInfo()
+    
+    // 加载关注统计信息
+    await this.loadFollowStatistics()
   },
 
   onShow() {
@@ -72,6 +76,26 @@ Page({
     
     // 加载草稿数量
     this.loadDraftCount()
+  },
+
+  // 加载关注统计信息
+  async loadFollowStatistics() {
+    try {
+      // 获取关注数（当前用户关注的人数）
+      const followingCount = await followService.getFollowingCount()
+      // 获取粉丝数（关注当前用户的人数）
+      const followerCount = await followService.getFollowerCount()
+      
+      this.setData({
+        'userInfo.followingCount': followingCount || 0,
+        'userInfo.followerCount': followerCount || 0
+      })
+      
+      console.log('[Profile] 关注统计:', { followingCount, followerCount })
+    } catch (error) {
+      console.error('[Profile] 加载关注统计失败:', error)
+      // 失败时保持默认值
+    }
   },
 
   // 加载用户信息
@@ -119,6 +143,16 @@ Page({
       title: '功能开发中',
       icon: 'none'
     })
+  },
+
+  // 跳转到关注列表
+  goToFollowing() {
+    wx.navigateTo({ url: '/pages/follows/index' })
+  },
+
+  // 跳转到粉丝列表
+  goToFollowers() {
+    wx.navigateTo({ url: '/pages/followers/index' })
   },
 
   // 草稿箱
