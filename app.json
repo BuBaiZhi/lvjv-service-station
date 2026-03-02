@@ -36,7 +36,10 @@
     "pages/admin/users",
     "pages/admin/audit",
     "pages/admin/stats",
-    "pages/common/report-success/report-success"
+    "pages/common/report-success/report-success",
+    "pages/follows/index",
+    "pages/followers/index",
+    "pages/user-detail/index"
   ],
   "window": {
     "navigationBarBackgroundColor": "#4CAF50",

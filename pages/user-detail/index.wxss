@@ -1,0 +1,465 @@
+page {
+  background: #f5f5f5;
+}
+
+.dark {
+  background: #1a1a1a;
+}
+
+.container {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 20rpx;
+}
+
+/* 背景装饰 */
+.bg-decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 300rpx;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.bg-mountain {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+
+/* 导航栏 */
+.nav-bar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100rpx;
+  padding: 0 20rpx;
+  background: transparent;
+}
+
+.nav-left,
+.nav-right {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-back {
+  font-size: 48rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.dark .nav-back {
+  color: #fff;
+}
+
+.nav-title {
+  flex: 1;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.dark .nav-title {
+  color: #fff;
+}
+
+/* 卡片基础样式 */
+.card {
+  background: #fff;
+  border-radius: 16rpx;
+  margin: 16rpx 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  padding: 24rpx;
+}
+
+.dark .card {
+  background: #2a2a2a;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+}
+
+/* 用户信息卡片 */
+.user-card {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 32rpx 24rpx;
+}
+
+.user-avatar-wrapper {
+  position: relative;
+  margin-bottom: 20rpx;
+}
+
+.user-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: #e8e8e8;
+}
+
+.user-status-dot {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 28rpx;
+  height: 28rpx;
+  background: #31a24c;
+  border-radius: 50%;
+  border: 3rpx solid #fff;
+}
+
+.user-info-text {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.user-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.dark .user-name {
+  color: #fff;
+}
+
+.user-badges {
+  display: flex;
+  justify-content: center;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6rpx 14rpx;
+  background: #e8f4ff;
+  border-radius: 16rpx;
+  font-size: 22rpx;
+  color: #007aff;
+}
+
+.dark .badge {
+  background: #003d8f;
+  color: #7bb3ff;
+}
+
+.user-bio {
+  font-size: 22rpx;
+  color: #666;
+  line-height: 1.6;
+  margin-top: 8rpx;
+}
+
+.dark .user-bio {
+  color: #999;
+}
+
+/* 统计数据卡片 */
+.stats-card {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: space-around;
+  padding: 24rpx;
+}
+
+.stats-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  flex: 1;
+}
+
+.stats-number {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.dark .stats-number {
+  color: #fff;
+}
+
+.stats-label {
+  font-size: 22rpx;
+  color: #999;
+}
+
+.stats-divider {
+  width: 1rpx;
+  background: #e8e8e8;
+}
+
+.dark .stats-divider {
+  background: #3a3a3a;
+}
+
+/* 操作按钮卡片 */
+.action-card {
+  position: relative;
+  z-index: 5;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12rpx;
+}
+
+.btn-follow,
+.btn-following,
+.btn-message,
+.edit-btn {
+  flex: 1;
+  padding: 14rpx 20rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+  text-align: center;
+}
+
+.btn-follow {
+  background: #007aff;
+  color: #fff;
+}
+
+.btn-follow:active {
+  background: #0051cc;
+}
+
+.btn-following {
+  background: #f5f5f5;
+  color: #666;
+  border: 1rpx solid #e0e0e0;
+}
+
+.dark .btn-following {
+  background: #3a3a3a;
+  color: #999;
+  border-color: #4a4a4a;
+}
+
+.btn-following:active {
+  background: #e8e8e8;
+}
+
+.dark .btn-following:active {
+  background: #4a4a4a;
+}
+
+.btn-message {
+  background: #f5f5f5;
+  color: #666;
+  border: 1rpx solid #e0e0e0;
+}
+
+.dark .btn-message {
+  background: #3a3a3a;
+  color: #999;
+  border-color: #4a4a4a;
+}
+
+.btn-message:active {
+  background: #e8e8e8;
+}
+
+.dark .btn-message:active {
+  background: #4a4a4a;
+}
+
+.edit-btn {
+  background: #007aff;
+  color: #fff;
+  width: 100%;
+}
+
+.edit-btn:active {
+  background: #0051cc;
+}
+
+/* 选项卡 */
+.tabs-card {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  padding: 0;
+  gap: 0;
+}
+
+.tab-item {
+  flex: 1;
+  padding: 16rpx;
+  text-align: center;
+  border-bottom: 3rpx solid transparent;
+  font-size: 24rpx;
+  color: #999;
+  font-weight: 600;
+}
+
+.tab-item.active {
+  border-bottom-color: #007aff;
+  color: #007aff;
+}
+
+.dark .tab-item.active {
+  color: #7bb3ff;
+  border-bottom-color: #7bb3ff;
+}
+
+/* 内容列表 */
+.content-list {
+  position: relative;
+  z-index: 4;
+  padding: 0 20rpx;
+}
+
+.content-item {
+  margin-bottom: 16rpx;
+}
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12rpx;
+}
+
+.post-title {
+  flex: 1;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.dark .post-title {
+  color: #fff;
+}
+
+.post-content {
+  font-size: 22rpx;
+  color: #666;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.dark .post-content {
+  color: #999;
+}
+
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12rpx;
+  border-top: 1rpx solid #f0f0f0;
+  font-size: 20rpx;
+  color: #999;
+}
+
+.dark .post-footer {
+  border-color: #3a3a3a;
+}
+
+.post-time {
+  color: #999;
+}
+
+.post-stats {
+  color: #999;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 40rpx;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 到底提示 */
+.load-more-tip {
+  text-align: center;
+  padding: 20rpx;
+  font-size: 22rpx;
+  color: #999;
+  margin: 20rpx 0;
+}
+
+/* 老人模式 */
+.elder-mode .user-avatar {
+  width: 140rpx;
+  height: 140rpx;
+}
+
+.elder-mode .user-name {
+  font-size: 36rpx;
+}
+
+.elder-mode .badge {
+  font-size: 26rpx;
+  padding: 8rpx 18rpx;
+}
+
+.elder-mode .stats-number {
+  font-size: 36rpx;
+}
+
+.elder-mode .btn-follow,
+.elder-mode .btn-following,
+.elder-mode .btn-message,
+.elder-mode .edit-btn {
+  font-size: 28rpx;
+  padding: 16rpx 24rpx;
+}
+
+.elder-mode .nav-back {
+  font-size: 56rpx;
+}
+
+.elder-mode .nav-title {
+  font-size: 36rpx;
+}
+
+.elder-mode .post-title {
+  font-size: 30rpx;
+}
+
+.elder-mode .post-content {
+  font-size: 26rpx;
+}

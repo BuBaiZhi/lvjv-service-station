@@ -172,6 +172,40 @@ Page({
       wx.setStorageSync('accessToken', result.accessToken)
       wx.setStorageSync('refreshToken', result.refreshToken)
       wx.setStorageSync('userInfo', JSON.stringify(result.userInfo))
+      wx.setStorageSync('userId', result.userInfo?.id || '')
+      
+      // 🌟 第 5 步：获取云开发的 openid（用于云数据库操作）
+      console.log('[Login] 第 5 步：获取云开发 openid...')
+      
+      try {
+        // 通过云函数获取 openid（最可靠的方式）
+        const cloudOpenid = await new Promise((resolve, reject) => {
+          wx.cloud.callFunction({
+            name: 'login',
+            data: {},
+            success: res => {
+              console.log('[Login] 云函数返回 openid:', res.result?.openid)
+              resolve(res.result?.openid || '')
+            },
+            fail: err => {
+              console.warn('[Login] 云函数调用失败:', err)
+              resolve('')
+            }
+          })
+        })
+        
+        // 如果云函数没返回，尝试从 storage 获取
+        const storageOpenid = wx.getStorageSync('openid') || cloudOpenid
+        
+        if (storageOpenid) {
+          wx.setStorageSync('openid', storageOpenid)
+          console.log('[Login] ✅ openid 已保存:', storageOpenid)
+        } else {
+          console.warn('[Login] ⚠️ 无法获取 openid')
+        }
+      } catch (openidError) {
+        console.warn('[Login] 获取 openid 失败:', openidError.message)
+      }
       
       // 保存到全局（内存）
       app.globalData.authMode = 'user'

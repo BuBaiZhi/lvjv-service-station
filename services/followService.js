@@ -139,8 +139,9 @@ async function getCloudFollowerCount() {
   const { db } = cloudModule
   
   // 统计所有 followingId === 当前用户的记录
+  const openid = wx.getStorageSync('openid')
   const res = await db.collection('follows')
-    .where({ followingId: db._.eq(wx.getStorageSync('openid')) })
+    .where({ followingId: openid })
     .count()
   
   return res.total

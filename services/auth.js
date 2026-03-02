@@ -120,7 +120,8 @@ function saveAuthInfo(result) {
     accessToken,
     refreshToken,
     expiresIn,
-    userInfo
+    userInfo,
+    openid
   } = result
 
   if (!accessToken || !refreshToken) {
@@ -132,6 +133,13 @@ function saveAuthInfo(result) {
     wx.setStorageSync('accessToken', accessToken)
     wx.setStorageSync('refreshToken', refreshToken)
     wx.setStorageSync('userInfo', JSON.stringify(userInfo))
+    wx.setStorageSync('userId', userInfo?.id || '')
+    
+    // 🔑 保存 openid（用于云开发）
+    if (openid) {
+      wx.setStorageSync('openid', openid)
+      console.log('[Auth] openid 已保存:', openid)
+    }
 
     // 保存到全局状态
     app.globalData.accessToken = accessToken

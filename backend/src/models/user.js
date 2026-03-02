@@ -129,13 +129,13 @@ async function searchUsers(keyword, limit = 20) {
  * @returns {Promise<number>} 新用户ID
  */
 async function createUser(userData) {
-  const { openid, nickname, avatar_url, gender, province, city, country } = userData
+  const { openid, nickname, avatar_url, gender, province, city } = userData
   try {
     const connection = await pool.getConnection()
     const [result] = await connection.query(
-      `INSERT INTO users (openid, nickname, avatar_url, gender, province, city, country)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [openid, nickname || '旅居用户', avatar_url || '', gender || 0, province, city, country]
+      `INSERT INTO users (openid, nickname, avatar_url, gender, province, city)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [openid, nickname || '旅居用户', avatar_url || '', gender || 0, province, city]
     )
     connection.release()
     logger.info('创建新用户', { openid, userId: result.insertId })
