@@ -62,7 +62,8 @@ async function saveCloudLike(itemId, itemType) {
   
   const data = {
     itemId,
-    itemType
+    itemType,
+    createTime: db.serverDate()
     // 注意：不要手动设置 _openid，云数据库会自动添加
   }
   

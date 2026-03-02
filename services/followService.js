@@ -51,7 +51,7 @@ async function saveCloudFollow(followingId, followingData = {}) {
   const { db, getOpenid } = cloudModule
   const openid = getOpenid()
   
-  // 检查是否已关注
+  // 检查是否已关注（必须加上 _openid 条件，确保同一个关注者不重复）
   const checkRes = await db.collection('follows')
     .where({ followingId: followingId })
     .count()
@@ -62,7 +62,8 @@ async function saveCloudFollow(followingId, followingData = {}) {
   
   const data = {
     followingId,
-    followingData
+    followingData,
+    createTime: db.serverDate()
     // 注意：不要手动设置 _openid，云数据库会自动添加
   }
   
@@ -92,13 +93,13 @@ async function checkCloudFollowing(followingId) {
   return res.total > 0
 }
 
-// 获取关注列表
+// 获取关注列表（获取当前用户关注的人）
 async function getCloudFollowingList(page = 1, pageSize = 20) {
   const { db, getOpenid } = cloudModule
   const openid = getOpenid()
   
+  // 获取当前用户的所有关注记录（_openid 由系统自动过滤）
   const res = await db.collection('follows')
-    .where({ followerId: openid })
     .orderBy('createTime', 'desc')
     .skip((page - 1) * pageSize)
     .limit(pageSize)
@@ -107,11 +108,12 @@ async function getCloudFollowingList(page = 1, pageSize = 20) {
   return res.data
 }
 
-// 获取粉丝列表
+// 获取粉丝列表（获取关注当前用户的所有人）
 async function getCloudFollowerList(page = 1, pageSize = 20) {
   const { db, getOpenid } = cloudModule
   const openid = getOpenid()
   
+  // 查询所有 followingId === 当前用户的记录（这些是关注我的人）
   const res = await db.collection('follows')
     .where({ followingId: openid })
     .orderBy('createTime', 'desc')
@@ -122,23 +124,24 @@ async function getCloudFollowerList(page = 1, pageSize = 20) {
   return res.data
 }
 
-// 获取关注数
+// 获取关注数（当前用户关注了多少人）
 async function getCloudFollowingCount() {
   const { db, getOpenid } = cloudModule
   const openid = getOpenid()
   
+  // 统计当前用户的所有关注记录
   const res = await db.collection('follows')
-    .where({ followerId: openid })
     .count()
   
   return res.total
 }
 
-// 获取粉丝数
+// 获取粉丝数（有多少人关注当前用户）
 async function getCloudFollowerCount() {
   const { db, getOpenid } = cloudModule
   const openid = getOpenid()
   
+  // 统计所有 followingId === 当前用户的记录
   const res = await db.collection('follows')
     .where({ followingId: openid })
     .count()
