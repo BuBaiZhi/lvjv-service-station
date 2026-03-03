@@ -1,8 +1,6 @@
 // 我的发布页面
 const app = getApp()
-
-// 开发模式：使用模拟数据
-const USE_MOCK = true
+const postService = require('../../../services/postService.js')
 
 Page({
   data: {
@@ -10,7 +8,8 @@ Page({
     appVersion: 'standard',
     activeTab: 'all',
     publishList: [],
-    filteredList: []
+    filteredList: [],
+    loading: false
   },
 
   async onLoad() {
@@ -31,79 +30,81 @@ Page({
 
   // 加载发布列表
   async loadPublishList() {
-    if (USE_MOCK) {
-      this.loadMockData()
-      return
-    }
+    if (this.data.loading) return
+    
+    this.setData({ loading: true })
     
     try {
-      const api = require('../../../services/apiProxy.js')
-      const publishList = await api.getPublishList()
+      const openid = wx.getStorageSync('openid')
+      console.log('[PublishList] 加载用户发布，openid:', openid)
       
-      if (publishList) {
-        this.setData({ 
-          publishList: publishList,
-          filteredList: publishList 
-        })
+      let publishList
+      
+      if (openid) {
+        // 获取当前用户的发布列表
+        publishList = await postService.getUserPosts(openid, 1, 50)
+      } else {
+        // 没有 openid 时，获取所有帖子（调试用）
+        console.log('[PublishList] 无 openid，获取所有帖子')
+        publishList = await postService.getPosts()
       }
+      
+      console.log('[PublishList] 原始数据:', publishList)
+      
+      // 格式化数据
+      const formattedList = publishList.map(item => {
+        // 确定类型：优先使用 _type，否则使用 type
+        const itemType = item._type || item.type || 'post'
+        return {
+          id: item._id || item.id,
+          title: item.title || item.name || '无标题',
+          type: itemType,
+          typeText: this.getTypeText(itemType),
+          status: item.status || 'active',
+          views: item.views || item.viewCount || 0,
+          likes: item.likes || 0,
+          date: item.createTime ? this.formatDate(item.createTime) : '未知',
+          image: item.coverImage || item.image || item.images?.[0] || 'https://picsum.photos/400/300?random=10'
+        }
+      })
+
+      this.setData({ 
+        publishList: formattedList,
+        filteredList: formattedList,
+        empty: formattedList.length === 0
+      })
+      
+      console.log('[PublishList] 加载成功:', formattedList.length, '条')
     } catch (error) {
-      console.error('Failed to load publish list:', error)
-      this.loadMockData()
+      console.error('[PublishList] 加载失败:', error)
+      this.setData({ 
+        publishList: [],
+        filteredList: [],
+        empty: true
+      })
+    } finally {
+      this.setData({ loading: false })
     }
   },
 
-  // 加载模拟数据
-  loadMockData() {
-    const mockPublish = [
-      {
-        id: 'house_1',
-        title: '三亚NCC社区·唯吾岛',
-        type: 'house',
-        typeText: '房源',
-        status: 'active',
-        views: 128,
-        likes: 23,
-        date: '2026-01-10',
-        image: 'https://picsum.photos/400/300?random=21'
-      },
-      {
-        id: 'post_1',
-        title: '周末徒步活动',
-        type: 'activity',
-        typeText: '活动',
-        status: 'active',
-        views: 56,
-        likes: 12,
-        date: '2026-02-05',
-        image: 'https://picsum.photos/400/300?random=22'
-      },
-      {
-        id: 'post_2',
-        title: '吉他入门教学',
-        type: 'skill',
-        typeText: '技能',
-        status: 'active',
-        views: 89,
-        likes: 18,
-        date: '2025-12-20',
-        image: 'https://picsum.photos/400/300?random=23'
-      },
-      {
-        id: 'post_3',
-        title: '旅居生活分享',
-        type: 'share',
-        typeText: '分享',
-        status: 'active',
-        views: 156,
-        likes: 45,
-        date: '2026-02-10',
-        image: 'https://picsum.photos/400/300?random=24'
-      }
-    ]
-    this.setData({ 
-      publishList: mockPublish,
-      filteredList: mockPublish 
-    })
+  // 获取类型文本
+  getTypeText(type) {
+    const typeMap = {
+      'house': '房源',
+      'post': '帖子',
+      'activity': '活动',
+      'skill': '技能',
+      'share': '分享'
+    }
+    return typeMap[type] || '帖子'
+  },
+
+  // 格式化日期
+  formatDate(date) {
+    if (!date) return '未知'
+    if (typeof date === 'string') return date.substring(0, 10)
+    if (date.toISOString) return date.toISOString().substring(0, 10)
+    return '未知'
   },
 
   // 切换标签
@@ -111,7 +112,7 @@ Page({
     const tab = e.currentTarget.dataset.tab
     this.setData({ activeTab: tab })
     
-    // 根据分类筛选
+    // 根据分类筛选（type 字段）
     if (tab === 'all') {
       this.setData({ filteredList: this.data.publishList })
     } else {

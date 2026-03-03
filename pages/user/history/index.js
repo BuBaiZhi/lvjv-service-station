@@ -1,8 +1,7 @@
 // 浏览历史页面
 const app = getApp()
-
-// 开发模式：使用模拟数据
-const USE_MOCK = true
+const likeService = require('../../../services/likeService.js')
+const favoriteService = require('../../../services/favoriteService.js')
 
 Page({
   data: {
@@ -33,7 +32,8 @@ Page({
     // 筛选后数据
     filteredList: [],
     isEditMode: false,
-    selectedIds: []
+    selectedIds: [],
+    loading: false
   },
 
   async onLoad(options) {
@@ -63,128 +63,67 @@ Page({
 
   // 加载浏览历史
   async loadHistoryList() {
-    // 开发模式直接使用模拟数据
-    if (USE_MOCK) {
-      this.loadMockData()
-      return
-    }
+    if (this.data.loading) return
+    this.setData({ loading: true })
     
     try {
-      // 从服务代理层获取浏览历史
-      const api = require('../../../services/apiProxy.js')
-      const historyData = await api.getHistoryList()
+      const openid = wx.getStorageSync('openid')
+      console.log('[History] 加载互动记录，openid:', openid)
       
-      if (historyData) {
-        this.setData({ 
-          historyList: historyData.historyList || [],
-          favoriteList: historyData.favoriteList || []
-        })
-        this.applyFilters()
-      }
+      // 加载点赞列表
+      const likes = await likeService.getLikeList()
+      const likesList = likes.map(item => ({
+        id: item._id || item.itemId,
+        itemId: item.itemId,
+        title: item.title || '内容',
+        type: item.itemType || 'post',
+        date: item.createTime ? this.formatDate(item.createTime) : '未知',
+        image: item.image || 'https://picsum.photos/200/200?random=40'
+      }))
+      
+      // 加载收藏列表
+      const collects = await favoriteService.getFavoriteList()
+      const collectsList = collects.map(item => ({
+        id: item._id || item.itemId,
+        itemId: item.itemId,
+        title: item.title || '内容',
+        type: item.itemType || 'post',
+        date: item.createTime ? this.formatDate(item.createTime) : '未知',
+        image: item.image || 'https://picsum.photos/200/200?random=40'
+      }))
+      
+      // 浏览历史暂时使用本地存储
+      const historyList = wx.getStorageSync('local_browse_history') || []
+      
+      this.setData({ 
+        historyList,
+        likesList,
+        collectsList,
+        commentsList: []
+      })
+      
+      this.applyFilters()
+      console.log('[History] 加载成功:', { history: historyList.length, likes: likesList.length, collects: collectsList.length })
     } catch (error) {
-      console.error('Failed to load history list:', error)
-      this.loadMockData()
+      console.error('[History] 加载失败:', error)
+      this.setData({ 
+        historyList: [],
+        likesList: [],
+        collectsList: [],
+        commentsList: []
+      })
+      this.applyFilters()
+    } finally {
+      this.setData({ loading: false })
     }
   },
 
-  // 加载模拟数据
-  loadMockData() {
-    // 模拟浏览历史数据
-    const mockHistory = [
-      {
-        id: 'house_1',
-        title: '三亚NCC社区·唯吾岛',
-        type: 'house',
-        price: 45,
-        date: '2026-02-14 14:30',
-        image: 'https://picsum.photos/200/200?random=31'
-      },
-      {
-        id: 'post_1',
-        title: '周末露营活动',
-        type: 'activity',
-        price: 80,
-        date: '2026-02-13 10:20',
-        image: 'https://picsum.photos/200/200?random=32'
-      },
-      {
-        id: 'post_2',
-        title: '钢琴教学',
-        type: 'skill',
-        price: 120,
-        date: '2026-02-12 16:45',
-        image: 'https://picsum.photos/200/200?random=33'
-      }
-    ]
-
-    // 模拟点赞数据
-    const mockLikes = [
-      {
-        id: 'house_3',
-        title: '黄山宏村·水墨人家',
-        type: 'house',
-        price: 55,
-        date: '2026-02-15 15:00',
-        image: 'https://picsum.photos/200/200?random=41'
-      },
-      {
-        id: 'post_4',
-        title: '春季徒步活动',
-        type: 'activity',
-        price: 50,
-        date: '2026-02-14 11:30',
-        image: 'https://picsum.photos/200/200?random=42'
-      }
-    ]
-
-    // 模拟收藏数据
-    const mockCollects = [
-      {
-        id: 'house_2',
-        title: '大理古城·苍山脚下',
-        type: 'house',
-        price: 68,
-        date: '2026-02-15 09:15',
-        image: 'https://picsum.photos/200/200?random=34'
-      },
-      {
-        id: 'post_5',
-        title: '吉他课程',
-        type: 'skill',
-        price: 100,
-        date: '2026-02-13 18:20',
-        image: 'https://picsum.photos/200/200?random=43'
-      }
-    ]
-
-    // 模拟评论数据
-    const mockComments = [
-      {
-        id: 'comment_1',
-        title: '周末露营活动',
-        type: 'activity',
-        content: '这个活动很棒，期待参加！',
-        date: '2026-02-14 16:00',
-        image: 'https://picsum.photos/200/200?random=51'
-      },
-      {
-        id: 'comment_2',
-        title: '三亚NCC社区',
-        type: 'house',
-        content: '环境很好，推荐大家来体验！',
-        date: '2026-02-13 12:30',
-        image: 'https://picsum.photos/200/200?random=52'
-      }
-    ]
-
-    this.setData({ 
-      historyList: mockHistory,
-      likesList: mockLikes,
-      collectsList: mockCollects,
-      commentsList: mockComments
-    })
-    
-    this.applyFilters()
+  // 格式化日期
+  formatDate(date) {
+    if (!date) return '未知'
+    if (typeof date === 'string') return date.substring(0, 10)
+    if (date.toISOString) return date.toISOString().substring(0, 10)
+    return '未知'
   },
 
   // 切换主分类（浏览/收藏）

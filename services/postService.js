@@ -255,6 +255,62 @@ function publishPost(postData) {
   return Promise.resolve('local_' + Date.now())
 }
 
+// 获取当前用户的发布列表（包含帖子和房源）
+function getUserPosts(userId, page = 1, pageSize = 20) {
+  if (USE_MOCK) {
+    return Promise.resolve(mockPosts)
+  }
+  
+  const openid = wx.getStorageSync('openid')
+  console.log('[postService] getUserPosts openid:', openid)
+  
+  if (!openid) {
+    console.warn('[postService] openid 为空，无法查询用户发布')
+    return Promise.resolve([])
+  }
+  
+  if (cloudModule && cloudModule.db) {
+    const { db } = cloudModule
+    
+    // 并行查询 posts 和 houses 集合
+    return Promise.all([
+      // 查询帖子
+      db.collection('posts')
+        .where({ _openid: openid })
+        .orderBy('createTime', 'desc')
+        .get(),
+      // 查询房源
+      db.collection('houses')
+        .where({ _openid: openid })
+        .orderBy('createTime', 'desc')
+        .get()
+    ]).then(([postsRes, housesRes]) => {
+      // 合并结果，添加类型标识
+      const posts = postsRes.data.map(p => ({ ...p, _type: 'post' }))
+      const houses = housesRes.data.map(h => ({ ...h, _type: 'house' }))
+      
+      // 合并并按时间排序
+      const allList = [...posts, ...houses].sort((a, b) => {
+        const timeA = new Date(a.createTime || 0).getTime()
+        const timeB = new Date(b.createTime || 0).getTime()
+        return timeB - timeA
+      })
+      
+      // 分页
+      const start = (page - 1) * pageSize
+      const pagedList = allList.slice(start, start + pageSize)
+      
+      console.log('[postService] 查询到发布数量: 帖子=' + posts.length + ', 房源=' + houses.length)
+      return pagedList
+    }).catch(err => {
+      console.log('[postService] 云端获取用户发布失败:', err.message)
+      return getLocalPosts()
+    })
+  }
+  
+  return Promise.resolve(getLocalPosts())
+}
+
 module.exports = {
   getPosts,
   getPostById,
@@ -266,6 +322,7 @@ module.exports = {
   getPostsByRegion,
   searchPosts,
   publishPost,
+  getUserPosts,
   // 暴露本地方法供调试
   getLocalPosts
 }
