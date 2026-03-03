@@ -1,0 +1,91 @@
+<view class="container {{theme === 'dark' ? 'dark' : ''}} {{elderMode ? 'elder-mode' : ''}}" data-theme="{{theme}}" data-elder="{{elderMode ? 'true' : 'false'}}">
+  <!-- 背景装饰 -->
+  <view class="bg-decorations">
+    <image class="bg-mountain" src="/images/backgrounds/山脉.jpg" mode="aspectFill"></image>
+  </view>
+  
+  <!-- 类型筛选Tab -->
+  <scroll-view scroll-x show-scrollbar="{{false}}" class="tab-scroll">
+    <view class="tab-list">
+      <view 
+        wx:for="{{tabs}}" 
+        wx:key="key"
+        class="tab-item {{currentTab === item.key ? 'active' : ''}}"
+        bindtap="switchTab"
+        data-key="{{item.key}}">
+        {{item.name}}
+        <view wx:if="{{currentTab === item.key}}" class="tab-indicator"></view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:elif="{{isEmpty}}" class="empty-container">
+    <view class="empty-icon">📦</view>
+    <text class="empty-text">暂无草稿</text>
+    <text class="empty-hint">发布内容时会自动保存草稿</text>
+  </view>
+
+  <!-- 草稿列表 -->
+  <view wx:else class="draft-list">
+    <view 
+      class="draft-card card" 
+      wx:for="{{filteredList}}" 
+      wx:key="_id"
+      wx:for-index="idx"
+      wx:for-item="draft">
+      
+      <!-- 草稿头部 -->
+      <view class="draft-header">
+        <view class="draft-type">
+          <text class="type-icon">{{draft.typeIcon}}</text>
+          <text class="type-name">{{draft.typeName}}</text>
+        </view>
+        <text class="draft-time">{{draft.timeText}}</text>
+      </view>
+      
+      <!-- 草稿标题 -->
+      <view wx:if="{{draft.title}}" class="draft-title">
+        <text>{{draft.title}}</text>
+      </view>
+      
+      <!-- 草稿预览 -->
+      <view class="draft-preview">
+        <text>{{draft.previewText}}</text>
+      </view>
+      
+      <!-- 草稿图片 -->
+      <view wx:if="{{draft.images && draft.images.length > 0}}" class="draft-images">
+        <image 
+          wx:for="{{draft.images}}" 
+          wx:for-item="img" 
+          wx:key="*this"
+          wx:if="{{index < 3}}"
+          class="draft-thumb" 
+          src="{{img}}" 
+          mode="aspectFill">
+        </image>
+        <view wx:if="{{draft.images.length > 3}}" class="more-images">
+          +{{draft.images.length - 3}}
+        </view>
+      </view>
+      
+      <!-- 操作按钮 -->
+      <view class="draft-actions">
+        <view class="action-btn edit-btn" catchtap="editDraft" data-draft="{{draft}}">
+          <text class="action-icon">✏️</text>
+          <text class="action-text">继续编辑</text>
+        </view>
+        <view class="action-btn delete-btn" catchtap="deleteDraft" data-draft="{{draft}}" data-index="{{idx}}">
+          <text class="action-icon">🗑️</text>
+          <text class="action-text">删除</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

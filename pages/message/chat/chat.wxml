@@ -1,0 +1,18 @@
+<view class="chat-page">
+  <scroll-view class="messages" scroll-y enable-flex scroll-into-view="{{scrollTo}}">
+    <block wx:for="{{messages}}" wx:key="id">
+      <view id="msg-{{item.id}}" class="msg-row {{item.from === 'mine' ? 'mine' : 'peer'}}">
+        <view class="bubble">
+          <text>{{item.text}}</text>
+        </view>
+        <text class="time">{{item.time}}</text>
+      </view>
+    </block>
+    <view id="msg-end"></view>
+  </scroll-view>
+
+  <view class="input-bar">
+    <input class="input" placeholder="输入消息..." value="{{inputText}}" bindinput="onInput" confirm-type="send" bindconfirm="onSend" />
+    <button class="send-btn" bindtap="onSend">发送</button>
+  </view>
+</view>

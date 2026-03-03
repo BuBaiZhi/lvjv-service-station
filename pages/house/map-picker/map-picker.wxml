@@ -1,0 +1,71 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
+<view class="container">
+  <!-- 搜索框 -->
+  <view class="search-header">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input 
+        class="search-input" 
+        placeholder="搜索地点"
+        bindinput="onSearchInput"
+        value="{{keyword}}"
+        confirm-type="search"
+        bindconfirm="onSearch"
+      ></input>
+      <text class="clear-btn" wx:if="{{keyword}}" bindtap="clearSearch">✕</text>
+    </view>
+    <text class="cancel-btn" bindtap="onCancel">取消</text>
+  </view>
+
+  <!-- 地图区域 -->
+  <view class="map-section">
+    <map
+      id="map"
+      class="map"
+      latitude="{{latitude}}"
+      longitude="{{longitude}}"
+      scale="{{scale}}"
+      markers="{{markers}}"
+      bindmarkertap="onMarkerTap"
+      bindtap="onMapTap"
+      show-location
+    ></map>
+    
+    <!-- 中心定位图标（固定在地图中心） -->
+    <view class="center-marker">
+      <view class="marker-dot"></view>
+      <view class="marker-circle"></view>
+    </view>
+    
+    <!-- 当前位置按钮 -->
+    <view class="current-location-btn" bindtap="onLocate">
+      <text class="locate-icon">📍</text>
+    </view>
+  </view>
+
+  <!-- 搜索结果/附近地点列表 -->
+  <view class="places-list" wx:if="{{showPlaces}}">
+    <view class="places-header">
+      <text class="places-title">{{searchMode ? '搜索结果' : '附近地点'}}</text>
+    </view>
+    <scroll-view class="places-scroll" scroll-y>
+      <view class="place-item" wx:for="{{places}}" wx:key="index" bindtap="selectPlace" data-item="{{item}}">
+        <view class="place-info">
+          <text class="place-name">{{item.name}}</text>
+          <text class="place-address">{{item.address}}</text>
+        </view>
+        <text class="place-distance">{{item.distance}}</text>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部确认栏（美团外卖风格） -->
+  <view class="bottom-bar" wx:if="{{selectedPlace}}">
+    <view class="selected-info">
+      <text class="selected-name">{{selectedPlace.name}}</text>
+      <text class="selected-address">{{selectedPlace.address}}</text>
+    </view>
+    <button class="confirm-btn" bindtap="onConfirm">确认选择</button>
+  </view>
+</view>
+</view>

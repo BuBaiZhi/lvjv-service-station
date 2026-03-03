@@ -1,0 +1,335 @@
+.container {
+  min-height: 100vh;
+  background: #f8f8f8;
+  padding-bottom: 120rpx;
+}
+
+.house-card {
+  background: white;
+  display: flex;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.house-image {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 16rpx;
+  margin-right: 20rpx;
+}
+
+.house-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.house-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1e3d4c;
+}
+
+.house-location {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.house-price {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #ff6b6b;
+}
+
+.unit {
+  font-size: 24rpx;
+  color: #999;
+  margin-left: 4rpx;
+}
+
+.section {
+  background: white;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.section-header {
+  margin-bottom: 30rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1e3d4c;
+}
+
+.date-selector {
+  display: flex;
+  align-items: center;
+}
+
+.date-item {
+  flex: 1;
+  background: #f8f8f8;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.date-label {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+  margin-bottom: 8rpx;
+}
+
+.date-value {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.date-arrow {
+  margin: 0 30rpx;
+  color: #999;
+}
+
+.guest-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+}
+
+.guest-label {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.guest-control {
+  display: flex;
+  align-items: center;
+}
+
+.control-btn {
+  width: 60rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  text-align: center;
+  background: #f0f0f0;
+  border-radius: 50%;
+  font-size: 32rpx;
+  color: #666;
+}
+
+.guest-count {
+  margin: 0 30rpx;
+  font-size: 28rpx;
+  color: #333;
+  min-width: 60rpx;
+  text-align: center;
+}
+
+.price-detail {
+  background: #f8f8f8;
+  border-radius: 16rpx;
+  padding: 30rpx;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.price-row.total {
+  margin-top: 30rpx;
+  padding-top: 30rpx;
+  border-top: 2rpx solid #ddd;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1e3d4c;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 16rpx 30rpx;
+  border-top: 2rpx solid #f0f0f0;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.03);
+}
+
+.bottom-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.total-price {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #ff6b6b;
+}
+
+.total-desc {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.book-btn {
+  width: 240rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  background: linear-gradient(135deg, #1e3d4c, #2a5a6e);
+  color: white;
+  font-size: 30rpx;
+  font-weight: 600;
+  border-radius: 40rpx;
+  margin: 0;
+}
+
+.book-btn::after {
+  border: none;
+}
+
+/* 日历弹窗 */
+.calendar-modal, .payment-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+.modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 32rpx 32rpx 0 0;
+  animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1e3d4c;
+}
+
+.close-btn {
+  font-size: 36rpx;
+  color: #999;
+  padding: 10rpx;
+}
+
+.modal-body {
+  padding: 30rpx;
+}
+
+.calendar-picker {
+  width: 100%;
+  height: 400rpx;
+}
+
+.picker-item {
+  line-height: 80rpx;
+  text-align: center;
+  font-size: 32rpx;
+}
+
+.modal-footer {
+  padding: 30rpx;
+  border-top: 2rpx solid #f0f0f0;
+}
+
+.confirm-btn, .confirm-pay-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: linear-gradient(135deg, #1e3d4c, #2a5a6e);
+  color: white;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 44rpx;
+}
+
+.confirm-btn::after, .confirm-pay-btn::after {
+  border: none;
+}
+
+/* 支付弹窗 */
+.payment-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+  padding: 20rpx;
+  background: #f8f8f8;
+  border-radius: 16rpx;
+}
+
+.payment-label {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.payment-amount {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #ff6b6b;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  background: #f8f8f8;
+  border-radius: 16rpx;
+}
+
+.payment-method.active {
+  background: rgba(30, 61, 76, 0.08);
+  border: 2rpx solid #1e3d4c;
+}
+
+.method-icon {
+  font-size: 40rpx;
+  margin-right: 20rpx;
+}
+
+.method-name {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.method-check {
+  font-size: 32rpx;
+  color: #1e3d4c;
+}

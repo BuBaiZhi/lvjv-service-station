@@ -1,0 +1,78 @@
+<!-- 设置页面 -->
+<view class="page {{theme === 'dark' ? 'dark' : ''}} {{elderMode ? 'elder-mode' : ''}}" data-theme="{{theme}}" data-elder="{{elderMode ? 'true' : 'false'}}">
+  <!-- 导航栏 -->
+  <view class="page-header">
+    <text class="back-btn" bindtap="goBack">‹ 返回</text>
+  </view>
+
+  <!-- 内容区域 -->
+  <view class="content">
+    <!-- 主题 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">主题</text>
+      </view>
+      <view class="theme-options">
+        <view 
+          class="theme-item {{theme === 'light' ? 'active' : ''}}"
+          bindtap="switchTheme"
+          data-theme="light"
+        >
+          <text class="theme-icon">☀️</text>
+          <text class="theme-name">浅色模式</text>
+        </view>
+        <view 
+          class="theme-item {{theme === 'dark' ? 'active' : ''}}"
+          bindtap="switchTheme"
+          data-theme="dark"
+        >
+          <text class="theme-icon">🌙</text>
+          <text class="theme-name">深色模式</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 版本 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">版本</text>
+      </view>
+      <view class="version-options">
+        <view 
+          class="version-item {{!elderMode ? 'active' : ''}}"
+          bindtap="switchElderMode"
+          data-elder-mode="false"
+        >
+          <text class="version-icon">📱</text>
+          <text class="version-name">标准版</text>
+        </view>
+        <view 
+          class="version-item {{elderMode ? 'active' : ''}}"
+          bindtap="switchElderMode"
+          data-elder-mode="true"
+        >
+          <text class="version-icon">👵</text>
+          <text class="version-name">老人版</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 其他设置 -->
+    <view class="section">
+      <view class="setting-list">
+        <view class="setting-item" bindtap="goToEditProfile">
+          <text class="setting-label">编辑资料</text>
+          <text class="setting-arrow">›</text>
+        </view>
+        <view class="setting-item" bindtap="clearCache">
+          <text class="setting-label">清除缓存</text>
+          <text class="setting-arrow">›</text>
+        </view>
+        <view class="setting-item" bindtap="aboutUs">
+          <text class="setting-label">关于我们</text>
+          <text class="setting-arrow">›</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

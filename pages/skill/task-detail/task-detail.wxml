@@ -1,0 +1,49 @@
+<view class="section" wx:if="{{task}}">
+  <view class="card">
+    <view class="title">
+      <text>{{task.title}}</text>
+    </view>
+    <view class="row">
+      <text class="tag">{{task.type}}</text>
+      <text class="tag tag-alt">{{task.mode}}</text>
+    </view>
+    <view class="row space">
+      <text class="price-main">¥{{task.reward}}</text>
+      <text class="location">{{task.location}}</text>
+    </view>
+    <view class="row">
+      <text class="publisher">发布方：{{task.publisher}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">
+      <text>任务说明</text>
+    </view>
+    <view class="card-content">
+      <text class="text">{{task.description}}</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{task.requirement}}">
+    <view class="card-title">
+      <text>技能要求</text>
+    </view>
+    <view class="card-content">
+      <text class="text">{{task.requirement}}</text>
+    </view>
+  </view>
+
+  <view class="card" wx:if="{{task.contact}}">
+    <view class="card-title">
+      <text>联系信息</text>
+    </view>
+    <view class="card-content">
+      <text class="text">{{task.contact}}</text>
+    </view>
+  </view>
+
+  <view class="card actions-card">
+    <button class="btn-primary" bindtap="gotoChat">问一问</button>
+  </view>
+</view>

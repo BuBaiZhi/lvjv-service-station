@@ -1,0 +1,5 @@
+<view class="badge-container" wx:if="{{identity}}">
+  <view class="badge {{identity === '数字游民' ? 'nomad' : 'villager'}}">
+    {{identity}}
+  </view>
+</view>

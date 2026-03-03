@@ -1,0 +1,21 @@
+.badge-container {
+  display: inline-block;
+  margin-left: 8rpx;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 20rpx;
+  line-height: 1.4;
+  color: #ffffff;
+}
+
+.nomad {
+  background: linear-gradient(135deg, #1e3d4c, #2a5a6e);
+}
+
+.villager {
+  background: linear-gradient(135deg, #6b8c7d, #8aa392);
+}

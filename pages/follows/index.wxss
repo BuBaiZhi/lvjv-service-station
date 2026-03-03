@@ -1,0 +1,362 @@
+page {
+  background: #f5f5f5;
+}
+
+.dark {
+  background: #1a1a1a;
+}
+
+.container {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 20rpx;
+}
+
+/* 背景装饰 */
+.bg-decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 300rpx;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.bg-mountain {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.3;
+}
+
+/* 导航栏 */
+.nav-bar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100rpx;
+  padding: 0 20rpx;
+  background: transparent;
+}
+
+.nav-left,
+.nav-right {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-back {
+  font-size: 48rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.dark .nav-back {
+  color: #fff;
+}
+
+.nav-title {
+  flex: 1;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.dark .nav-title {
+  color: #fff;
+}
+
+/* 内容区域 */
+.content {
+  position: relative;
+  z-index: 5;
+  padding: 20rpx;
+}
+
+/* 关注卡片列表 */
+.follows-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.follow-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.dark .follow-card {
+  background: #2a2a2a;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.3);
+}
+
+/* 关注卡片头部 */
+.follow-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #e8e8e8;
+}
+
+.user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.nickname {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.dark .nickname {
+  color: #fff;
+}
+
+/* 标签 */
+.tags {
+  display: flex;
+  gap: 8rpx;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4rpx 12rpx;
+  background: #f0f0f0;
+  border-radius: 16rpx;
+  font-size: 20rpx;
+  color: #666;
+}
+
+.dark .tag {
+  background: #3a3a3a;
+  color: #999;
+}
+
+.tag.role {
+  background: #e8f4ff;
+  color: #007aff;
+}
+
+.dark .tag.role {
+  background: #003d8f;
+  color: #7bb3ff;
+}
+
+/* 简介 */
+.bio {
+  font-size: 22rpx;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 16rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.dark .bio {
+  color: #999;
+}
+
+/* 统计信息 */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 16rpx 0;
+  border-top: 1rpx solid #f0f0f0;
+  border-bottom: 1rpx solid #f0f0f0;
+  margin-bottom: 16rpx;
+}
+
+.dark .stats {
+  border-color: #3a3a3a;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.stat-number {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.dark .stat-number {
+  color: #fff;
+}
+
+.stat-label {
+  font-size: 20rpx;
+  color: #999;
+}
+
+/* 操作按钮 */
+.action-bar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.unfollow-btn {
+  padding: 8rpx 20rpx;
+  background: #f5f5f5;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #666;
+  border: 1rpx solid #e0e0e0;
+}
+
+.dark .unfollow-btn {
+  background: #3a3a3a;
+  color: #999;
+  border-color: #4a4a4a;
+}
+
+.unfollow-btn:active {
+  background: #e8e8e8;
+}
+
+.dark .unfollow-btn:active {
+  background: #4a4a4a;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 40rpx;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 12rpx;
+}
+
+.dark .empty-text {
+  color: #fff;
+}
+
+.empty-desc {
+  font-size: 22rpx;
+  color: #999;
+  margin-bottom: 32rpx;
+}
+
+.empty-btn {
+  padding: 16rpx 32rpx;
+  background: #007aff;
+  border-radius: 20rpx;
+  color: #fff;
+  font-size: 24rpx;
+}
+
+.empty-btn:active {
+  background: #0051cc;
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 40rpx;
+}
+
+.spinner {
+  width: 40rpx;
+  height: 40rpx;
+  border: 4rpx solid #f0f0f0;
+  border-top-color: #007aff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20rpx;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 到底提示 */
+.load-more-tip {
+  text-align: center;
+  padding: 20rpx;
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 20rpx;
+}
+
+/* 老人模式 */
+.elder-mode .avatar {
+  width: 100rpx;
+  height: 100rpx;
+}
+
+.elder-mode .nickname {
+  font-size: 32rpx;
+}
+
+.elder-mode .tag {
+  font-size: 24rpx;
+  padding: 6rpx 16rpx;
+}
+
+.elder-mode .stat-number {
+  font-size: 28rpx;
+}
+
+.elder-mode .unfollow-btn,
+.elder-mode .empty-btn {
+  font-size: 28rpx;
+  padding: 12rpx 24rpx;
+}
+
+.elder-mode .nav-back {
+  font-size: 56rpx;
+}
+
+.elder-mode .nav-title {
+  font-size: 36rpx;
+}

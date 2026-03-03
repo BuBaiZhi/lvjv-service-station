@@ -1,0 +1,89 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}">
+<view class="container">
+  <!-- 审核 tabs -->
+  <view class="audit-tabs">
+    <view class="tab {{currentTab === 'post' ? 'active' : ''}}" bindtap="switchTab" data-tab="post">
+      帖子审核 <text class="badge" wx:if="{{postPendingCount > 0}}">{{postPendingCount}}</text>
+    </view>
+    <view class="tab {{currentTab === 'house' ? 'active' : ''}}" bindtap="switchTab" data-tab="house">
+      房源审核 <text class="badge" wx:if="{{housePendingCount > 0}}">{{housePendingCount}}</text>
+    </view>
+  </view>
+
+  <!-- 审核列表 -->
+  <scroll-view class="audit-list" scroll-y enhanced show-scrollbar="{{false}}">
+    <!-- 帖子审核 -->
+    <block wx:if="{{currentTab === 'post'}}">
+      <view class="audit-item" wx:for="{{postList}}" wx:key="id">
+        <view class="item-header">
+          <image class="author-avatar" src="{{item.authorAvatar}}" mode="aspectFill"></image>
+          <view class="author-info">
+            <text class="author-name">{{item.authorName}}</text>
+            <text class="author-role">{{item.authorRole}}</text>
+          </view>
+          <text class="item-time">{{item.time}}</text>
+        </view>
+        <text class="item-title" wx:if="{{item.title}}">{{item.title}}</text>
+        <text class="item-content">{{item.content}}</text>
+        <view class="item-images" wx:if="{{item.images && item.images.length > 0}}">
+          <image class="item-image" wx:for="{{item.images}}" wx:key="index" src="{{item}}" mode="aspectFill"></image>
+        </view>
+        <view class="item-tags" wx:if="{{item.tags && item.tags.length > 0}}">
+          <text class="tag" wx:for="{{item.tags}}" wx:key="*this">#{{item}}</text>
+        </view>
+        <!-- 修复了这里 -->
+        <view class="audit-actions">
+          <button class="approve-btn" bindtap="approve" data-id="{{item.id}}">通过</button>
+          <button class="reject-btn" bindtap="reject" data-id="{{item.id}}">拒绝</button>
+          <button class="detail-btn" bindtap="viewDetail" data-id="{{item.id}}">查看详情</button>
+        </view>
+      </view>
+    </block>
+
+    <!-- 房源审核 -->
+    <block wx:if="{{currentTab === 'house'}}">
+      <view class="audit-item" wx:for="{{houseList}}" wx:key="id">
+        <view class="item-header">
+          <image class="author-avatar" src="{{item.authorAvatar}}" mode="aspectFill"></image>
+          <view class="author-info">
+            <text class="author-name">{{item.authorName}}</text>
+            <text class="author-role">{{item.authorRole}}</text>
+          </view>
+          <text class="item-time">{{item.time}}</text>
+        </view>
+        <view class="house-preview">
+          <image class="house-image" src="{{item.image}}" mode="aspectFill"></image>
+          <view class="house-info">
+            <text class="house-title">{{item.title}}</text>
+            <text class="house-location">{{item.location}}</text>
+            <text class="house-price">¥{{item.price}}/{{item.unit}}</text>
+          </view>
+        </view>
+        <text class="item-description">{{item.description}}</text>
+        <!-- 修复了这里 -->
+        <view class="audit-actions">
+          <button class="approve-btn" bindtap="approve" data-id="{{item.id}}">通过</button>
+          <button class="reject-btn" bindtap="reject" data-id="{{item.id}}">拒绝</button>
+          <button class="detail-btn" bindtap="viewDetail" data-id="{{item.id}}">查看详情</button>
+        </view>
+      </view>
+    </block>
+  </scroll-view>
+
+  <!-- 审核统计 -->
+  <view class="audit-stats">
+    <view class="stat-item">
+      <text class="stat-label">今日待审</text>
+      <text class="stat-number">{{todayPending}}</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-label">今日通过</text>
+      <text class="stat-number">{{todayApproved}}</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-label">今日拒绝</text>
+      <text class="stat-number">{{todayRejected}}</text>
+    </view>
+  </view>
+</view>
+</view>

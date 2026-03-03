@@ -1,0 +1,42 @@
+<view class="section">
+  <view class="card">
+    <view class="row">
+      <text class="label">类型</text>
+      <view class="tabs">
+        <view class="tab {{type === '发需求' ? 'active' : ''}}" bindtap="onTypeChange" data-key="发需求">
+          <text>发需求</text>
+        </view>
+        <view class="tab {{type === '找资源' ? 'active' : ''}}" bindtap="onTypeChange" data-key="找资源">
+          <text>找资源</text>
+        </view>
+      </view>
+    </view>
+    <view class="form-item">
+      <text class="label">标题</text>
+      <input class="input" value="{{title}}" placeholder="例如：对接城市渠道合作" bindinput="onInputTitle" />
+    </view>
+    <view class="form-item">
+      <text class="label">联系人</text>
+      <input class="input" value="{{contact}}" placeholder="例如：合作社小李" bindinput="onInputContact" />
+    </view>
+    <view class="form-item">
+      <text class="label">位置</text>
+      <input class="input" value="{{location}}" placeholder="例如：某合作社/某村" bindinput="onInputLocation" />
+    </view>
+    <view class="form-item">
+      <text class="label">标签</text>
+      <input class="input" value="{{tagsText}}" placeholder="例如：农产品,渠道对接（逗号分隔）" bindinput="onInputTags" />
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="form-item">
+      <text class="label">详细说明</text>
+    </view>
+    <textarea class="textarea" value="{{desc}}" placeholder="请描述需求或资源情况、数量、周期等" bindinput="onInputDesc" />
+  </view>
+
+  <view class="card">
+    <button class="btn-primary" bindtap="onSubmit">发布</button>
+  </view>
+</view>

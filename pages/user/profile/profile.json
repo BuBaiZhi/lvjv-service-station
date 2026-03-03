@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "个人中心",
+  "usingComponents": {
+    "identity-badge": "/components/identity-badge/identity-badge"
+  }
+}

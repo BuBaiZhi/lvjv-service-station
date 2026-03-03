@@ -1,0 +1,80 @@
+<view class="modal-mask" wx:if="{{visible}}" bindtap="onClose">
+  <view class="modal-content" catchtap="stopPropagation">
+    <view class="modal-header">
+      <text class="modal-title">{{commentCount}}条评论</text>
+      <text class="close-btn" bindtap="onClose">✕</text>
+    </view>
+    
+    <!-- 评论列表 -->
+    <scroll-view class="comment-list" scroll-y>
+      <block wx:for="{{comments}}" wx:key="id">
+        <view class="comment-item">
+          <view class="comment-header">
+            <image 
+              class="comment-avatar" 
+              src="{{item.avatar}}" 
+              mode="aspectFill" 
+              bindtap="onAvatarTap" 
+              data-user-id="{{item.userId}}"
+            ></image>
+            <view class="comment-info">
+              <view class="comment-user">
+                <text class="user-name">{{item.userName}}</text>
+                <identity-badge wx:if="{{item.identity}}" identity="{{item.identity}}"></identity-badge>
+              </view>
+              <text class="comment-time">{{item.time}}</text>
+            </view>
+            <view class="comment-actions">
+              <view class="action-item" bindtap="onLikeComment" data-id="{{item._id}}">
+                <text class="action-icon">{{item.isLiked ? '❤️' : '🤍'}}</text>
+                <text class="action-count" wx:if="{{item.likeCount > 0}}">{{item.likeCount}}</text>
+              </view>
+              <view class="action-item" bindtap="onReply" data-id="{{item._id}}" data-name="{{item.userName}}">
+                <text class="action-icon">💬</text>
+              </view>
+            </view>
+          </view>
+          <text class="comment-content">{{item.content}}</text>
+          
+          <!-- 二级回复 -->
+          <view class="replies" wx:if="{{item.replies && item.replies.length > 0}}">
+            <block wx:for="{{item.replies}}" wx:key="id">
+              <view class="reply-item">
+                <view class="reply-header">
+                  <image 
+                    class="reply-avatar" 
+                    src="{{item.avatar}}" 
+                    mode="aspectFill" 
+                    bindtap="onAvatarTap" 
+                    data-user-id="{{item.userId}}"
+                  ></image>
+                  <view class="reply-info">
+                    <view class="reply-user">
+                      <text class="user-name">{{item.userName}}</text>
+                      <text class="reply-to" wx:if="{{item.replyTo}}">回复 {{item.replyTo}}</text>
+                    </view>
+                    <text class="reply-time">{{item.time}}</text>
+                  </view>
+                </view>
+                <text class="reply-content">{{item.content}}</text>
+              </view>
+            </block>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    
+    <!-- 评论输入框 -->
+    <view class="comment-input-area">
+      <input 
+        class="comment-input" 
+        placeholder="{{replyPlaceholder || '写评论...'}}" 
+        bindinput="onInput"
+        value="{{inputValue}}"
+        confirm-type="send"
+        bindconfirm="onSend"
+      ></input>
+      <button class="send-btn" bindtap="onSend">发送</button>
+    </view>
+  </view>
+</view>

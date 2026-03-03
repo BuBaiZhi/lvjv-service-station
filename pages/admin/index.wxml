@@ -1,0 +1,91 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
+<view class="container">
+  <!-- 管理员头部 -->
+  <view class="admin-header">
+    <text class="admin-title">管理者后台</text>
+    <text class="admin-date">{{currentDate}}</text>
+  </view>
+
+  <!-- 数据卡片 -->
+  <view class="stats-cards">
+    <view class="stat-card" bindtap="goToUsers">
+      <text class="stat-number">{{stats.userCount}}</text>
+      <text class="stat-label">总用户</text>
+    </view>
+    <view class="stat-card" bindtap="goToAudit">
+      <text class="stat-number">{{stats.pendingCount}}</text>
+      <text class="stat-label">待审核</text>
+    </view>
+    <view class="stat-card" bindtap="goToPosts">
+      <text class="stat-number">{{stats.postCount}}</text>
+      <text class="stat-label">帖子</text>
+    </view>
+    <view class="stat-card" bindtap="goToHouses">
+      <text class="stat-number">{{stats.houseCount}}</text>
+      <text class="stat-label">房源</text>
+    </view>
+  </view>
+
+  <!-- 快捷入口 -->
+  <view class="quick-actions">
+    <view class="section-title">快捷操作</view>
+    <view class="action-grid">
+      <view class="action-item" bindtap="goToUsers">
+        <text class="action-icon">👥</text>
+        <text class="action-text">用户管理</text>
+      </view>
+      <view class="action-item" bindtap="goToAudit">
+        <text class="action-icon">📋</text>
+        <text class="action-text">内容审核</text>
+      </view>
+      <view class="action-item" bindtap="goToStats">
+        <text class="action-icon">📊</text>
+        <text class="action-text">数据统计</text>
+      </view>
+      <view class="action-item" bindtap="goToSettings">
+        <text class="action-icon">⚙️</text>
+        <text class="action-text">系统设置</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最近待审核列表 -->
+  <view class="recent-section">
+    <view class="section-header">
+      <text class="section-title">最近待审核</text>
+      <text class="section-more" bindtap="goToAudit">查看更多 ></text>
+    </view>
+    <view class="audit-list">
+      <!-- 修复了这一行：把 {{item._id}}="{{item.id}}" 改成 data-id="{{item.id}}" -->
+      <view class="audit-item" wx:for="{{pendingList}}" wx:key="id" bindtap="goToAuditDetail" data-id="{{item.id}}" data-type="{{item.type}}">
+        <image class="audit-image" src="{{item.image}}" mode="aspectFill"></image>
+        <view class="audit-info">
+          <text class="audit-title">{{item.title}}</text>
+          <text class="audit-meta">{{item.type}} · {{item.author}} · {{item.time}}</text>
+        </view>
+        <view class="audit-status pending">待审核</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最近注册用户 -->
+  <view class="recent-section">
+    <view class="section-header">
+      <text class="section-title">最近注册</text>
+      <text class="section-more" bindtap="goToUsers">查看更多 ></text>
+    </view>
+    <view class="user-list">
+      <!-- 修复了这一行：把 {{item._id}}="{{item.id}}" 改成 data-id="{{item.id}}" -->
+      <view class="user-item" wx:for="{{recentUsers}}" wx:key="id" bindtap="goToUserDetail" data-id="{{item.id}}">
+        <image class="user-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+        <view class="user-info">
+          <view class="user-name-line">
+            <text class="user-name">{{item.name}}</text>
+            <text class="user-role {{item.role === '数字游民' ? 'nomad' : 'villager'}}">{{item.role}}</text>
+          </view>
+          <text class="user-time">注册时间：{{item.registerTime}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view></view>

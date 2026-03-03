@@ -1,0 +1,104 @@
+/* components/common.wxss - 公共组件样式 */
+/* 按钮组件 */
+.btn {
+  height: var(--button-height, 80rpx);
+  font-size: var(--button-font-size, var(--font-size-medium));
+  border-radius: var(--radius-md);
+  padding: 0 var(--spacing-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2rpx solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* 输入框组件 */
+.input-field {
+  background: var(--color-background-card);
+  border: 2rpx solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+}
+
+.input-field:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4rpx rgba(30, 61, 76, 0.2);
+}
+
+/* 卡片组件 */
+.card-standard {
+  background: var(--color-background-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-md);
+  margin: var(--spacing-sm);
+  box-shadow: var(--shadow-card);
+  border: 1rpx solid var(--color-border-light);
+}
+
+/* 标签组件 */
+.tag {
+  background: rgba(168, 213, 186, 0.2);
+  color: var(--color-primary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-small);
+  display: inline-block;
+  margin: var(--spacing-xs);
+}
+
+/* 列表项 */
+.list-item {
+  padding: var(--spacing-md);
+  border-bottom: 1rpx solid var(--color-border-light);
+  display: flex;
+  align-items: center;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+/* 导航栏 */
+.nav-bar {
+  background: var(--color-primary);
+  color: white;
+  padding: var(--spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 模态框 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--color-background-modal);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: var(--color-background-card);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-lg);
+  max-width: 80vw;
+  max-height: 80vh;
+  overflow-y: auto;
+}

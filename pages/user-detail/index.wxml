@@ -1,0 +1,109 @@
+<view class="container {{theme === 'dark' ? 'dark' : ''}} {{elderMode ? 'elder-mode' : ''}}">
+  <!-- 背景装饰 -->
+  <view class="bg-decorations">
+    <image class="bg-mountain" src="/images/backgrounds/山脉.jpg" mode="aspectFill"></image>
+  </view>
+  
+  <!-- 导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="navigateBack">
+      <text class="nav-back">‹</text>
+    </view>
+    <view class="nav-title">{{isOwnProfile ? '个人中心' : '用户主页'}}</view>
+    <view class="nav-right"></view>
+  </view>
+
+  <!-- 用户信息区 -->
+  <view class="user-card card" wx:if="{{userInfo}}">
+    <view class="user-avatar-wrapper">
+      <image src="{{userInfo.avatar || 'https://picsum.photos/200/200?random=1'}}" class="user-avatar" mode="aspectFill"></image>
+      <view class="user-status-dot"></view>
+    </view>
+    <view class="user-info-text">
+      <text class="user-name">{{userInfo.nickname || '旅行者'}}</text>
+      <view class="user-badges">
+        <text class="badge">{{userInfo.role || '村民'}}</text>
+        <text class="badge" wx:if="{{userInfo.area}}">{{userInfo.area}}</text>
+      </view>
+      <text class="user-bio" wx:if="{{userInfo.bio}}">{{userInfo.bio}}</text>
+    </view>
+  </view>
+
+  <!-- 统计数据 -->
+  <view class="card stats-card" wx:if="{{userInfo}}">
+    <view class="stats-item" bindtap="goToFollowing">
+      <text class="stats-number">{{userInfo.followingCount || 0}}</text>
+      <text class="stats-label">关注</text>
+    </view>
+    <view class="stats-divider"></view>
+    <view class="stats-item" bindtap="goToFollowers">
+      <text class="stats-number">{{userInfo.followerCount || 0}}</text>
+      <text class="stats-label">粉丝</text>
+    </view>
+    <view class="stats-divider"></view>
+    <view class="stats-item">
+      <text class="stats-number">{{userInfo.postCount || 0}}</text>
+      <text class="stats-label">发布</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="card action-card" wx:if="{{!isOwnProfile && userInfo}}">
+    <view class="action-buttons">
+      <view class="btn-follow" wx:if="{{!isFollowing}}" bindtap="followUser">
+        + 关注
+      </view>
+      <view class="btn-following" wx:else bindtap="unfollowUser">
+        已关注
+      </view>
+      <view class="btn-message" bindtap="sendMessage">
+        发消息
+      </view>
+    </view>
+  </view>
+
+  <!-- 编辑资料（自己的主页） -->
+  <view class="card action-card" wx:if="{{isOwnProfile && userInfo}}">
+    <view class="edit-btn" bindtap="editProfile">
+      编辑资料
+    </view>
+  </view>
+
+  <!-- 内容选项卡 -->
+  <view class="card tabs-card" wx:if="{{userInfo}}">
+    <view class="tab-item {{activeTab === 'posts' ? 'active' : ''}}" data-tab="posts" bindtap="switchTab">
+      <text>发布</text>
+    </view>
+    <view class="tab-item {{activeTab === 'houses' ? 'active' : ''}}" data-tab="houses" bindtap="switchTab">
+      <text>房源</text>
+    </view>
+  </view>
+
+  <!-- 内容列表 -->
+  <view class="content-list">
+    <view wx:for="{{contentList}}" wx:key="_id" class="content-item">
+      <!-- 这里显示帖子或房源卡片 -->
+      <view class="post-card card">
+        <view class="post-header">
+          <text class="post-title">{{item.title}}</text>
+        </view>
+        <view class="post-content">{{item.content || item.description}}</view>
+        <view class="post-footer">
+          <text class="post-time">{{item.createTime}}</text>
+          <text class="post-stats">{{item.likeCount || 0}} 👍 {{item.commentCount || 0}} 💬</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{!loading && contentList.length === 0 && userInfo}}">
+      <view class="empty-icon">📭</view>
+      <text class="empty-text">暂无内容</text>
+    </view>
+
+    <!-- 加载更多提示 -->
+    <view class="load-more-tip" wx:if="{{!hasMore && contentList.length > 0}}">
+      已经到底了
+    </view>
+  </view>
+</view>

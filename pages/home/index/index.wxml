@@ -1,0 +1,98 @@
+<view class="container {{theme === 'dark' ? 'dark' : ''}} {{elderMode ? 'elder-mode' : ''}}" data-theme="{{theme}}" data-elder="{{elderMode ? 'true' : 'false'}}">
+  <!-- 背景装饰 -->
+  <view class="bg-decorations">
+    <image class="bg-mountain" src="/images/backgrounds/山脉.jpg" mode="aspectFill"></image>
+  </view>
+  
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-title">发现民宿</view>
+    <view class="nav-actions">
+      <view class="nav-icon-btn" bindtap="onSearch">
+        <image class="nav-icon-img" src="/images/icons/search.png" mode="aspectFit"></image>
+      </view>
+      <view class="nav-icon-btn" bindtap="onPublishHouse">
+        <image class="nav-icon-img" src="/images/icons/增加添加加号.png" mode="aspectFit"></image>
+      </view>
+      <view class="nav-icon-btn" bindtap="onFilter">
+        <image class="nav-icon-img" src="/images/icons/漏斗.png" mode="aspectFit"></image>
+      </view>
+    </view>
+  </view>
+
+  <!-- 轮播图 -->
+  <scroll-view scroll-x show-scrollbar="{{false}}" class="banner-scroll">
+    <view class="banner-list">
+      <view wx:for="{{banners}}" wx:key="index" bindtap="onBannerTap" data-index="{{index}}" class="banner-item">
+        <image src="{{item.image}}" class="banner-image" mode="aspectFill"></image>
+        <view class="banner-overlay">
+          <text class="banner-title">{{item.title}}</text>
+          <text class="banner-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 分类入口 -->
+  <view class="card category-card">
+    <text class="section-title">热门目的地</text>
+    <view class="category-list">
+      <view wx:for="{{categories}}" wx:key="index" bindtap="onCategoryTap" data-category="{{item.name}}" class="category-item">
+        <image class="category-icon-img" src="{{item.iconSrc}}" mode="aspectFit"></image>
+        <text class="category-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 地区选择器 -->
+  <view class="card region-selector" bindtap="showRegionPicker">
+    <text class="region-icon">📍</text>
+    <text class="region-label">当前地区</text>
+    <text class="region-value">{{currentRegion}}</text>
+    <text class="region-arrow">▼</text>
+  </view>
+
+  <!-- 推荐房源 -->
+  <view class="section-header">
+    <text class="section-title">热门推荐</text>
+    <text class="section-more" bindtap="onViewAll">查看更多 ›</text>
+  </view>
+
+  <!-- 房源列表 -->
+  <view class="house-list">
+    <view class="card house-card" wx:for="{{houses}}" wx:key="id" bindtap="onHouseTap" data-id="{{item.id}}">
+      <image src="{{item.image}}" class="house-image" mode="aspectFill"></image>
+      <view class="house-info">
+        <view class="house-header">
+          <text class="house-title">{{item.title}}</text>
+          <text class="house-likes">❤️ {{item.likes || 0}}</text>
+        </view>
+        <text class="house-location">📍 {{item.location}}</text>
+        <view class="house-price">
+          <text class="price">¥{{item.price}}</text>
+          <text class="unit">/{{item.unit}}</text>
+        </view>
+        <view class="house-tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">#{{tag}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 地区选择弹窗 -->
+  <view wx:if="{{showRegionModal}}" class="modal-overlay">
+    <view class="modal-mask" bindtap="hideRegionPicker"></view>
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">选择地区</text>
+        <text class="modal-close" bindtap="hideRegionPicker">✕</text>
+      </view>
+      <scroll-view scroll-y class="modal-body">
+        <view wx:for="{{regions}}" wx:key="index" bindtap="selectRegion" data-region="{{item}}" class="region-item {{currentRegion === item ? 'active' : ''}}">
+          <text class="region-name">{{item}}</text>
+          <text wx:if="{{currentRegion === item}}" class="region-check">✓</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

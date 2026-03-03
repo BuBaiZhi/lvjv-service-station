@@ -1,0 +1,18 @@
+<view class="section" wx:if="{{video}}">
+  <view class="card">
+    <video class="player" src="{{video.url}}" controls poster="{{video.cover}}"></video>
+  </view>
+
+  <view class="card">
+    <view class="title">
+      <text>{{video.title}}</text>
+    </view>
+    <view class="meta-row">
+      <text class="publisher">{{video.publisher}}</text>
+      <text class="meta">{{video.level}} · {{video.duration}}</text>
+    </view>
+    <view class="desc">
+      <text>{{video.description}}</text>
+    </view>
+  </view>
+</view>

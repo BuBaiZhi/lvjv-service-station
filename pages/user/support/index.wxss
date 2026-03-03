@@ -1,0 +1,244 @@
+/* 服务与支持页面样式 */
+
+/* 页面基础 */
+.page {
+  min-height: 100vh;
+  background-color: var(--color-background, #f5f5f5);
+  padding-bottom: 30rpx;
+  color: var(--color-text, #333);
+}
+
+/* 导航栏 */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background: var(--color-background-card, #ffffff);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-btn {
+  font-size: 28rpx;
+  color: var(--color-primary, #1e3d4c);
+  padding: 10rpx 20rpx;
+  width: 100rpx;
+}
+
+.page-title {
+  flex: 1;
+  font-size: 34rpx;
+  font-weight: 600;
+  color: var(--color-primary, #1e3d4c);
+  text-align: center;
+}
+
+.placeholder {
+  width: 100rpx;
+}
+
+.content {
+  padding: 20rpx 30rpx;
+}
+
+/* 区块 */
+.section {
+  margin-bottom: 30rpx;
+}
+
+.section-header {
+  padding: 20rpx 0;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--color-primary, #1e3d4c);
+}
+
+/* 常见问题 */
+.faq-list {
+  background: var(--color-background-card, #ffffff);
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.faq-item {
+  border-bottom: 2rpx solid var(--color-border-light, #f0f0f0);
+}
+
+.faq-item:last-child {
+  border-bottom: none;
+}
+
+.faq-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30rpx;
+  cursor: pointer;
+}
+
+.question-text {
+  flex: 1;
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.expand-icon {
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #1890ff;
+  margin-left: 20rpx;
+}
+
+.faq-answer {
+  padding: 0 30rpx 30rpx;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.faq-answer[hidden] {
+  display: none;
+}
+
+/* 联系我们 */
+.contact-list {
+  background: var(--bg-card);
+  border-radius: 12rpx;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.contact-item:last-child {
+  border-bottom: none;
+}
+
+.contact-icon {
+  font-size: 48px;
+  margin-right: 20rpx;
+}
+
+.contact-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.contact-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.contact-content {
+  font-size: 15px;
+  color: #1890ff;
+}
+
+.contact-desc {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.arrow {
+  font-size: 20px;
+  color: var(--text-light);
+  margin-left: 20rpx;
+}
+
+/* 意见反馈 */
+.feedback-card {
+  background: var(--bg-card);
+  border-radius: 12rpx;
+  padding: 40rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30rpx;
+}
+
+.feedback-tip {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.btn-primary {
+  width: 200rpx;
+  height: 44px;
+  background: #1890ff;
+  color: #fff;
+  border: none;
+  border-radius: 24rpx;
+  font-size: 15px;
+}
+
+/* 版本信息 */
+.version-info {
+  background: var(--bg-card);
+  border-radius: 12rpx;
+  padding: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.version-label {
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.version-number {
+  font-size: 15px;
+  color: var(--text-tertiary);
+}
+
+/* 老人友好版 */
+.elderly-mode .section-title {
+  font-size: 28rpx;
+}
+
+.elderly-mode .faq-question,
+.elderly-mode .contact-item {
+  padding: 40rpx;
+}
+
+.elderly-mode .question-text,
+.elderly-mode .contact-title {
+  font-size: 32rpx;
+}
+
+.elderly-mode .faq-answer,
+.elderly-mode .contact-desc,
+.elderly-mode .contact-content {
+  font-size: 28rpx;
+}
+
+.elderly-mode .feedback-tip {
+  font-size: 32rpx;
+}
+
+.elderly-mode .btn-primary {
+  height: 80rpx;
+  font-size: 32rpx;
+}
+
+.elderly-mode .version-label,
+.elderly-mode .version-number {
+  font-size: 28rpx;
+}

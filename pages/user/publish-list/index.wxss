@@ -1,0 +1,197 @@
+/* 我的发布页面样式 */
+
+/* 页面基础 */
+.page {
+  min-height: 100vh;
+  background-color: var(--color-background, #f5f5f5);
+  color: var(--color-text, #333);
+}
+
+/* 导航栏 */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background: var(--color-background-card, #ffffff);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-btn {
+  font-size: 28rpx;
+  color: var(--color-primary, #1e3d4c);
+  padding: 10rpx 20rpx;
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 24rpx;
+  background: var(--color-primary, #1e3d4c);
+  border-radius: 40rpx;
+  color: white;
+  font-size: 26rpx;
+}
+
+/* 标签栏 */
+.tabs {
+  display: flex;
+  background: var(--color-background-card, #ffffff);
+  padding: 16rpx 20rpx;
+  gap: 16rpx;
+}
+
+.tab-item {
+  flex: 1;
+  text-align: center;
+  font-size: 26rpx;
+  color: var(--color-text-light, #666);
+  padding: 16rpx 0;
+  border-radius: 40rpx;
+  background: var(--color-background, #f5f5f5);
+  transition: all 0.2s;
+}
+
+.tab-item.active {
+  color: white;
+  background: var(--color-primary, #1e3d4c);
+  font-weight: 500;
+}
+
+/* 发布列表 */
+.content {
+  padding: 20rpx 30rpx;
+}
+
+.publish-card {
+  background: var(--color-background-card, #ffffff);
+  border-radius: 20rpx;
+  overflow: hidden;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.publish-image {
+  width: 100%;
+  height: 280rpx;
+}
+
+.publish-info {
+  padding: 24rpx;
+}
+
+.publish-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.publish-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--color-text, #333);
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.publish-type {
+  font-size: 22rpx;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  background: rgba(168, 213, 186, 0.2);
+  color: #6b8c7d;
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}
+
+.publish-meta {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 20rpx;
+  padding: 16rpx 0;
+  border-top: 2rpx solid var(--color-border-light, #f0f0f0);
+  border-bottom: 2rpx solid var(--color-border-light, #f0f0f0);
+}
+
+.meta-item {
+  font-size: 24rpx;
+  color: var(--color-text-light, #666);
+}
+
+.publish-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16rpx;
+}
+
+.action-btn {
+  padding: 12rpx 32rpx;
+  border-radius: 40rpx;
+  font-size: 26rpx;
+  color: var(--color-primary, #1e3d4c);
+  border: 2rpx solid var(--color-primary, #1e3d4c);
+  background: transparent;
+}
+
+.action-btn.delete {
+  color: var(--color-accent, #ffb7b2);
+  border-color: var(--color-accent, #ffb7b2);
+}
+
+/* 空状态 */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 0;
+}
+
+.empty-icon {
+  font-size: 100rpx;
+  margin-bottom: 20rpx;
+  opacity: 0.5;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: var(--color-text-light, #666);
+  margin-bottom: 40rpx;
+}
+
+.btn-primary {
+  padding: 20rpx 60rpx;
+  background: var(--color-primary, #1e3d4c);
+  color: white;
+  border: none;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+}
+
+/* 老人友好版 */
+.elderly-mode .tab-item {
+  font-size: 32rpx;
+}
+
+.elderly-mode .publish-title {
+  font-size: 36rpx;
+}
+
+.elderly-mode .meta-item {
+  font-size: 28rpx;
+}
+
+.elderly-mode .action-btn {
+  font-size: 30rpx;
+  padding: 16rpx 40rpx;
+}
+
+.elderly-mode .empty-text {
+  font-size: 32rpx;
+}

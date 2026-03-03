@@ -1,0 +1,35 @@
+<view class="container" data-theme="{{theme}}" data-elder="{{elderMode}}" style="background: var(--color-background); min-height: 100vh;">
+<view class="container">
+  <!-- 聊天头部 -->
+  <view class="chat-header">
+    <text class="back-btn" bindtap="onBack">←</text>
+    <text class="user-name">{{userName}}</text>
+  </view>
+
+  <!-- 聊天记录 -->
+  <scroll-view class="message-list" scroll-y scroll-top="{{scrollTop}}" scroll-into-view="{{lastMessageId}}">
+    <view class="message-item" wx:for="{{messages}}" wx:key="id" id="msg-{{item.id}}">
+      <view class="message {{item.isSelf ? 'self' : 'other'}}">
+        <image class="avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+        <view class="bubble">
+          <text class="content">{{item.content}}</text>
+          <text class="time">{{item.time}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 输入框 -->
+  <view class="input-area">
+    <input 
+      class="message-input"
+      placeholder="输入消息..."
+      bindinput="onInput"
+      value="{{inputValue}}"
+      confirm-type="send"
+      bindconfirm="onSend"
+    ></input>
+    <button class="send-btn" bindtap="onSend">发送</button>
+  </view>
+</view>
+</view>

@@ -1,0 +1,101 @@
+<view class="post-card" bindtap="onTap">
+  <!-- 置顶标识 -->
+  <view class="pin-badge" wx:if="{{post.isPinned}}">📌 置顶</view>
+  
+  <!-- 作者信息 -->
+  <view class="author-info" bindtap="onAuthorTap" data-author-id="{{post.author.id}}">
+    <image class="avatar" src="{{post.author.avatar}}" mode="aspectFill"></image>
+    <view class="author-detail">
+      <view class="author-name">
+        <text>{{post.author.name}}</text>
+        <identity-badge identity="{{post.author.identity}}"></identity-badge>
+        <text class="author-level" wx:if="{{post.author.level}}">Lv.{{post.author.level}}</text>
+      </view>
+      <view class="post-time">
+        <text class="time-text">{{formatTime(post.time)}}</text>
+        <text class="location-tag" wx:if="{{post.location}}">· {{post.location}}</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 帖子类型标签 - 使用 data-type 属性 -->
+  <view class="post-type" wx:if="{{post.type}}">
+    <text class="type-tag" data-type="{{post.type}}"># {{post.type}}</text>
+  </view>
+  
+  <!-- 标题 -->
+  <view class="post-title" wx:if="{{post.title}}">
+    {{post.title}}
+  </view>
+  
+  <!-- 正文 -->
+  <view class="post-content {{post.isExpand ? 'expand' : ''}}">
+    {{post.content}}
+  </view>
+  
+  <!-- 图片列表 - 九宫格 -->
+  <view class="image-grid grid-{{post.images ? post.images.length : 0}}" wx:if="{{post.images && post.images.length > 0}}">
+    <block wx:for="{{post.images}}" wx:key="index">
+      <view class="grid-item" wx:if="{{index < 9}}">
+        <image 
+          class="grid-image" 
+          src="{{item}}" 
+          mode="aspectFill"
+          bindtap="previewImage"
+          data-index="{{index}}"
+          data-images="{{post.images}}"
+        ></image>
+        <view class="image-count" wx:if="{{index === 8 && post.images.length > 9}}">
+          +{{post.images.length - 9}}
+        </view>
+      </view>
+    </block>
+  </view>
+  
+  <!-- 标签列表 -->
+  <view class="tags-container" wx:if="{{post.tags && post.tags.length > 0}}">
+    <block wx:for="{{post.tags}}" wx:key="index">
+      <text class="tag-item">#{{item}}</text>
+    </block>
+  </view>
+  
+  <!-- 互动统计 -->
+  <view class="stats-bar">
+    <view class="stat-item">
+      <text class="stat-icon">👁️</text>
+      <text class="stat-count">{{formatNumber(post.views || 0)}}</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-icon">❤️</text>
+      <text class="stat-count">{{formatNumber(post.likes || 0)}}</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-icon">💬</text>
+      <text class="stat-count">{{formatNumber(post.comments || 0)}}</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-icon">⭐</text>
+      <text class="stat-count">{{formatNumber(post.collects || 0)}}</text>
+    </view>
+  </view>
+  
+  <!-- 互动栏 -->
+  <view class="interaction-bar">
+    <view class="interaction-item {{post.isLiked ? 'active' : ''}}" bindtap="onLike" catchtap>
+      <text class="icon">{{post.isLiked ? '❤️' : '🤍'}}</text>
+      <text class="text">{{post.isLiked ? '已点赞' : '点赞'}}</text>
+    </view>
+    <view class="interaction-item" bindtap="onComment" catchtap>
+      <text class="icon">💬</text>
+      <text class="text">评论</text>
+    </view>
+    <view class="interaction-item {{post.isCollected ? 'active' : ''}}" bindtap="onCollect" catchtap>
+      <text class="icon">{{post.isCollected ? '⭐' : '☆'}}</text>
+      <text class="text">{{post.isCollected ? '已收藏' : '收藏'}}</text>
+    </view>
+    <view class="interaction-item" bindtap="onShare" catchtap>
+      <text class="icon">↗️</text>
+      <text class="text">分享</text>
+    </view>
+  </view>
+</view>
